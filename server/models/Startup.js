@@ -1,11 +1,9 @@
 const mongoose = require("mongoose");
-
 const BankDetailsSchema = new mongoose.Schema({
   bankName: String,
   accountNumber: String,
   ifscCode: String,
 });
-
 const DocumentSchema = new mongoose.Schema({
   gmpCertificate: String,
   coppCertificate: String,
@@ -13,7 +11,6 @@ const DocumentSchema = new mongoose.Schema({
   manufacturingLicense: String,
   companyIncorporationCertificate: String,
 });
-
 const StartupSchema = new mongoose.Schema({
   name: String,
   typeOfEntity: { type: String, enum: ["private", "partnership"] },
@@ -26,6 +23,11 @@ const StartupSchema = new mongoose.Schema({
   productionCapacity: Number,
   documents: DocumentSchema,
   bankDetails: BankDetailsSchema,
+  panCard: String,
+  gstRegistrationNo: String,
+  ieCode: String,
+  capitalInvestment: Number,
+  progress: String,
   status: {
     type: String,
     enum: ["pending", "approved", "rejected"],

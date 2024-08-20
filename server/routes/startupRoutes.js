@@ -1,12 +1,18 @@
 const express = require("express");
 const {
-  createStartup,
+  createStartupStepOne,
+  createStartupStepTwo,
+  createStartupStepThree,
   getStartups,
   getStartupById,
 } = require("../controllers/startupController");
 const auth = require("../middleware/authMiddleware");
 const router = express.Router();
-router.post("/", auth, createStartup);
+
+router.post("/step1", auth, createStartupStepOne);
+router.post("/step2", auth, createStartupStepTwo);
+router.post("/step3", auth, createStartupStepThree);
+
 router.get("/", auth, getStartups);
 router.get("/:id", auth, getStartupById);
 
