@@ -28,7 +28,7 @@ const StartupSchema = new mongoose.Schema({
   bankDetails: BankDetailsSchema,
   status: {
     type: String,
-    enum: ["pending", "approved", "rejected"],
+    enum: ["pending", "approved", "rejected","proceed"],
     default: "pending",
   },
   userId: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
