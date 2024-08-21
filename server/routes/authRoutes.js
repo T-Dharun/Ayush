@@ -5,7 +5,13 @@ const User = require("../models/User"); // Assuming you have a User model
 const authMiddleware = require("../middleware/authMiddleware"); // Middleware to protect routes
 
 const router = express.Router();
-const { register, login } = require("../controllers/authController");
+const {
+  register,
+  login,
+  modifyUserName,
+  sendOTP,
+  verifyOTP,
+} = require("../controllers/authController");
 // Secret key for JWT
 const JWT_SECRET =
   process.env.JWT_SECRET ||
@@ -14,6 +20,10 @@ const JWT_SECRET =
 router.post("/register", register);
 // Login route
 router.post("/login", login);
+router.post("/sendOTP", sendOTP);
+router.post("/verifyOTP", verifyOTP);
+router.put("/modifyUserName", authMiddleware, modifyUserName);
+
 // Protected route example
 router.get("/me", authMiddleware, async (req, res) => {
   try {

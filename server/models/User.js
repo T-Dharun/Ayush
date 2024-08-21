@@ -4,11 +4,22 @@ const UserSchema = new mongoose.Schema({
   name: String,
   email: { type: String, required: true, unique: true },
   password: { type: String, required: true },
+  mobile: {
+    type: String,
+    required: true,
+    unique: true,
+    match: [
+      /^\+\d{1,3}\d{10}$/,
+      "Please enter a valid mobile number with country code",
+    ],
+  },
   role: {
     type: String,
     enum: ["startup", "clerk", "authority", "stakeholder"],
     required: false,
   },
+  otp: String,
+  otpExpires: Date,
   date: { type: Date, default: Date.now },
 });
 UserSchema.pre("save", async function (next) {
