@@ -19,12 +19,16 @@ exports.register = async (req, res) => {
     }
     user = new User({ name, email, password, role, mobile });
     await user.save();
-
-    const payload = { user: { id: user.id } };
     //jwt.sign(payload, secret, { expiresIn }, (err, token) => {
     //if (err) throw err;
     res.status(201).json("user registered");
     //});
+    console.log(user);
+    const payload = { user: { id: user.id, role: user.role } };
+    jwt.sign(payload, secret, { expiresIn }, (err, token) => {
+      if (err) throw err;
+      res.json({ token });
+    });
   } catch (err) {
     console.error(err.message);
     res.status(500).send("Server error");
@@ -47,7 +51,7 @@ exports.login = async (req, res) => {
     }
 
     // If password matches, create a JWT token
-    const payload = { user: { id: user.id } };
+    const payload = { user: { id: user.id, role: user.role } };
     jwt.sign(payload, secret, { expiresIn }, (err, token) => {
       if (err) throw err;
       res.json({ token });
