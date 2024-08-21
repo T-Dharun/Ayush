@@ -2,9 +2,10 @@ const jwt = require("jsonwebtoken");
 const User = require("../models/User");
 const { secret, expiresIn } = require("../config/jwt");
 const bcrypt = require("bcryptjs");
-exports.register = async (req, res ,roleDefault) => {
+exports.register = async (req, res) => {
   let { name, email, password, role } = req.body;
-  if(roleDefault) role=roleDefault;
+  //console.log(req.body);
+  if(req.user && req.user.role == "authority") role="clerk";
   try {
     let user = await User.findOne({ email });
     if (user) {
@@ -12,8 +13,8 @@ exports.register = async (req, res ,roleDefault) => {
     }
     user = await new User({ name, email, password, role });
     await user.save();
-
-    const payload = { user: { id: user.id } };
+    console.log(user);
+    const payload = { user: { id: user.id , role:user.role} };
     jwt.sign(payload, secret, { expiresIn }, (err, token) => {
       if (err) throw err;
       res.json({ token });
@@ -42,7 +43,7 @@ exports.login = async (req, res) => {
     }
 
     // If password matches, create a JWT token
-    const payload = { user: { id: user.id } };
+    const payload = { user: { id: user.id ,role:user.role } };
     jwt.sign(payload, secret, { expiresIn }, (err, token) => {
       if (err) throw err;
       res.json({ token });

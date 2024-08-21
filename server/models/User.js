@@ -7,7 +7,7 @@ const UserSchema = new mongoose.Schema({
   role: {
     type: String,
     enum: ["startup", "clerk", "authority", "stakeholder"],
-    required: false,
+    required: true,
   },
   date: { type: Date, default: Date.now },
 });
