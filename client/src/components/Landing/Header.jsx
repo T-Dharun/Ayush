@@ -13,10 +13,10 @@ const Header = () => {
             className="h-8"
           />
           <div className="text-sm leading-tight">
-            <p className='ml-[100px]'>भारत सरकार |</p>
+            <p className='ml-[90px]'>भारत सरकार |</p>
             <p className="font-bold uppercase">Government of India |</p>
           </div>
-          <div className="text-sm leading-tight border-1 border-white">
+          <div className="text-sm leading-tight border-white">
           <p>Ministry of AYUSH</p>
           </div>
         

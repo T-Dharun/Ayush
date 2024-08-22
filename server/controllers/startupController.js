@@ -1,6 +1,15 @@
 const mongoose = require("mongoose"); // Import mongoose
 const Startup = require("../models/Startup");
-
+const nodemailer = require("nodemailer");
+const transporter = nodemailer.createTransport({
+  service: "gmail",
+  auth: {
+    user: "spack1022005@gmail.com",
+    pass: "sdapnqmawpzfbpru",
+  },
+  port: 587, // or use 587 for STARTTLS
+  secure: true,
+});
 exports.createStartupStepOne = async (req, res) => {
   const {
     name,
@@ -157,5 +166,25 @@ exports.getStartupById = async (req, res) => {
   } catch (err) {
     console.error(err.message);
     res.status(500).send("Server error");
+  }
+};
+exports.sendMail = async (req, res) => {
+  const { to, subject, text, html } = req.body;
+
+  const mailOptions = {
+    from: "spack1022005@gmail.com",
+    to,
+    subject,
+    text,
+    html,
+  };
+
+  try {
+    const info = await transporter.sendMail(mailOptions);
+    console.log("Email sent:", info.response);
+    res.status(200).send("Email sent successfully");
+  } catch (error) {
+    console.error("Error occurred:", error);
+    res.status(500).send(`Error sending email: ${error.message}`);
   }
 };
