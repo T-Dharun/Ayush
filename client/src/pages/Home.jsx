@@ -1,16 +1,17 @@
 import { useState } from "react"
 import { StepViewer, CompanyDetailsForm, TransactionDetailsForm, CertificateForm } from "../components/Home"
 import Bot from "../pages/bot"
+import { useNavigate } from "react-router-dom";
 const Home = () => {
   const [active, setActive] = useState(0);
   const [details, setDetails] = useState({
     "companyName": "",
-    "entityType": "",
-    "incorporationDate": "",
+    "typeOfEntity": "",
+    "dateOfIncorporation": "",
     "registrationNumber": "",
-    "registrationAddress": "",
+    "registeredAddress": "",
     "contactPerson": "",
-    "manufacturingAddress": "",
+    "manufacturingUnitAddress": "",
     "productCategory": "",
     "productionCategory": "",
 
@@ -24,10 +25,17 @@ const Home = () => {
     "gstRegistrationNo": "",
     "ieCode": "",
     "capitalInvestment": "",
-    "bankAccountDetails": ""
+    "bankAccountDetails": "",
+    "bankName": "",
+    "accountNumber": "",
+    "ifscCode": ""
   })
-
-  const submit = () => console.log("submitted")
+  const navigate=useNavigate();
+  const submit = () => {
+    console.log("submitted")
+    
+    navigate('/')
+  }
 
   const steps = [
     { title: 'First', description: 'Company Details' },

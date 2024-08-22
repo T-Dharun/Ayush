@@ -1,7 +1,13 @@
 import { Input, Textarea } from '@chakra-ui/react'
 import PropTypes from "prop-types";
+import { postBankDetails } from '../../services/companyService';
 
 const TransactionDetailsForm = ({ setDetails, details, onSubmit }) => {
+  const submit=(submit)=>{
+    postBankDetails(details);
+    console.log(details);
+    onSubmit();
+  }
   return (
     <main className="bg-white text-secondary w-[48rem] p-4 rounded-md border-2 border-emerald-400 flex flex-col gap-4">
       <div className="w-full grid grid-cols-2 gap-3">
@@ -56,16 +62,41 @@ const TransactionDetailsForm = ({ setDetails, details, onSubmit }) => {
             onChange={(e) => setDetails({ ...details, capitalInvestment: e.target.value })}
           />
         </section>
-
+        
         <section className="flex flex-col gap-1">
-          <label htmlFor="bankAccountDetails" className="font-bold">
-            Bank Account Details:{" "}
+          <label htmlFor="BankName" className="font-bold">
+            BankName:{" "}
           </label>
-          <Textarea
-            id="bankAccountDetails"
-            placeholder="Enter Bank Account Details"
+          <Input
+            id="bankName"
+            type="text"
+            placeholder="Bank Name"
             className="p-2 border-2 border-emerald-400 rounded-md focus:outline-none"
-            onChange={(e) => setDetails({ ...details, bankAccountDetails: e.target.value })}
+            onChange={(e) => setDetails({ ...details, bankName: e.target.value })}
+          />
+        </section>
+        <section className="flex flex-col gap-1">
+          <label htmlFor="accountNumber" className="font-bold">
+            Account Number:{" "}
+          </label>
+          <Input
+            id="AccountNumber"
+            type="text"
+            placeholder="Account Number"
+            className="p-2 border-2 border-emerald-400 rounded-md focus:outline-none"
+            onChange={(e) => setDetails({ ...details, accountNumber: e.target.value })}
+          />
+        </section>
+        <section className="flex flex-col gap-1">
+          <label htmlFor="ifsc Code" className="font-bold">
+            IFSC code:{" "}
+          </label>
+          <Input
+            id="ifscCode"
+            type="string"
+            placeholder="IFSC code"
+            className="p-2 border-2 border-emerald-400 rounded-md focus:outline-none"
+            onChange={(e) => setDetails({ ...details, ifscCode: e.target.value })}
           />
         </section>
       </div>
@@ -74,7 +105,7 @@ const TransactionDetailsForm = ({ setDetails, details, onSubmit }) => {
         <button
           type="button"
           className="bg-emerald-400 text-primary p-2 px-3 rounded-md cursor-pointer hover:opacity-90"
-          onClick={onSubmit}
+          onClick={submit}
         >
           SUBMIT
         </button>

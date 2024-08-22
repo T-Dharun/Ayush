@@ -12,6 +12,7 @@ export const register = async (userData) => {
   return response.data;
 };
 
+
 export const verifyToken = async () => {
   const response = await axios.get(`${API_URL}/verifyToken`, {
     headers: getAuthHeader(),

@@ -16,7 +16,13 @@ function Home() {
 
   const fetchCompanyData = async () => {
     try {
-      const response = await axiosInstance.get('http://localhost:5000/api/government/startups');
+      const a=JSON.parse(localStorage.getItem('user'));
+      console.log(a.token);
+      const response = await axios.get('http://localhost:5000/api/government/startups',{
+        headers:{
+          'x-auth-token':a.token
+        }
+      });
       console.log(response);
       console.log("Fetched data:", response.data); // Log the data instead of the response object
       setCompanies(response.data);
