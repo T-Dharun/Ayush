@@ -153,7 +153,7 @@ function Login({ isSignUp, onClose }) {
                     <Components.Title>Sign in</Components.Title>
                     <Components.Input type='email' placeholder='Email' ref={emailRef} />
                     <Components.Input type='password' placeholder='Password' ref={passwordRef} />
-                    {error && !toggle && <p style={{ color: 'red' }}>{error}</p>}
+                    {error && toggle && <p style={{ color: 'red' }}>{error}</p>}
                     <Components.Anchor href='#'>Forgot your password?</Components.Anchor>
                     <Components.Button type="submit" disabled={isLoading}>{!isLoading?"Sign in":"Signing in..."}</Components.Button>
                 </Components.Form>
@@ -166,7 +166,7 @@ function Login({ isSignUp, onClose }) {
                         <Components.Paragraph>
                             To keep connected with us please login with your personal info
                         </Components.Paragraph>
-                        <Components.GhostButton onClick={() => {toggle(true);setOtpMode(false)}}>
+                        <Components.GhostButton onClick={() => {toggle(true);setOtpMode(false);setError('')}}>
                             Sign In
                         </Components.GhostButton>
                     </Components.LeftOverlayPanel>
@@ -176,7 +176,7 @@ function Login({ isSignUp, onClose }) {
                         <Components.Paragraph>
                             Enter Your personal details and start journey with us
                         </Components.Paragraph>
-                        <Components.GhostButton onClick={() => toggle(false)}>
+                        <Components.GhostButton onClick={() => {toggle(false);setError('')}}>
                           Sign up
                         </Components.GhostButton>
                     </Components.RightOverlayPanel>
