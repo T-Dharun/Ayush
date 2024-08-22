@@ -1,8 +1,10 @@
 import { Input, Select, Textarea } from '@chakra-ui/react'
 import PropTypes from "prop-types";
+import { postCompanyDetails } from '../../services/companyService';
 
 const CompanyDetailsForm = ({ setActive, details, setDetails }) => {
   const submit = () => {
+    postCompanyDetails(details);
     setActive(1)
   }
 
@@ -29,7 +31,7 @@ const CompanyDetailsForm = ({ setActive, details, setDetails }) => {
           <Select
             id="entityType"
             placeholder='Select option'
-            onChange={(e) => setDetails({ ...details, entityType: e.target.value })}
+            onChange={(e) => setDetails({ ...details, typeOfEntity: e.target.value })}
           >
             <option value='private'>Private</option>
             <option value='partnership'>Partnership</option>
@@ -63,14 +65,14 @@ const CompanyDetailsForm = ({ setActive, details, setDetails }) => {
         </section>
 
         <section className="flex flex-col gap-1">
-          <label htmlFor="registrationAddress" className="font-bold">
+          <label htmlFor="registratedAddress" className="font-bold">
             Address:{" "}
           </label>
           <Textarea
-            id="registrationAddress"
+            id="registratedAddress"
             placeholder="Enter address"
             className="p-2 border-2 border-emerald-400 rounded-md focus:outline-none"
-            onChange={(e) => setDetails({ ...details, registrationAddress: e.target.value })}
+            onChange={(e) => setDetails({ ...details, registeredAddress: e.target.value })}
           />
         </section>
 
@@ -82,7 +84,7 @@ const CompanyDetailsForm = ({ setActive, details, setDetails }) => {
             id="manufacturingAddress"
             placeholder="Enter Manufacturing Address"
             className="p-2 border-2 border-emerald-400 rounded-md focus:outline-none"
-            onChange={(e) => setDetails({ ...details, manufacturingAddress: e.target.value })}
+            onChange={(e) => setDetails({ ...details, manufacturingUnitAddress: e.target.value })}
           />
         </section>
 
@@ -121,7 +123,7 @@ const CompanyDetailsForm = ({ setActive, details, setDetails }) => {
             type="datetime-local"
             placeholder="incorporation date"
             className="p-2 border-2 border-emerald-400 rounded-md focus:outline-none"
-            onChange={(e) => setDetails({ ...details, incorporationDate: e.target.value })}
+            onChange={(e) => setDetails({ ...details, DateOfIncorporation: e.target.value })}
           />
         </section>
       </div>

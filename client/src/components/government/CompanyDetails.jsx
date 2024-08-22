@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import axios from 'axios';
-import axiosInstance from '../../config';
 const CompanyDetails = () => {
     const { startupId } = useParams();
     const [loading, setLoading] = useState(true);
@@ -34,7 +33,13 @@ const CompanyDetails = () => {
     const navigate=useNavigate();
     const verifyCompany = async () => {
         try {
-            const response = await axiosInstance.patch(`http://localhost:5000/api/government/startups/verify/${startupId}`);
+            const a=JSON.parse(localStorage.getItem('user'));
+            console.log(a.token)
+            const response = await axios.patch(`http://localhost:5000/api/government/startups/verify/${startupId}`,{},{
+                headers:{
+                    'x-auth-token':a.token
+                }
+            });
             console.log(response);            
             alert(response.data.msg)
             navigate('/government')
@@ -45,7 +50,13 @@ const CompanyDetails = () => {
     }
     const rejectCompany = async () => {
         try {
-            const response = await axiosInstance.patch(`http://localhost:5000/api/government/startups/reject/${startupId}`);
+            const a=JSON.parse(localStorage.getItem('user'));
+            console.log(a.token)
+            const response = await axios.patch(`http://localhost:5000/api/government/startups/reject/${startupId}`,{},{
+                headers:{
+                    'x-auth-token':a.token
+                }
+            });
             console.log(response);            
             alert(response.data.msg)
             navigate('/government')
@@ -57,13 +68,12 @@ const CompanyDetails = () => {
     const fetchCompanyData = async () => {
 
         try {
-            const token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNjZjNGEyZmY3YmM5ZmRhMDEzY2NiODA3Iiwicm9sZSI6ImNsZXJrIn0sImlhdCI6MTcyNDI2MTQ3MCwiZXhwIjoxNzI0MjY1MDcwfQ.hdtnTljzQBQ4pEOUyX27x9-UZ_Qhwkhcb4W1uiAgDFE'; // replace with the actual token value
-            const axiosInstance = axios.create({
-                headers: {
-                    'x-auth-token': token
+            const a=JSON.parse(localStorage.getItem('user'));
+            const response = await axios.get(`http://localhost:5000/api/government/startups/${startupId}`,{
+                headers:{
+                    'x-auth-token':a.token
                 }
             });
-            const response = await axiosInstance.get(`http://localhost:5000/api/government/startups/${startupId}`);
             setCompanyData(response.data);
             setLoading(false);
         } catch (error) {

@@ -6,7 +6,7 @@ const axiosInstance = axios.create({
 
 axiosInstance.interceptors.request.use(
     (config) => {
-        const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNjZjNGEyZmY3YmM5ZmRhMDEzY2NiODA3Iiwicm9sZSI6ImNsZXJrIn0sImlhdCI6MTcyNDI2MzEzMiwiZXhwIjoxNzI0MjY2NzMyfQ.szIyWt2rSHBUTutjwwD5zgt7LokQgZ8y531sRH5hLe0"; // Assuming you store the token in localStorage
+        const token = localStorage.getItem('user').token;
         if (token) {
             config.headers['x-auth-token'] = token;
         }
