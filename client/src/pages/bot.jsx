@@ -36,9 +36,9 @@ const Bot = () => {
         setInput(event.target.value);
     }
     return (
-        <div className={`chatbot-container ${isOpen ? 'open' : ''}`}>
+        <div className={`chatbot-container  ${isOpen ? 'open' : ''}`}>
             {!isOpen && <div className="chatbot-icon" onClick={toggleChatbot}>
-                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS1TquK3v0EcAM-B1UrmEl-Crdmmj-iSJcHng&s" alt="Chatbot" width="150px" height="150px" className='bot-image'/>
+                <img src="https://tse4.mm.bing.net/th?id=OIP.kjOyhLhykSmAp6BNHMwNbgHaHa&pid=Api&P=0&h=180" alt="Chatbot" width="80px" height="80px" className='bot-image'/>
             </div>}
             { isOpen && <div className="chatbot-window">
                 <div className="chatbot-header">

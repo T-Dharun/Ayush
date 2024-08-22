@@ -1,8 +1,31 @@
-import { Input } from '@chakra-ui/react'
+import { Input } from '@chakra-ui/react';
 import PropTypes from "prop-types";
 
 const CertificateForm = ({ setActive, details, setDetails }) => {
-  const submit = () => setActive(2);
+  const submit = async () => {
+    const formData = new FormData();
+
+    for (const [key, value] of Object.entries(details)) {
+      if (value) {
+        formData.append(key, value);
+      }
+    }
+
+    try {
+      const response = await fetch('http://localhost:5000/api/documents/upload', {
+        method: 'POST',
+        body: formData,
+      });
+
+      if (response.ok) {
+        setActive(2);
+      } else {
+        console.error('Failed to upload certificates');
+      }
+    } catch (err) {
+      console.error('Error uploading certificates:', err);
+    }
+  };
 
   return (
     <main className="bg-white text-secondary w-[48rem] p-4 rounded-md border-2 border-emerald-400 flex flex-col gap-4">
@@ -14,7 +37,7 @@ const CertificateForm = ({ setActive, details, setDetails }) => {
           <Input
             id="gmpCertificate"
             type="file"
-            accept='.pdf'
+            accept=".pdf"
             className="p-2 border-2 border-emerald-400 rounded-md focus:outline-none"
             onChange={(e) => setDetails({ ...details, gmpCertificate: e.target.files[0] })}
           />
@@ -27,7 +50,7 @@ const CertificateForm = ({ setActive, details, setDetails }) => {
           <Input
             id="coppCertificate"
             type="file"
-            accept='.pdf'
+            accept=".pdf"
             className="p-2 border-2 border-emerald-400 rounded-md focus:outline-none"
             onChange={(e) => setDetails({ ...details, coppCertificate: e.target.files[0] })}
           />
@@ -40,7 +63,7 @@ const CertificateForm = ({ setActive, details, setDetails }) => {
           <Input
             id="ayushLicenseCertificate"
             type="file"
-            accept='.pdf'
+            accept=".pdf"
             className="p-2 border-2 border-emerald-400 rounded-md focus:outline-none"
             onChange={(e) => setDetails({ ...details, ayushLicenseCertificate: e.target.files[0] })}
           />
@@ -53,7 +76,7 @@ const CertificateForm = ({ setActive, details, setDetails }) => {
           <Input
             id="manufacturingLicense"
             type="file"
-            accept='.pdf'
+            accept=".pdf"
             className="p-2 border-2 border-emerald-400 rounded-md focus:outline-none"
             onChange={(e) => setDetails({ ...details, manufacturingLicense: e.target.files[0] })}
           />
@@ -66,7 +89,7 @@ const CertificateForm = ({ setActive, details, setDetails }) => {
           <Input
             id="companyIncorporationCertificate"
             type="file"
-            accept='.pdf'
+            accept=".pdf"
             className="p-2 border-2 border-emerald-400 rounded-md focus:outline-none"
             onChange={(e) => setDetails({ ...details, companyIncorporationCertificate: e.target.files[0] })}
           />
@@ -79,12 +102,12 @@ const CertificateForm = ({ setActive, details, setDetails }) => {
           className="bg-emerald-400 text-primary p-2 px-3 rounded-md cursor-pointer hover:opacity-90"
           onClick={submit}
         >
-          SUBMIT
+          NEXT
         </button>
       </section>
     </main>
   );
-}
+};
 
 CertificateForm.propTypes = {
   setActive: PropTypes.func.isRequired,

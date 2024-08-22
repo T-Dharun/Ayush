@@ -75,6 +75,7 @@ function Login({ isSignUp, onClose }) {
           setIsLoading(true);
           await verifyOtp({ mobile, otp });
           setOtpVerification(true);
+          toggle(true);
           alert("OTP verified successfully");
           navigate('/login');
         } catch (error) {
@@ -125,7 +126,7 @@ function Login({ isSignUp, onClose }) {
                 {otpMode?
                   <Components.Form onSubmit={(e) => { e.preventDefault(); handleVerifyOtp(); }}>
                     <Components.Title>Verify OTP</Components.Title>
-                    <Components.Input type='text' placeholder='Enter OTP' ref={otpRef} />
+                    <Components.Input type='number' placeholder='Enter OTP' ref={otpRef} />
                     {error && <p style={{ color: 'red' }}>{error}</p>}
                     <Components.Button type="submit" disabled={isLoading}>Verify</Components.Button>
                   </Components.Form>

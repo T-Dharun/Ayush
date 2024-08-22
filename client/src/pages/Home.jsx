@@ -36,7 +36,7 @@ const Home = () => {
   ]
 
   return (
-    <div className="screen bg-primary center flex-col gap-5">
+    <div className="screen center flex-col gap-5" style={{backgroundColor:"white"}}>
       <section className="w-[48rem]">
         <StepViewer
           steps={steps}

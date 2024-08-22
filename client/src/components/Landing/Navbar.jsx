@@ -64,11 +64,11 @@ const Navbar = () => {
         </div>
 
         <div className="flex-1 flex justify-center items-center">
-          <img src={LOGO} alt="Logo" className="h-12 w-15 rounded-full" />
+          <img src={LOGO} alt="Logo" className="h-12 w-15 rounded-full mr-[40px] " />
           <div className="relative ml-4">
           <input
   type="search"
-  className="w-full py-2 pl-10 text-sm text-gray-700 rounded-full mr-[50px] w-[400px] "
+  className="w-full py-2 pl-10 text-sm text-gray-700 rounded-full mr-[280px] w-[400px] "
   placeholder="Search..." style={{ border: '2px solid black' }}
 />
 
@@ -83,7 +83,7 @@ const Navbar = () => {
           </div>
         </div>
 
-        <div className="hidden md:flex space-x-8 relative mr-[80px]">
+        <div className="hidden md:flex space-x-8 relative ml-[10px]">
           <div className="relative">
             <button
               className="text-gray-800 hover:text-orange-500 focus:outline-none"
@@ -199,8 +199,8 @@ const Navbar = () => {
               <Link to={user ? "/profile" : "/login"} style={{ textDecoration: 'none' }}>
                 {!user ? (
                   <button
-                    style={{ border: '3px solid black' }}
-                    className="px-4 py-2 rounded-full text-gray-800 hover:bg-gray-100"
+                    style={{ border: '3px solid black'  }}
+                    className="px-4 py-2 rounded-full text-gray-800 hover:bg-gray-100 ml-[80px]"
                   >
                     Login
                   </button>
