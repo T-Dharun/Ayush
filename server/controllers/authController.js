@@ -23,7 +23,7 @@ exports.register = async (req, res) => {
     //if (err) throw err;
     res.status(201).json("user registered");
     //});
-    console.log(user);
+    //console.log(user);
     const payload = { user: { id: user.id, role: user.role } };
     jwt.sign(payload, secret, { expiresIn }, (err, token) => {
       if (err) throw err;
@@ -40,7 +40,7 @@ exports.login = async (req, res) => {
     // Find the user by email
     const user = await User.findOne({ email });
     console.log(user);
-    if (!user || !user.otpVerifed) {
+    if (!user || !user.otpVerified) {
       return res.status(400).json({ msg: "Invalid email credentials" });
     }
     // Compare the entered password with the hashed password stored in the database
@@ -96,7 +96,6 @@ exports.sendOTP = async (req, res) => {
     if (!user) {
       return res.status(400).json({ msg: "User not found" });
     }
-
     // Generate a random 6-digit OTP
     const otp = Math.floor(100000 + Math.random() * 900000).toString();
     //console.log(user);
@@ -123,12 +122,10 @@ exports.sendOTP = async (req, res) => {
         }
       }
     );
-
     // Save the OTP to the user's document (hashed) or in-memory store (like Redis)
     user.otp = otp; // You might want to hash the OTP before saving
     user.otpExpires = Date.now() + 10 * 60 * 1000; // OTP expires in 10 minutes
     await user.save();
-
     res.json({ msg: "OTP sent successfully" });
   } catch (err) {
     console.error(err.message);
@@ -149,6 +146,10 @@ exports.verifyOTP = async (req, res) => {
     if (user.otp !== otp || Date.now() > user.otpExpires) {
       return res.status(400).json({ msg: "Invalid or expired OTP" });
     }
+    user.otpVerified = true;
+    // Save the updated user document
+    await user.save();
+
     // OTP is valid, create a JWT token
     const payload = { user: { id: user.id } };
     jwt.sign(payload, secret, { expiresIn }, (err, token) => {

@@ -23,6 +23,9 @@ router.post("/login", login);
 router.post("/sendOTP", sendOTP);
 router.post("/verifyOTP", verifyOTP);
 router.put("/modifyUserName", authMiddleware, modifyUserName);
+router.get("/verifyToken", authMiddleware, (req, res) => {
+  res.status(200).send({ success: true, message: "Token is valid" });
+});
 
 // Protected route example
 router.get("/me", authMiddleware, async (req, res) => {

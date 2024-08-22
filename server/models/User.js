@@ -18,6 +18,7 @@ const UserSchema = new mongoose.Schema({
     enum: ["startup", "clerk", "authority", "stakeholder"],
     required: true,
   },
+  otpVerified: { type: Boolean, default: false },
   otp: String,
   otpExpires: Date,
   date: { type: Date, default: Date.now },

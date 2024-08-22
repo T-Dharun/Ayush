@@ -1,5 +1,3 @@
-import GovernWorkspace from './GovernWorkspace';
-
-export{
-    GovernWorkspace
-}
+import GovernWorkspace from "./GovernWorkspace";
+import Home from "./Home";
+export { GovernWorkspace, Home };

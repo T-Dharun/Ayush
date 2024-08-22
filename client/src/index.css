@@ -1,19 +1,21 @@
-
-:root {
-  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
-  box-sizing: border-box;
-  padding: 0;
-  margin: 0;
-  font-synthesis: none;
-  text-rendering: optimizeLegibility;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
 * {
-    margin: 0%;
-    padding: 0%;
-        box-sizing: border-box;
-      
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
 
+.screen {
+  @apply min-h-screen w-screen;
+}
+
+.full {
+  @apply w-full h-full;
+}
+
+.center {
+  @apply flex justify-center items-center;
+}
