@@ -34,7 +34,7 @@ const Home = () => {
   const submit = () => {
     console.log("submitted")
     
-    navigate('/')
+    navigate('/status');
   }
 
   const steps = [

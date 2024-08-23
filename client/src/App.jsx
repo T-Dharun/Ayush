@@ -5,7 +5,7 @@ import { ChakraProvider, Spinner } from '@chakra-ui/react';
 import LandingPage from './pages/LandingPage';
 import Bot from './pages/bot';
 import Login from "./components/Login/login";
-import { Home } from './pages';
+import { Home ,Status} from './pages';
 import { useAuth } from './services/AuthContext';
 import { useEffect,useState } from "react";
 import axiosHeader from "./axiosHeader";
@@ -42,6 +42,7 @@ const App = () => {
             <Route path='/guide' element={<Guide />} />
             <Route path='/government' element={<GovernWorkspace />} />
             <Route path='/startupView/:startupId' element={<CompanyDetails />} />
+            <Route path="/status" element={<Status id={user.id} />} />
           </>
         )}
       </Routes>

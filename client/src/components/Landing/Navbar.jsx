@@ -31,9 +31,14 @@ const Navbar = () => {
     };
   }, []);
 
+  const [isPopupOpen, setIsPopupOpen] = useState(false);
+
+  const togglePopup = () => {
+    setIsPopupOpen(!isPopupOpen);
+  };
+
   useEffect(() => {
     if (isLoggedIn) {
-      // Simulate fetching user data from API
       console.log('Fetching user data...');
       fetch('http://localhost:5000/user')
         .then(response => response.json())
@@ -83,7 +88,7 @@ const Navbar = () => {
           </div>
         </div>
 
-        <div className="hidden md:flex space-x-8 relative ml-[10px]">
+        <div className="hidden md:flex space-x-8 relative ml-[40px]">
           <div className="relative">
             <button
               className="text-gray-800 hover:text-orange-500 focus:outline-none"
@@ -160,7 +165,7 @@ const Navbar = () => {
           </div>
 
           <a href="#" className="text-gray-800 hover:text-orange-500">Events & Media</a>
-          <a href="#" className="text-gray-800 hover:text-orange-500">Ecosystem</a>
+          <a href="#" className="text-gray-800 hover:text-orange-500 ">Ecosystem</a>
         </div>
 
         
@@ -196,22 +201,48 @@ const Navbar = () => {
             </div>
           ) : (
             <>
-              <Link to={user ? "/profile" : "/login"} style={{ textDecoration: 'none' }}>
-                {!user ? (
-                  <button
-                    style={{ border: '3px solid black'  }}
-                    className="px-4 py-2 rounded-full text-gray-800 hover:bg-gray-100 ml-[80px]"
-                  >
-                    Login
-                  </button>
-                ) : (
-                  <div className="flex items-center">
-                    <FaUserCircle size={24} color="black" /> {/* Profile icon */}
-                  </div>
-                )}
-            </Link>
+             <div className="flex items-center">
+      {user ? (
+        <>
+          {/* Profile Icon and Dropdown */}
+          <div className="relative">
+            <div               className="flex items-center cursor-pointer text-gray-700 hover:text-gray-900 transition duration-300 ease-in-out transform hover:scale-110 ml-[40px]" 
+ onClick={togglePopup}>
+              <FaUserCircle size={24} color="black" />
+            </div>
+            {isPopupOpen && (
+              <div className="absolute right-0 mt-2 w-56 bg-white shadow-xl rounded-xl z-50 overflow-hidden ">
+                <ul className="p-4 space-y-2">  
+                  <li className="hover:bg-gray-200 p-3 rounded-lg cursor-pointer transition duration-200 ease-in-out transform hover:translate-x-2">
+                    Home
+                  </li>
+                  <Link to="/government" className="hover:bg-gray-200 p-3 rounded-lg cursor-pointer transition duration-200 ease-in-out transform hover:translate-x-2">
+                  <li className="hover:bg-gray-200 p-3 rounded-lg cursor-pointer transition duration-200 ease-in-out transform hover:translate-x-2">
+                    Work
+                  </li>
+                  </Link>
+                  <li className="hover:bg-gray-200 p-3 rounded-lg cursor-pointer transition duration-200 ease-in-out transform hover:translate-x-2">
+                    Settings
+                  </li>
+                </ul>
+              </div>
+            )}
+          </div>
+        </>
+      ) : (
+        /* Login Button with Link */
+        <Link to="/login" style={{ textDecoration: 'none' }}>
+          <button
+            style={{ border: '3px solid black' }}
+            className="px-4 py-2 rounded-full text-gray-800 hover:bg-gray-100 ml-[100px]"
+          >
+            Login
+          </button>
+        </Link>
+      )}
+    </div>
               <Link to="/register">
-                <button className="px-4 py-2 bg-blue-900 text-white rounded-full hover:bg-blue-700 mr-[20px]">
+                <button className="px-4 py-2 bg-blue-900 text-white rounded-full hover:bg-blue-700 ml-[20px]">
                   Start Registration
                 </button>
               </Link>

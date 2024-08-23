@@ -8,7 +8,7 @@ const Bot = () => {
         setIsOpen(!isOpen);
     };
     const handleSendMessage = () => {
-        fetch('http://localhost:5000/process', {
+        fetch('http://localhost:8080/process', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
