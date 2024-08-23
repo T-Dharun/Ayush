@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import axios from 'axios';
+import Navbar from './Navbar';
 const CompanyDetails = () => {
     const { startupId } = useParams();
     const [loading, setLoading] = useState(true);
@@ -30,17 +31,19 @@ const CompanyDetails = () => {
     useEffect(() => {
         fetchCompanyData();
     }, []);
-    const navigate=useNavigate();
+    const user=JSON.parse(localStorage.getItem('data'));
+    console.log(user.role)
+    const navigate = useNavigate();
     const verifyCompany = async () => {
         try {
-            const a=JSON.parse(localStorage.getItem('user'));
+            const a = JSON.parse(localStorage.getItem('user'));
             console.log(a.token)
-            const response = await axios.patch(`http://localhost:5000/api/government/startups/verify/${startupId}`,{},{
-                headers:{
-                    'x-auth-token':a.token
+            const response = await axios.patch(`http://localhost:5000/api/government/startups/verify/${startupId}`, {}, {
+                headers: {
+                    'x-auth-token': a.token
                 }
             });
-            console.log(response);            
+            console.log(response);
             alert(response.data.msg)
             navigate('/government')
         }
@@ -50,14 +53,14 @@ const CompanyDetails = () => {
     }
     const rejectCompany = async () => {
         try {
-            const a=JSON.parse(localStorage.getItem('user'));
+            const a = JSON.parse(localStorage.getItem('user'));
             console.log(a.token)
-            const response = await axios.patch(`http://localhost:5000/api/government/startups/reject/${startupId}`,{},{
-                headers:{
-                    'x-auth-token':a.token
+            const response = await axios.patch(`http://localhost:5000/api/government/startups/reject/${startupId}`, {}, {
+                headers: {
+                    'x-auth-token': a.token
                 }
             });
-            console.log(response);            
+            console.log(response);
             alert(response.data.msg)
             navigate('/government')
         }
@@ -68,12 +71,13 @@ const CompanyDetails = () => {
     const fetchCompanyData = async () => {
 
         try {
-            const a=JSON.parse(localStorage.getItem('user'));
-            const response = await axios.get(`http://localhost:5000/api/government/startups/${startupId}`,{
-                headers:{
-                    'x-auth-token':a.token
+            const a = JSON.parse(localStorage.getItem('user'));
+            const response = await axios.get(`http://localhost:5000/api/government/startups/${startupId}`, {
+                headers: {
+                    'x-auth-token': a.token
                 }
             });
+            console.log(response.data)
             setCompanyData(response.data);
             setLoading(false);
         } catch (error) {
@@ -85,6 +89,8 @@ const CompanyDetails = () => {
     }
 
     return (
+        <>
+        <Navbar/>
         <div className="container py-5">
             <h1 className="fs-51 mb-5 fw-500">Company Details</h1>
             <p className="lead">Startup ID: {startupId}</p>
@@ -147,25 +153,29 @@ const CompanyDetails = () => {
                         <div className="card-body">
                             <p><strong>Certificate:</strong> {companyData.documents.certificate}</p>
                             <p><strong>License:</strong> {companyData.documents.license}</p>
-                            <p><strong>Other Documents:</strong>
-                                <ul>
-                                    {companyData.documents.otherDocuments.map((doc, index) => (
-                                        <li key={index}>{doc}</li>
-                                    ))}
-                                </ul>
-                            </p>
+                            {Object.entries(companyData.documents).map(([key, value]) => (
+                                
+                                key!='_id' && <tr key={key}>
+                                    <td><strong>{key}:</strong></td> 
+                                    <td><a href={value} target="_blank" rel="noopener noreferrer"><button className='ml-5 btn-primary'>view Here</button></a></td>
+        
+                                </tr>
+
+                            ))}
+
                         </div>
                     </div>
                 </div>
             </div>
             <div className="row mt-4">
                 <div className="col-md-12 text-center">
-                    <button className="btn btn-success btn-lg mr-3" onClick={verifyCompany}>Verify</button>
+                    <button className="btn btn-success btn-lg mr-3" onClick={verifyCompany}>{user.role=='clerk'?'Verify and Proceed':'Recognize'}</button>
                     <button className="btn btn-danger m-3 btn-lg mr-3" onClick={rejectCompany}>Reject</button>
                     <button className="btn btn-secondary btn-lg">Chat</button>
                 </div>
             </div>
         </div>
+        </>
     );
 };
 

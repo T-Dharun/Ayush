@@ -1,7 +1,11 @@
 import React from 'react';
-import { Link, NavLink } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 
 const Navbar = () => {
+  const a=JSON.parse(localStorage.getItem('data'));
+  const addCl=a.role=='authority'?'Add Clerk':"";
+  //console.log(a.role=='authority')
+  
   return (
     <nav className="navbar navbar-expand-lg navbar-light bg-white shadow-sm">
       <div className="container">
@@ -17,21 +21,26 @@ const Navbar = () => {
           <span className="navbar-toggler-icon"></span>
         </button>
 
-        <div className="collapse navbar-collapse" id="navbarSupportedContent">
+        <div className="" id="navbarSupportedContent">
           <ul className="navbar-nav mr-auto">
             <li className="nav-item">
-              <NavLink className="nav-link" to="/workspace">
-                Workspace
+              <NavLink className="nav-link" to="/">
+                Home
               </NavLink>
             </li>
             <li className="nav-item">
               <NavLink className="nav-link" to="/add">
-                Proceeded Startups
+                Workspace
               </NavLink>
             </li>
             <li className="nav-item">
               <NavLink className="nav-link" to="/add-react">
                 Approved Startups
+              </NavLink>
+            </li>
+              <li className="nav-item">
+              <NavLink className="nav-link" to="/government/create">
+                {addCl}
               </NavLink>
             </li>
           </ul>

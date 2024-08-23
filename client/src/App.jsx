@@ -9,6 +9,7 @@ import { Home ,Status} from './pages';
 import { useAuth } from './services/AuthContext';
 import { useEffect,useState } from "react";
 import axiosHeader from "./axiosHeader";
+import AddClerk from "./components/government/AddClerk";
 const App = () => {
   const [data, setData] = useState(null);
   const { user, loading } = useAuth();
@@ -41,6 +42,7 @@ const App = () => {
             <Route path="/bot" element={<Bot />} />
             <Route path='/guide' element={<Guide />} />
             <Route path='/government' element={<GovernWorkspace />} />
+            <Route path='/government/create' element={<AddClerk />} />
             <Route path='/startupView/:startupId' element={<CompanyDetails />} />
             <Route path="/status" element={<Status id={user.id} />} />
           </>
