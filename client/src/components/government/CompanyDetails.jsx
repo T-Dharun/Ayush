@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import axios from 'axios';
+import Navbar from './Navbar';
 const CompanyDetails = () => {
     const { startupId } = useParams();
     const [loading, setLoading] = useState(true);
@@ -30,6 +31,8 @@ const CompanyDetails = () => {
     useEffect(() => {
         fetchCompanyData();
     }, []);
+    const user=JSON.parse(localStorage.getItem('data'));
+    console.log(user.role)
     const navigate = useNavigate();
     const verifyCompany = async () => {
         try {
@@ -86,6 +89,8 @@ const CompanyDetails = () => {
     }
 
     return (
+        <>
+        <Navbar/>
         <div className="container py-5">
             <h1 className="fs-51 mb-5 fw-500">Company Details</h1>
             <p className="lead">Startup ID: {startupId}</p>
@@ -164,12 +169,13 @@ const CompanyDetails = () => {
             </div>
             <div className="row mt-4">
                 <div className="col-md-12 text-center">
-                    <button className="btn btn-success btn-lg mr-3" onClick={verifyCompany}>Verify</button>
+                    <button className="btn btn-success btn-lg mr-3" onClick={verifyCompany}>{user.role=='clerk'?'Verify and Proceed':'Recognize'}</button>
                     <button className="btn btn-danger m-3 btn-lg mr-3" onClick={rejectCompany}>Reject</button>
                     <button className="btn btn-secondary btn-lg">Chat</button>
                 </div>
             </div>
         </div>
+        </>
     );
 };
 

@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios'; // Ensure axios is imported if you're using it
 import { useNavigate } from 'react-router-dom'; // Import useNavigate if you want to redirect
+import Navbar from './Navbar';
 
 const AddClerk = () => {
   const [create, setCreate] = useState({
@@ -39,6 +40,8 @@ const AddClerk = () => {
   };
 
   return (
+    <>
+    <Navbar/>
     <div className="container mt-5">
       <div className="row">
         <div className="col-md-6 offset-md-3">
@@ -97,6 +100,7 @@ const AddClerk = () => {
         </div>
       </div>
     </div>
+    </>
   );
 };
 

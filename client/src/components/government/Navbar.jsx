@@ -2,6 +2,10 @@ import React from 'react';
 import { NavLink } from 'react-router-dom';
 
 const Navbar = () => {
+  const a=JSON.parse(localStorage.getItem('data'));
+  const addCl=a.role=='authority'?'Add Clerk':"";
+  //console.log(a.role=='authority')
+  
   return (
     <nav className="navbar navbar-expand-lg navbar-light bg-white shadow-sm">
       <div className="container">
@@ -34,9 +38,9 @@ const Navbar = () => {
                 Approved Startups
               </NavLink>
             </li>
-            <li className="nav-item">
+              <li className="nav-item">
               <NavLink className="nav-link" to="/government/create">
-                Add Clerk
+                {addCl}
               </NavLink>
             </li>
           </ul>
