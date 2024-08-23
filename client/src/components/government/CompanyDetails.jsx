@@ -30,17 +30,17 @@ const CompanyDetails = () => {
     useEffect(() => {
         fetchCompanyData();
     }, []);
-    const navigate=useNavigate();
+    const navigate = useNavigate();
     const verifyCompany = async () => {
         try {
-            const a=JSON.parse(localStorage.getItem('user'));
+            const a = JSON.parse(localStorage.getItem('user'));
             console.log(a.token)
-            const response = await axios.patch(`http://localhost:5000/api/government/startups/verify/${startupId}`,{},{
-                headers:{
-                    'x-auth-token':a.token
+            const response = await axios.patch(`http://localhost:5000/api/government/startups/verify/${startupId}`, {}, {
+                headers: {
+                    'x-auth-token': a.token
                 }
             });
-            console.log(response);            
+            console.log(response);
             alert(response.data.msg)
             navigate('/government')
         }
@@ -50,14 +50,14 @@ const CompanyDetails = () => {
     }
     const rejectCompany = async () => {
         try {
-            const a=JSON.parse(localStorage.getItem('user'));
+            const a = JSON.parse(localStorage.getItem('user'));
             console.log(a.token)
-            const response = await axios.patch(`http://localhost:5000/api/government/startups/reject/${startupId}`,{},{
-                headers:{
-                    'x-auth-token':a.token
+            const response = await axios.patch(`http://localhost:5000/api/government/startups/reject/${startupId}`, {}, {
+                headers: {
+                    'x-auth-token': a.token
                 }
             });
-            console.log(response);            
+            console.log(response);
             alert(response.data.msg)
             navigate('/government')
         }
@@ -68,12 +68,13 @@ const CompanyDetails = () => {
     const fetchCompanyData = async () => {
 
         try {
-            const a=JSON.parse(localStorage.getItem('user'));
-            const response = await axios.get(`http://localhost:5000/api/government/startups/${startupId}`,{
-                headers:{
-                    'x-auth-token':a.token
+            const a = JSON.parse(localStorage.getItem('user'));
+            const response = await axios.get(`http://localhost:5000/api/government/startups/${startupId}`, {
+                headers: {
+                    'x-auth-token': a.token
                 }
             });
+            console.log(response.data)
             setCompanyData(response.data);
             setLoading(false);
         } catch (error) {
@@ -147,13 +148,16 @@ const CompanyDetails = () => {
                         <div className="card-body">
                             <p><strong>Certificate:</strong> {companyData.documents.certificate}</p>
                             <p><strong>License:</strong> {companyData.documents.license}</p>
-                            <p><strong>Other Documents:</strong>
-                                <ul>
-                                    {companyData.documents.otherDocuments.map((doc, index) => (
-                                        <li key={index}>{doc}</li>
-                                    ))}
-                                </ul>
-                            </p>
+                            {Object.entries(companyData.documents).map(([key, value]) => (
+                                
+                                key!='_id' && <tr key={key}>
+                                    <td><strong>{key}:</strong></td> 
+                                    <td><a href={value} target="_blank" rel="noopener noreferrer"><button className='ml-5 btn-primary'>view Here</button></a></td>
+        
+                                </tr>
+
+                            ))}
+
                         </div>
                     </div>
                 </div>
