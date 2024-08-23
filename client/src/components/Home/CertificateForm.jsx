@@ -12,9 +12,13 @@ const CertificateForm = ({ setActive, details, setDetails }) => {
     }
 
     try {
+      const token=JSON.parse(localStorage.getItem('user')).token;
       const response = await fetch('http://localhost:5000/api/documents/upload', {
         method: 'POST',
         body: formData,
+        headers: {
+          'x-auth-token': token
+        }
       });
 
       if (response.ok) {

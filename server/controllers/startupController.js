@@ -25,7 +25,7 @@ exports.createStartupStepOne = async (req, res) => {
   try {
     // Ensure userId is an ObjectId
     const userId = mongoose.Types.ObjectId(req.user.id);
-    console.log(userId);
+    //console.log(userId);
     // Find or create the startup document
     let startup = await Startup.findOne({ userId });
 
