@@ -1,12 +1,16 @@
 import React from 'react';
 import Header from '../components/Landing/Header';
 import './Status.css';
+import { useNavigate } from 'react-router-dom';
+
 function RegistrationProcess() {
+  const navigate=useNavigate();
   return (
     <>    
     <Header/>
+    
     <div className="container1">
-        
+    <button className='mt-5 mb-5 bg-secondary p-4 pt-2 pb-2 text-white' onClick={()=>navigate('/')}>Back</button>    
       <div className="header1">
         <div className="title1">Registration Process</div>
       </div>

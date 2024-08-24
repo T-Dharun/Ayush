@@ -10,6 +10,7 @@ import { useAuth } from './services/AuthContext';
 import { useEffect,useState } from "react";
 import axiosHeader from "./axiosHeader";
 import AddClerk from "./components/government/AddClerk";
+import ViewStartups from "./components/government/ViewStartups";
 const App = () => {
   const [data, setData] = useState(null);
   const { user, loading } = useAuth();
@@ -18,15 +19,17 @@ const App = () => {
       try {
         const response = await axiosHeader.get('auth/me');
         localStorage.setItem('data', JSON.stringify(response.data));
-        console.log(response.data); // Log the data to see the response
+        console.log(response.data + "Fsadfsad");
         setData(response.data); // Store the data in state
       } catch (error) {
         console.error("Error fetching data:", error);
       }
     };
-
-    fetchData();
-  }, []);
+  
+    if (user) { // Fetch data only if 'user' exists
+      fetchData();
+    }
+  }, [user]); 
   if (loading) {
     return <Spinner size="xl" />; // Show a loading spinner or placeholder
   }
@@ -36,7 +39,7 @@ const App = () => {
       <Routes>
         <Route path='/' element={<LandingPage />} />
         <Route path="/register" element={<Home />} />
-        <Route path="/login" element={<Login />} />
+        <Route path="/login" element={<Login/>} />
         {user && (
           <>
             <Route path="/bot" element={<Bot />} />
@@ -44,6 +47,7 @@ const App = () => {
             <Route path='/government' element={<GovernWorkspace />} />
             <Route path='/government/create' element={<AddClerk />} />
             <Route path='/startupView/:startupId' element={<CompanyDetails />} />
+            <Route path='/approvedStartups' element={<ViewStartups/>} />
             <Route path="/status" element={<Status id={user.id} />} />
           </>
         )}

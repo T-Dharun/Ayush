@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 
 const CompanyCard = (props) => {
+  console.log(props)
   return (
     <div className="card shadow-sm mb-4 bg-white">
       <div className="card-body p-4">

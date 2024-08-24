@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 const Home = () => {
   const [active, setActive] = useState(0);
   const [details, setDetails] = useState({
-    "companyName": "",
+    "name": "",
     "typeOfEntity": "",
     "dateOfIncorporation": "",
     "registrationNumber": "",

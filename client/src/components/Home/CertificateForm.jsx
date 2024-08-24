@@ -4,7 +4,7 @@ import PropTypes from "prop-types";
 const CertificateForm = ({ setActive, details, setDetails }) => {
   const submit = async () => {
     const formData = new FormData();
-
+    setActive(2);
     for (const [key, value] of Object.entries(details)) {
       if (value) {
         formData.append(key, value);
@@ -22,7 +22,7 @@ const CertificateForm = ({ setActive, details, setDetails }) => {
       });
 
       if (response.ok) {
-        setActive(2);
+        //setActive(2);
       } else {
         console.error('Failed to upload certificates');
       }
