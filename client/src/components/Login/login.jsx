@@ -3,6 +3,7 @@ import * as Components from './css.js';
 import { useNavigate } from 'react-router-dom';
 import {useAuth}  from "../../services/AuthContext.jsx";
 import { register, login ,sendOtp,verifyOtp} from "../../services/authService.jsx";
+import axiosHeader from "../../axiosHeader.jsx";
 function Login({ isSignUp, onClose }) {
     const [signIn, toggle] = useState(!isSignUp);
     const navigate = useNavigate();
@@ -21,6 +22,17 @@ function Login({ isSignUp, onClose }) {
     const otpRef = useRef();
     const [mobile, setMobile] = useState('');
     const [isLoading, setIsLoading] = useState(false);
+    const [data,setData] = useState(null);
+      const fetchData = async () => {
+        try {
+          const response = await axiosHeader.get('auth/me');
+          localStorage.setItem('data', JSON.stringify(response.data));
+          console.log(response.data); // Log the data to see the response
+          setData(response.data); // Store the data in state
+        } catch (error) {
+          console.error("Error fetching data:", error);
+        }
+      };
     useEffect(() => {
       setError('');
     },[toggle])
@@ -40,6 +52,7 @@ function Login({ isSignUp, onClose }) {
           // Log in the user if login was successful
           loginUser(userData);
           console.log("Logged in successfully");
+          fetchData();
           onClose(); // Close the login modal
       } catch (error) {
           if (error.response && error.response.status === 400) {

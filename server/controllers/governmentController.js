@@ -1,6 +1,16 @@
 const Startup = require('../models/Startup');
-
-// Fetch startups by status
+const User = require('../models/User');
+const nodemailer = require("nodemailer");
+const transporter = nodemailer.createTransport({
+  service: "gmail",
+  auth: {
+    user: "spack1022005@gmail.com",
+    pass: "sdapnqmawpzfbpru",
+  },
+  port: 587, // or use 587 for STARTTLS
+  secure: false,
+});
+//Fetch startups by status
 exports.getStartupsByStatus = async (req, res, st) => {
   let status = st === 'approved' ? st : getStatusBasedOnRole(req.user.role);
 
@@ -30,8 +40,6 @@ exports.getStartupById = async (req, res) => {
     res.status(500).send('Server error');
   }
 };
-
-// Update startup status
 exports.updateStartupStatus = async (req, res, status) => {
   status = status === 'verify' ? getStatusBasedOnVerify(req.user.role) : status;
 
@@ -47,17 +55,58 @@ exports.updateStartupStatus = async (req, res, status) => {
 
     startup.status = status;
     await startup.save();
-    console.log(status +" "+req.user.role) ;
+    console.log(status + " " + req.user.role);
 
-    res.json({
+    const responseMessage = {
       msg: status === 'rejected' ? (req.body.message || 'Document mismatch') : `Startup ${status}`,
       status,
-    });
+    };
+
+    // Send the initial response
+    res.json(responseMessage);
+
+    // Only proceed to send an email if the status is 'rejected'
+    if (status === 'rejected') {
+      const message = req.body.message || "Officials Reject the Application, Please check the necessary documents";
+      console.log(message);
+      const startup = await Startup.findById(req.params.id);
+      if (!startup) {
+        return res.status(404).json({ msg: 'Startup not found' });
+      }
+      const {userId}=startup;
+      const user = await User.findById(userId);
+      if (!user) {
+        console.log('User not found');
+        return; // E
+      }
+      const {email} = user;
+      // console.log(startup)
+      // console.log(user);
+      const mailOptions = {
+        from: "spack1022005@gmail.com",
+        to: email,
+        subject: "Your startup registration application will be Rejected.",
+        text: message,
+        html: `<h1> ${message} </h1>`,
+      };
+
+      try {
+        const info = await transporter.sendMail(mailOptions);
+        console.log("Email sent:", info.response);
+        // Do not send another response here
+      } catch (error) {
+        console.error("Error occurred while sending email:", error);
+        // Handle the email error appropriately, but do not send another response
+      }
+    }
   } catch (err) {
     console.error(err.message);
-    res.status(500).send('Server error');
+    if (!res.headersSent) {
+      res.status(500).send('Server error');
+    }
   }
 };
+
 
 // Helper function to get status based on role
 function getStatusBasedOnRole(role) {
@@ -80,4 +129,3 @@ function getStatusBasedOnVerify(role) {
       return null;
   }
 }
-

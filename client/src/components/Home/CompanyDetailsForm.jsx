@@ -16,11 +16,11 @@ const CompanyDetailsForm = ({ setActive, details, setDetails }) => {
             Name:{" "}
           </label>
           <Input
-            id="companyName"
+            id="name"
             type="text"
             placeholder="company name"
             className="p-2 border-2 border-emerald-400 rounded-md focus:outline-none"
-            onChange={(e) => setDetails({ ...details, companyName: e.target.value })}
+            onChange={(e) => setDetails({ ...details, name: e.target.value })}
           />
         </section>
 

@@ -55,7 +55,8 @@ const CompanyDetails = () => {
         try {
             const a = JSON.parse(localStorage.getItem('user'));
             console.log(a.token)
-            const response = await axios.patch(`http://localhost:5000/api/government/startups/reject/${startupId}`, {}, {
+            const message=prompt("What is the reason to reject the company");
+            const response = await axios.patch(`http://localhost:5000/api/government/startups/reject/${startupId}`, {message}, {
                 headers: {
                     'x-auth-token': a.token
                 }

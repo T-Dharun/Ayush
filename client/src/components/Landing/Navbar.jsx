@@ -2,7 +2,9 @@ import React, { useState, useEffect } from 'react';
 import LOGO from '../../assets/LOGO.jpeg';
 import { useLocation, Link } from 'react-router-dom';
 import { FaUserCircle } from 'react-icons/fa';
+import axiosHeader from '../../axiosHeader';
 const Navbar = () => {
+
   const [isStartupDropdownOpen, setIsStartupDropdownOpen] = useState(false);
   const [isEnablerDropdownOpen, setIsEnablerDropdownOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
@@ -10,13 +12,14 @@ const Navbar = () => {
   const [showPopup, setShowPopup] = useState(false);
   const [userDetails, setUserDetails] = useState(null);
   const user = JSON.parse(localStorage.getItem('user'));
+  const data = JSON.parse(localStorage.getItem('data'));
+  console.log(data)
   const location = useLocation();
   //console.log("nav"+user.token);
   const closeDropdowns = () => {
     setIsStartupDropdownOpen(false);
     setIsEnablerDropdownOpen(false);
   };
-
   const isAnalyticsPage = location.pathname === '/analytics';
 
   useEffect(() => {
@@ -36,7 +39,6 @@ const Navbar = () => {
   const togglePopup = () => {
     setIsPopupOpen(!isPopupOpen);
   };
-
   useEffect(() => {
     if (isLoggedIn) {
       console.log('Fetching user data...');
@@ -71,11 +73,11 @@ const Navbar = () => {
         <div className="flex-1 flex justify-center items-center">
           <img src={LOGO} alt="Logo" className="h-12 w-15 rounded-full mr-[40px] " />
           <div className="relative ml-4">
-          <input
-  type="search"
-  className="w-full py-2 pl-10 text-sm text-gray-700 rounded-full mr-[280px] w-[400px] "
-  placeholder="Search..." style={{ border: '2px solid black' }}
-/>
+            <input
+              type="search"
+              className="w-full py-2 pl-10 text-sm text-gray-700 rounded-full mr-[280px] w-[400px] "
+              placeholder="Search..." style={{ border: '2px solid black' }}
+            />
 
             <svg
               className="absolute top-1/2 transform -translate-y-1/2 left-3 h-5 w-5 text-gray-400"
@@ -168,7 +170,7 @@ const Navbar = () => {
           <a href="#" className="text-gray-800 hover:text-orange-500 ">Ecosystem</a>
         </div>
 
-        
+
         <div className="hidden md:flex space-x-4">
           {isLoggedIn ? (
             <div className="relative">
@@ -201,51 +203,70 @@ const Navbar = () => {
             </div>
           ) : (
             <>
-             <div className="flex items-center">
-      {user ? (
-        <>
-          {/* Profile Icon and Dropdown */}
-          <div className="relative">
-            <div               className="flex items-center cursor-pointer text-gray-700 hover:text-gray-900 transition duration-300 ease-in-out transform hover:scale-110 ml-[40px]" 
- onClick={togglePopup}>
-              <FaUserCircle size={24} color="black" />
-            </div>
-            {isPopupOpen && (
-              <div className="absolute right-0 mt-2 w-56 bg-white shadow-xl rounded-xl z-50 overflow-hidden ">
-                <ul className="p-4 space-y-2">  
-                  <li className="hover:bg-gray-200 p-3 rounded-lg cursor-pointer transition duration-200 ease-in-out transform hover:translate-x-2">
-                    Home
-                  </li>
-                  <Link to="/government" className="hover:bg-gray-200 p-3 rounded-lg cursor-pointer transition duration-200 ease-in-out transform hover:translate-x-2">
-                  <li className="hover:bg-gray-200 p-3 rounded-lg cursor-pointer transition duration-200 ease-in-out transform hover:translate-x-2">
-                    Work
-                  </li>
+              <div className="flex items-center">
+                {user ? (
+                  <div className="relative">
+                    <div className="flex items-center cursor-pointer text-gray-700 hover:text-gray-900 transition duration-300 ease-in-out transform hover:scale-110 ml-[40px]"
+                      onClick={togglePopup}>
+                      <FaUserCircle size={24} color="black" />
+                      <span className="text-sm text-gray-500 ml-2">Profile</span>
+                    </div>
+                    {isPopupOpen && (
+                      <div className="absolute right-0 mt-2 w-64 bg-white shadow-md rounded-md z-50 overflow-hidden">
+                        <ul className="p-4 space-y-2">
+                          <Link to="/">
+                            <li className="py-2 px-4 hover:bg-gray-100 rounded-md cursor-pointer transition duration-200 ease-in-out transform hover:translate-x-2">
+                              <span className="text-sm text-gray-600">Home</span>
+                            </li>
+                          </Link>
+                          <Link to="/">
+                            <li className="py-2 px-4 hover:bg-gray-100 rounded-md cursor-pointer transition duration-200 ease-in-out transform hover:translate-x-2">
+                              <span className="text-sm text-gray-600">DashBoard</span>
+                            </li>
+                          </Link>
+                          {data.role !== 'startup' ? (
+                            <Link to="/government">
+                              <li className="py-2 px-4 hover:bg-gray-100 rounded-md cursor-pointer transition duration-200 ease-in-out transform hover:translate-x-2">
+                                <span className="text-sm text-gray-600">Work</span>
+                              </li>
+                            </Link>
+                          ) : (
+                            <Link to="/status">
+                              <li className="py-2 px-4 hover:bg-gray-100 rounded-md cursor-pointer transition duration-200 ease-in-out transform hover:translate-x-2">
+                                <span className="text-sm text-gray-600">Status</span>
+                              </li>
+                            </Link>
+                          )}
+                          <Link to="/settings">
+                            <li className="py-2 px-4 hover:bg-gray-100 rounded-md cursor-pointer transition duration-200 ease-in-out transform hover:translate-x-2">
+                              <span className="text-sm text-gray-600">Settings</span>
+                            </li>
+                          </Link>
+                          <Link to="/login">
+                            <li className="py-2 px-4 hover:bg-gray-100 rounded-md cursor-pointer transition duration-200 ease-in-out transform hover:translate-x-2">
+                              <span className="text-sm text-gray-600">Logout</span>
+                            </li>
+                          </Link>
+                        </ul>
+                      </div>
+                    )}
+                  </div>) : (
+                  /* Login Button with Link */
+                  <Link to="/login" style={{ textDecoration: 'none' }}>
+                    <button
+                      style={{ border: '3px solid black' }}
+                      className="px-4 py-2 rounded-full text-gray-800 hover:bg-gray-100 ml-[100px]"
+                    >
+                      Login
+                    </button>
                   </Link>
-                  <li className="hover:bg-gray-200 p-3 rounded-lg cursor-pointer transition duration-200 ease-in-out transform hover:translate-x-2">
-                    Settings
-                  </li>
-                </ul>
+                )}
               </div>
-            )}
-          </div>
-        </>
-      ) : (
-        /* Login Button with Link */
-        <Link to="/login" style={{ textDecoration: 'none' }}>
-          <button
-            style={{ border: '3px solid black' }}
-            className="px-4 py-2 rounded-full text-gray-800 hover:bg-gray-100 ml-[100px]"
-          >
-            Login
-          </button>
-        </Link>
-      )}
-    </div>
-              <Link to="/register">
+              {data.role == 'startup' && <Link to="/register">
                 <button className="px-4 py-2 bg-blue-900 text-white rounded-full hover:bg-blue-700 ml-[20px]">
                   Start Registration
                 </button>
-              </Link>
+              </Link>}
             </>
           )}
         </div>
