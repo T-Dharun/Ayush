@@ -41,7 +41,7 @@ exports.createStartupStepOne = async (req, res) => {
         manufacturingUnitAddress,
         productCategory,
         productionCapacity,
-        Progress: "step1", // Ensure consistent field name
+        progress: "step1", // Ensure consistent field name
       });
     } else {
       // Create new document
@@ -55,7 +55,7 @@ exports.createStartupStepOne = async (req, res) => {
         manufacturingUnitAddress,
         productCategory,
         productionCapacity,
-        Progress: "step1", // Ensure consistent field name
+        progress: "step1", // Ensure consistent field name
         userId, // Ensure userId is set correctly
       });
     }
@@ -88,6 +88,7 @@ exports.createStartupStepTwo = async (req, res) => {
     }
 
     // Update the existing startup with document details
+    startup.progress = "step2";
     startup.documents = {
       gmpCertificate,
       coppCertificate,
@@ -95,8 +96,7 @@ exports.createStartupStepTwo = async (req, res) => {
       manufacturingLicense,
       companyIncorporationCertificate,
     };
-    startup.Progress = "step2"; // Ensure consistent field name
-
+    // Ensure consistent field name
     await startup.save();
     res.status(200).json(startup);
   } catch (err) {
@@ -130,7 +130,8 @@ exports.createStartupStepThree = async (req, res) => {
     startup.ieCode = ieCode;
     startup.capitalInvestment = capitalInvestment;
     startup.bankDetails = bankAccountDetails;
-    startup.Progress = "step3"; // Ensure consistent field name
+    startup.progress = "step3"; // Ensure consistent field name
+    startup.status  = "initial";
 
     await startup.save();
     res.status(200).json(startup);

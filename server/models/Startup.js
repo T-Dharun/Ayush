@@ -30,8 +30,8 @@ const StartupSchema = new mongoose.Schema({
   progress: String,
   status: {
     type: String,
-    enum: ["pending", "approved", "rejected","proceed"],
-    default: "pending",
+    enum: ["start","initial","upload","verify","pending", "approved", "rejected","proceed"],
+    default: "start",
   },
   userId: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
 });
