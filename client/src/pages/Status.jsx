@@ -6,7 +6,10 @@ function RegistrationProcess() {
     <>    
     <Header/>
     <div className="container1">
-        
+      <section className="back">
+        <a href="/">Back</a>
+      </section>
+
       <div className="header1">
         <div className="title1">Registration Process</div>
       </div>

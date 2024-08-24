@@ -2,8 +2,8 @@ import React from 'react';
 import { NavLink } from 'react-router-dom';
 
 const Navbar = () => {
-  const a=JSON.parse(localStorage.getItem('data'));
-  const addCl=a.role=='authority'?'Add Clerk':"";
+  //const a=JSON.parse(localStorage.getItem('data'));
+  //const addCl=a.role=='authority'?'Add Clerk':"";
   //console.log(a.role=='authority')
   
   return (
@@ -40,7 +40,7 @@ const Navbar = () => {
             </li>
               <li className="nav-item">
               <NavLink className="nav-link" to="/government/create">
-                {addCl}
+                  add Clerk
               </NavLink>
             </li>
           </ul>
