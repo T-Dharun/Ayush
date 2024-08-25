@@ -21,6 +21,7 @@ router.get("/startups", auth, (req, res) =>
   getStartupsByStatus(req, res, "view")
 );
 router.get("/startups/:id", auth, getStartupById);
+
 router.patch("/startups/verify/:id", auth, (req, res) =>
   updateStartupStatus(req, res, "verify")
 );

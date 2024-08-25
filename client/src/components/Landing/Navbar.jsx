@@ -245,7 +245,7 @@ const Navbar = () => {
                             </li>
                           </Link>
                           <Link to="/login">
-                            <li className="py-2 px-4 hover:bg-gray-100 rounded-md cursor-pointer transition duration-200 ease-in-out transform hover:translate-x-2">
+                            <li className="py-2 px-4 hover:bg-gray-100 rounded-md cursor-pointer transition duration-200 ease-in-out transform hover:translate-x-2" onClick={()=>{localStorage.removeItem('data');localStorage.removeItem('user')}}>
                               <span className="text-sm text-gray-600">Logout</span>
                             </li>
                           </Link>

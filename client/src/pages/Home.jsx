@@ -1,7 +1,8 @@
-import { useState } from "react"
+import { useState,useEffect } from "react"
 import { StepViewer, CompanyDetailsForm, TransactionDetailsForm, CertificateForm } from "../components/Home"
 import Bot from "../pages/bot"
 import { useNavigate } from "react-router-dom";
+import axios from 'axios';
 const Home = () => {
   const [active, setActive] = useState(0);
   const [details, setDetails] = useState({
@@ -36,6 +37,32 @@ const Home = () => {
     
     navigate('/status');
   }
+  useEffect(() => {
+    fetchCompany();
+  }, []);
+
+  const fetchCompany = async () => {
+    try {
+      const a = JSON.parse(localStorage.getItem('user'));
+      const data = JSON.parse(localStorage.getItem('data'));
+
+      const response = await axios.get(`http://localhost:5000/api/status/startup/${data._id}`, {
+        headers: {
+          'x-auth-token': a.token,
+        },
+      });
+      console.log(response.data.company.progress)
+      if(response.data.company){
+        switch(response.data.company.progress){
+          case 'step1':setActive(1);break;
+          case 'step2':setActive(2);break;
+          case 'step3':{navigate('/');alert("Already registered !!!");};break;
+        }
+      }
+    } catch (error) {
+      console.error('Fetch error:', error);
+    }
+  };
 
   const steps = [
     { title: 'First', description: 'Company Details' },

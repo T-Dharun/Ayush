@@ -11,7 +11,10 @@ import { useEffect,useState } from "react";
 import axiosHeader from "./axiosHeader";
 import AddClerk from "./components/government/AddClerk";
 import ViewStartups from "./components/government/ViewStartups";
+import EntityDetails from "./components/Registration/EntityDetails";
+import AddressDetails from "./components/Registration/AddressDetails";
 import { ProgressBar } from "./components/Home/index";
+import Registration from "./pages/Registration";
 const App = () => {
   const [data, setData] = useState(null);
   const { user, loading } = useAuth();
@@ -42,6 +45,7 @@ const App = () => {
       <Route path="/progressBar" element={<ProgressBar />} />
         <Route path='/' element={<LandingPage />} />
         <Route path="/register" element={<Home />} />
+        <Route path="/r" element={<Registration />} />
         <Route path="/forgot-password" element={<ForgotPassword />} />
         <Route path="/login" element={<Login/>} />
         {user && (
