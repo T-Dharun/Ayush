@@ -1,21 +1,20 @@
 import React from 'react';
 import './progressBar.css';
 
-function ProgressBar({currentStep}) {
-    currentStep=3;
+function ProgressBar({ currentStep }) {
   const data = [
     {
       step: 1,
       title: 'Create Account',
       description: 'Create Account',
-      complete: true,
-      active: true,
+      complete: false,
+      active: false,
     },
     {
       step: 2,
       title: 'Add Family Members',
       description: 'Add Family Members',
-      complete: true,
+      complete: false,
       active: false,
     },
     {
@@ -54,25 +53,34 @@ function ProgressBar({currentStep}) {
       active: false,
     },
   ];
-  data.map((item, index) => {
-    if(item.step<currentStep) {
-        data[index].complete=true;
-        data[index].active=true;
+
+  // Update `complete` and `active` based on `currentStep`
+  data.forEach((item, index) => {
+    if (item.step < currentStep) {
+      data[index].complete = true;
+      data[index].active = true;
+    } else if (item.step === currentStep) {
+      data[index].active = true;
     }
-  })
+  });
+
   return (
     <div className="progressBar">
       {data.map((item, index) => (
         <div key={index} className="progressBar-item">
-            <div className="progressBar-info">
-                <div className={`progressBar-circle ${item.complete ? 'complete' : ''} ${item.active ? 'active' : ''}`}>
-                    {!item.complete&&<span>{item.step}</span>}
-                </div>
-                <div className="progressBar-text">
-                    <p className="progressBar-title">{item.title}</p>
-                    <p className="progressBar-description">{item.description}</p>
-                </div>
+          <div className="progressBar-info">
+            <div
+              className={`progressBar-circle ${item.complete ? 'complete' : ''} ${
+                item.active ? 'active' : ''
+              }`}
+            >
+              {!item.complete && <span>{item.step}</span>}
             </div>
+            <div className="progressBar-text">
+              <p className="progressBar-title">{item.title}</p>
+              <p className="progressBar-description">{item.description}</p>
+            </div>
+          </div>
           {index < data.length - 1 && <div className="progressBar-line" />}
         </div>
       ))}

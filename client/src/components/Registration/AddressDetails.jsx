@@ -1,5 +1,5 @@
 import { useState } from "react";
-
+import { ProgressBar } from "../Home";
 const AddressDetails = () => {
   const [officeAddress, setOfficeAddress] = useState({
     addressLine: "",
@@ -69,8 +69,8 @@ const AddressDetails = () => {
   };
 
   return (
-    <section className="h-screen bg-white overflow-y-auto flex flex-col">
-      <div className="container mx-auto p-2 flex-grow">
+    <section className="h-screen bg-white overflow-y-auto flex flex-col w-100 pt-5">
+      <div className="container mx-auto p-2 flex-grow  w-75">
         <h1 className="text-xl font-bold mb-2">Address Details</h1>
         <p className="text-sm mb-4">
           Please provide the information below to validate the address details of your startup company.

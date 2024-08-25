@@ -1,10 +1,12 @@
 import { useState } from "react";
+import { ProgressBar } from "../Home";
 
-const EntityDetails = () => {
+const EntityDetails = ({setStep}) => {
   const [details, setDetails] = useState({});
   const [logo, setLogo] = useState(null);
 
   const submit = () => {
+    setStep(prev=>prev+1);
     console.log(details);
   };
 
@@ -13,8 +15,8 @@ const EntityDetails = () => {
   };
 
   return (
-    <section className="h-screen bg-white overflow-y-auto">
-      <div className="container mx-auto p-4">
+    <section className="h-screen bg-white overflow-y-auto  w-100">
+      <div className="container mx-auto p-4  w-75">
         <h1 className="text-2xl font-bold mb-4">Entity Details</h1>
         <p className="text-md mb-6">
           Entity details typically refer to the specific attributes or pieces of information that define 
