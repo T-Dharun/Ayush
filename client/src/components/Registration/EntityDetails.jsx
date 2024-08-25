@@ -2,13 +2,20 @@ import { useState } from "react";
 import { ProgressBar } from "../Home";
 import { putEntityDetails } from "../../services/registrationService";
 
-const EntityDetails = ({setStep}) => {
-  const [details, setDetails] = useState({});
+const EntityDetails = ({ step,setStep }) => {
+  const [details, setDetails] = useState({
+    name: '',
+    typeOfEntity: '',
+    CINNumber: '',
+    capitalInvestment: '',
+    sector: '',
+    panCard: ''
+  });
   const [logo, setLogo] = useState(null);
 
-  const submit = () => {
-    setStep(prev=>prev+1);
-    putEntityDetails(details);
+  const submit = async() => {
+    setStep(prev => prev + 1);
+    await putEntityDetails({ ...details,logo ,step });
     console.log(details);
   };
 
@@ -17,8 +24,8 @@ const EntityDetails = ({setStep}) => {
   };
 
   return (
-    <section className="h-screen bg-white overflow-y-auto  w-100">
-      <div className="container mx-auto p-4  w-75">
+    <section className="h-screen bg-white overflow-y-auto w-100">
+      <div className="container mx-auto p-4 w-75">
         <h1 className="text-2xl font-bold mb-4">Entity Details</h1>
         <p className="text-md mb-6">
           Entity details typically refer to the specific attributes or pieces of information that define 
@@ -26,77 +33,77 @@ const EntityDetails = ({setStep}) => {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
           <div>
             <label
-              htmlFor="CompanyName"
+              htmlFor="name"
               className="block font-bold mb-2 text-gray-700"
             >
               Name:
             </label>
             <input
-              id="CompanyName"
+              id="name"
               type="text"
               placeholder="Company Name"
               className="w-full p-3 pl-5 text-sm text-gray-700 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-transparent"
-              onChange={(e) => setDetails({ ...details, [e.target.id]: e.target.value })}
+              onChange={(e) => setDetails({ ...details, name: e.target.value })}
             />
             <label
-              htmlFor="entityType"
+              htmlFor="typeOfEntity"
               className="block font-bold mb-2 text-gray-700 mt-4"
             >
-              Entity:
+              Type of Entity:
             </label>
             <select
-              id="entityType"
+              id="typeOfEntity"
               placeholder="Select option"
               className="w-full p-3 pl-5 text-sm text-gray-700 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-transparent"
-              onChange={(e) => setDetails({ ...details, [e.target.id]: e.target.value })}
+              onChange={(e) => setDetails({ ...details, typeOfEntity: e.target.value })}
             >
-              <option value="private">Private</option>
+              <option value="private">Private Limited</option>
               <option value="partnership">Partnership</option>
             </select>
             <label
-              htmlFor="CIN Number"
+              htmlFor="CINNumber"
               className="block font-bold mb-2 text-gray-700 mt-4"
             >
               CIN Number:
             </label>
             <input
               id="CINNumber"
-              type="number"
+              type="text"
               placeholder="CIN Number"
               className="w-full p-3 pl-5 text-sm text-gray-700 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-transparent"
-              onChange={(e) => setDetails({ ...details, [e.target.id]: e.target.value })}
+              onChange={(e) => setDetails({ ...details, CINNumber: e.target.value })}
             />
             <label
-              htmlFor="CapitalInvestment"
+              htmlFor="capitalInvestment"
               className="block font-bold mb-2 text-gray-700 mt-4"
             >
               Capital Investment:
             </label>
             <input
-              id="CapitalInvestment"
+              id="capitalInvestment"
               type="number"
               placeholder="Capital Investment"
               className="w-full p-3 pl-5 text-sm text-gray-700 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-transparent"
-              onChange={(e) => setDetails({ ...details, [e.target.id]: e.target.value })}
+              onChange={(e) => setDetails({ ...details, capitalInvestment: e.target.value })}
             />
           </div>
           <div>
             <label
-              htmlFor="CompanyLogo"
+              htmlFor="logo"
               className="block font-bold mb-2 text-gray-700"
             >
               Company Logo:
             </label>
-            <div className="w-full p-3 rounded-md flex justify-right items-center h-24 " >
+            <div className="w-full p-3 rounded-md flex justify-right items-center h-24">
               <input
-                id="CompanyLogo"
+                id="logo"
                 type="file"
-                accept=".pdf"
+                accept="image/*"
                 className="hidden"
                 onChange={handleLogoChange}
               />
               <label
-                htmlFor="CompanyLogo"
+                htmlFor="logo"
                 className="cursor-pointer"
               >
                 {logo ? (
@@ -109,44 +116,44 @@ const EntityDetails = ({setStep}) => {
               </label>
             </div>
             <label
-              htmlFor="Sector"
+              htmlFor="sector"
               className="block font-bold mb-2 text-gray-700 mt-4"
             >
               Sector:
             </label>
             <select
-              id="Sector"
+              id="sector"
               placeholder="Select option"
               className="w-full p-3 pl-5 text-sm text-gray-700 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-transparent"
-              onChange={(e) => setDetails({ ...details, [e.target.id]: e.target.value })}
+              onChange={(e) => setDetails({ ...details, sector: e.target.value })}
             >
-              <option value="private">AYURVEDA</option>
-              <option value="partnership">YOGA</option>
-              <option value="private">UNANI</option>
-              <option value="partnership">SIDHA</option>
-              <option value="private">HOMOEPATHY</option>
+              <option value="Ayurvedha">AYURVEDA</option>
+              <option value="Yoga">YOGA</option>
+              <option value="Unani">UNANI</option>
+              <option value="Sidha">SIDHA</option>
+              <option value="Homeopathy">HOMOEPATHY</option>
             </select>
             <label
-              htmlFor="PAN"
+              htmlFor="panCard"
               className="block font-bold mb-2 text-gray-700 mt-4"
             >
               PAN:
             </label>
             <input
-              id="PAN"
+              id="panCard"
               type="text"
               placeholder="PAN"
               className="w-full p-3 pl-5 text-sm text-gray-700 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-transparent"
-              onChange={(e) => setDetails({ ...details, [e.target.id]: e.target.value })}
+              onChange={(e) => setDetails({ ...details, panCard: e.target.value })}
             />
           </div>
         </div>
         <button
-        className="bg-blue-400 text-white py-2 px-4 rounded-md hover:bg-blue-500 w-100 mt-3"
-        onClick={submit}
-      >
-        Continue
-      </button>
+          className="bg-blue-400 text-white py-2 px-4 rounded-md hover:bg-blue-500 w-100 mt-3"
+          onClick={submit}
+        >
+          Continue
+        </button>
       </div>
     </section>
   );

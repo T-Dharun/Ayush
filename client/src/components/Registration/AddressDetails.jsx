@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { ProgressBar } from "../Home";
-const AddressDetails = ({setStep}) => {
+import { putEntityDetails } from "../../services/registrationService";
+const AddressDetails = ({step,setStep}) => {
   const [officeAddress, setOfficeAddress] = useState({
     addressLine: "",
     state: "",
@@ -14,8 +15,10 @@ const AddressDetails = ({setStep}) => {
     district: "",
     pincode: "",
   });
-  const submit=()=>{
+  const submit=async()=>{
     console.log(officeAddress)
+    console.log(manufacturingAddress);
+    await putEntityDetails({officeAddress,manufacturingAddress,step});
     setStep(prev=>prev+1);
   }
   const states = ["Tamil Nadu"];

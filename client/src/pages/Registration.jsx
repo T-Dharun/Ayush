@@ -11,15 +11,15 @@ const Registration = () => {
     const renderComponent = () => {
         switch (step) {
             case 0:
-                return <EntityDetails setStep={setStep} />;
+                return <EntityDetails setStep={setStep} step={step}/>;
             case 1:
-                return <AddressDetails setStep={setStep} />;
+                return <AddressDetails setStep={setStep} step={step} />;
             case 2:
-                return <AuthorizedDetails setStep={setStep} />;
+                return <AuthorizedDetails setStep={setStep}  step={step}/>;
             case 3:
                 return <CertificateDetails setStep={setStep}/>;
             case 4:
-                    return <Final setStep={setStep}/>;
+                    return <Final setStep={setStep} step={step}/>;
             default:
                 return null; // or some default component or message
         }
