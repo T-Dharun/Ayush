@@ -2,6 +2,8 @@ import { useState, useEffect } from "react";
 import { ProgressBar } from "../components/Home";
 import AddressDetails from "../components/Registration/AddressDetails";
 import EntityDetails from "../components/Registration/EntityDetails";
+import InformationRequired from "../components/Registration/InformationRequired";
+import FounderDetails from "../components/Registration/FounderDetails";
 import AuthorizedDetails from "../components/Registration/AuthorizedDetails";
 import CertificateDetails from "../components/Registration/CertificateDetails";
 import Final from "../components/Registration/Final";
@@ -32,9 +34,14 @@ const Registration = () => {
             case 2:
                 return <AuthorizedDetails setStep={setStep}  step={step}/>;
             case 3:
-                return <CertificateDetails setStep={setStep}/>;
+                return <FounderDetails setStep={setStep}/>
             case 4:
-                    return <Final setStep={setStep} step={step}/>;
+
+              return <InformationRequired setStep={setStep}/>;
+            case 5:
+                return <CertificateDetails setStep={setStep}/>;
+            case 6:
+                return <Final setStep={setStep} step={step}/>;
             default:
                 return null; // or some default component or message
         }
@@ -48,6 +55,7 @@ const Registration = () => {
             </section>
         </>
     );
+
 };
 
 export default Registration;

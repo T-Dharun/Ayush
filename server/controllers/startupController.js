@@ -190,7 +190,7 @@ exports.sendMail = async (req, res) => {
 
 exports.createStartup = async (req, res) => {
   let { step, data } = req.body;
-  console.log(req.body)
+  console.log(req.body);
   if (!step || !data) {
     return res.status(400).json({ message: "Step and data are required" });
   }
@@ -213,7 +213,7 @@ exports.createStartup = async (req, res) => {
           CINNumber: data.CINNumber,
           panCard: data.panCard,
           capitalInvestment: data.capitalInvestment,
-          progress: `${step}`
+          progress: `${step}`,
         });
         //console.log(startup);
       } else {
@@ -240,7 +240,7 @@ exports.createStartup = async (req, res) => {
         //  console.log(req.body);
         startup.set({
           progress: `${step}`,
-          Person: { ...data }
+          Person: { ...data },
         });
         //  console.log(data);
         await startup.save();
@@ -265,7 +265,7 @@ exports.createStartup = async (req, res) => {
         //console.log(req.body);
         startup.set({
           progress: `${step}`,
-          status: 'initial'
+          status: "initial",
         });
         //console.log(data);
         await startup.save();
@@ -275,53 +275,53 @@ exports.createStartup = async (req, res) => {
       case 6:
         if (data.bankDetails) {
           startup.bankDetails = {
-            bankName: data.bankDetails.bankName || startup.bankDetails.bankName,
+            bankName:
+              data.bankDetails.bankName || startup.bankDetails?.bankName,
             accountNumber:
               data.bankDetails.accountNumber ||
-              startup.bankDetails.accountNumber,
-            ifscCode: data.bankDetails.ifscCode || startup.bankDetails.ifscCode,
+              startup.bankDetails?.accountNumber,
+            ifscCode:
+              data.bankDetails.ifscCode || startup.bankDetails?.ifscCode,
           };
         }
+
+        // Preserve file paths if they exist and only update the fields that are provided
         if (data.documents) {
           startup.documents = {
             gmpCertificateNumber:
               data.documents.gmpCertificateNumber ||
-              startup.documents.gmpCertificateNumber,
+              startup.documents?.gmpCertificateNumber,
             coppCertificateNumber:
               data.documents.coppCertificateNumber ||
-              startup.documents.coppCertificateNumber,
+              startup.documents?.coppCertificateNumber,
             ayushLicenseCertificateNumber:
               data.documents.ayushLicenseCertificateNumber ||
-              startup.documents.ayushLicenseCertificateNumber,
+              startup.documents?.ayushLicenseCertificateNumber,
             manufacturingLicenseNumber:
               data.documents.manufacturingLicenseNumber ||
-              startup.documents.manufacturingLicenseNumber,
+              startup.documents?.manufacturingLicenseNumber,
             companyIncorporationCertificateNumber:
               data.documents.companyIncorporationCertificateNumber ||
-              startup.documents.companyIncorporationCertificateNumber,
+              startup.documents?.companyIncorporationCertificateNumber,
+            // Preserve file path data
+            gmpCertificate:
+              startup.documents?.gmpCertificate ||
+              data.documents.gmpCertificate,
+            coppCertificate:
+              startup.documents?.coppCertificate ||
+              data.documents.coppCertificate,
+            ayushLicenseCertificate:
+              startup.documents?.ayushLicenseCertificate ||
+              data.documents.ayushLicenseCertificate,
+            manufacturingLicense:
+              startup.documents?.manufacturingLicense ||
+              data.documents.manufacturingLicense,
+            companyIncorporationCertificate:
+              startup.documents?.companyIncorporationCertificate ||
+              data.documents.companyIncorporationCertificate,
           };
         }
         break;
-      case 7:
-        // Update the stage field
-        if (data.stage) {
-          startup.Stage = data.stage;
-        }
-
-        // Handle details
-        if (data.Details && Array.isArray(data.Details)) {
-          data.Details.forEach((detail) => {
-            const { question, answer } = detail;
-            if (typeof question !== "string" || typeof answer !== "boolean") {
-              throw new Error("Invalid data format for Details");
-            }
-            // Append new details to the existing array
-            startup.Details.push({ question, answer });
-          });
-        }
-        break;
-
-      // Handle other steps similarly
       default:
         return res.status(400).json({ message: "Invalid step" });
     }

@@ -1,12 +1,13 @@
 import React, { useState } from 'react';
-
-const CertificateDetails = ({setStep}) => {
+import axios from 'axios';
+import axiosHeader from '../../axiosHeader';
+const CertificateDetails = ({ setStep }) => {
   const [details, setDetails] = useState({
-    gmpCertificate: { file: null, number: '' },
-    coppCertificate: { file: null, number: '' },
-    ayushLicenseCertificate: { file: null, number: '' },
-    manufacturingLicense: { file: null, number: '' },
-    companyIncorporationCertificate: { file: null, number: '' },
+    gmpCertificate: { file: null, number: '', uploaded: false },
+    coppCertificate: { file: null, number: '', uploaded: false },
+    ayushLicenseCertificate: { file: null, number: '', uploaded: false },
+    manufacturingLicense: { file: null, number: '', uploaded: false },
+    companyIncorporationCertificate: { file: null, number: '', uploaded: false },
     bankDetails: {
       name: '',
       accountNo: '',
@@ -17,7 +18,7 @@ const CertificateDetails = ({setStep}) => {
   const handleCertificateChange = (e, field) => {
     setDetails((prevDetails) => ({
       ...prevDetails,
-      [field]: { ...prevDetails[field], file: e.target.files[0] },
+      [field]: { ...prevDetails[field], file: e.target.files[0] ,uploaded: true},
     }));
   };
 
@@ -35,9 +36,73 @@ const CertificateDetails = ({setStep}) => {
     }));
   };
 
-  const submit = () => {
-    setStep(prev=>prev+1);
-    console.log(details);
+  const submit = async () => {
+    const formData = new FormData();
+    // Append certificate files and numbers
+    for (const [key, { file, number }] of Object.entries(details)) {
+      console.log(key,file);
+      if (key !== 'bankDetails') {
+        if (file) {
+          formData.append(`${key}`, file);
+          console.log(key); 
+        }
+      }
+    }
+
+    // Append bank details
+    const { bankDetails } = details;
+    for (const [key, value] of Object.entries(bankDetails)) {
+      formData.append(key, value);
+    }
+
+    try {
+      const uploadResponse = await axiosHeader.post(
+        'documents/upload', // Use the relative path here
+        formData,
+        {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+          },
+        }
+      );
+      if (uploadResponse.status === 200) {
+         //After successful upload, collect data and send to createStartup endpoint
+        const data = {
+          bankDetails: {
+            bankName: details.bankDetails.name,
+            accountNumber: details.bankDetails.accountNo,
+            ifscCode: details.bankDetails.ifscCode,
+          },
+          documents: {
+            gmpCertificateNumber: details.gmpCertificate.number,
+            coppCertificateNumber: details.coppCertificate.number,
+            ayushLicenseCertificateNumber: details.ayushLicenseCertificate.number,
+            manufacturingLicenseNumber: details.manufacturingLicense.number,
+            companyIncorporationCertificateNumber: details.companyIncorporationCertificate.number,
+          },
+        };
+  
+        const createStartupResponse = await axiosHeader.post(
+          'startups/createStartup',
+          { step: 6, data },
+          {
+            headers: {
+              'Content-Type': 'application/json',
+            },
+          }
+        );
+  
+        if (createStartupResponse.status === 200) {
+          setStep(prev => prev + 1);
+        } else {
+          console.error('Failed to create startup:', createStartupResponse.data);
+        }
+      } else {
+        console.error('Failed to upload certificates:', uploadResponse.data);
+      }
+    } catch (err) {
+      console.error('Error uploading certificates or creating startup:', err);
+    }
   };
 
   return (
@@ -67,7 +132,7 @@ const CertificateDetails = ({setStep}) => {
                 />
                 <label
                   htmlFor={`${certificate}File`}
-                  className="w-10 h-10 bg-gray-200 rounded-md flex justify-center items-center cursor-pointer"
+                  className={`w-10 h-10 rounded-md flex justify-center items-center cursor-pointer ${details[certificate].uploaded ? 'bg-green-400' : 'bg-gray-200'}`}
                 >
                   📁
                 </label>

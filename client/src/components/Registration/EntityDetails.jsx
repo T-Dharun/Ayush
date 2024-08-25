@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { ProgressBar } from "../Home";
-import { putEntityDetails } from "../../services/registrationService";
+//import { putEntityDetails } from "../../services/registrationService";
 
 const EntityDetails = ({ step,setStep }) => {
   const [details, setDetails] = useState({
@@ -13,9 +13,9 @@ const EntityDetails = ({ step,setStep }) => {
   });
   const [logo, setLogo] = useState(null);
 
-  const submit = async() => {
-    setStep(prev => prev + 1);
-    await putEntityDetails({ ...details,logo ,step });
+  const submit = () => {
+    setStep(prev=>prev+1);
+    putEntityDetails(details);
     console.log(details);
   };
 
