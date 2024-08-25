@@ -142,7 +142,8 @@ exports.getStartups = async (req, res) => {
   try {
     // Ensure userId is an ObjectId
     const userId = mongoose.Types.ObjectId(req.user.id);
-
+    console.log(req.user.id);
+    console.log("fasdf")
     const startups = await Startup.find({ userId });
     res.json(startups);
   } catch (err) {

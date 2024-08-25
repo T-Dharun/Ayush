@@ -20,3 +20,18 @@ export const putEntityDetails = async (data) => {
     console.log(response);
     return response.data;
 };
+
+export const getStep = async () => {
+    let a=JSON.parse(localStorage.getItem('user'));
+    //console.log(a);
+    const response = await axios.get(`${API_URL}/`,
+        {
+            headers: {
+                'x-auth-token':`${a.token}`
+            }
+        }
+    );
+
+    console.log(response);
+    return response.data;
+};
