@@ -129,7 +129,7 @@ exports.createStartupStepThree = async (req, res) => {
     startup.capitalInvestment = capitalInvestment;
     startup.bankDetails = bankAccountDetails;
     startup.progress = "step3"; // Ensure consistent field name
-    startup.status  = "initial";
+    startup.status = "initial";
 
     await startup.save();
     res.status(200).json(startup);
@@ -192,50 +192,113 @@ exports.createStartup = async (req, res) => {
   if (!step || !data) {
     return res.status(400).json({ message: "Step and data are required" });
   }
-  const userId = mongoose.Types.ObjectId(req.user.id);
+
   try {
-    let startup;
-    // Find the startup by user ID or any unique identifier
-    if (step === 1) {
-      // For step 1, if the startup does not exist, create a new one
-      startup = await Startup.findOneAndUpdate(
-        { userId }, // Find by user ID
-        {
-          $set: {
-            name: data.name,
-            logo: data.logo,
-            typeOfEntity: data.typeOfEntity,
-            sector: data.sector,
-            CINNumber: data.CINNumber,
-            panCard: data.panCard,
-            capitalInvestment: data.capitalInvestment,
-          },
-        },
-        { new: true, upsert: true } // Create if not exists, return updated doc
-      );
-    } else {
-      // For other steps, handle updates as before
-      startup = await Startup.findOne({ userId: data.userId });
-      if (!startup) {
+    const userId = mongoose.Types.ObjectId(req.user.id);
+    let startup = await Startup.findOne({ userId });
+    if (!startup) {
+      if (step === 1) {
+        // Create new startup if it does not exist
+        startup = new Startup({
+          userId: data.userId,
+          // Initialize fields for step 1
+          name: data.name,
+          logo: data.logo,
+          typeOfEntity: data.typeOfEntity,
+          sector: data.sector,
+          CINNumber: data.CINNumber,
+          panCard: data.panCard,
+          capitalInvestment: data.capitalInvestment,
+        });
+      } else {
         return res.status(404).json({ message: "Startup not found" });
       }
-
-      // Update startup fields based on the step
-      switch (step) {
-        case 2:
-          startup.registeredAddress =
-            data.registeredAddress || startup.registeredAddress;
-          startup.contactPerson = data.contactPerson || startup.contactPerson;
-          // Add other fields for page 2
-          break;
-        // Handle other steps similarly
-        default:
-          return res.status(400).json({ message: "Invalid step" });
-      }
-
-      // Save the updated startup
-      await startup.save();
     }
+
+    // Update startup fields based on the step
+    switch (step) {
+      case 1:
+        // Fields for step 1 (already handled in creation)
+        break;
+      case 2:
+        if (Array.isArray(data.Address)) {
+          startup.Address = data.Address; // Update with the provided array of addresses
+        }
+        startup.registeredAddress =
+          data.registeredAddress || startup.registeredAddress;
+        startup.contactPerson = data.contactPerson || startup.contactPerson;
+        break;
+      case 3: // Handling representative or other persons
+      case 4:
+        if (data.Person && Array.isArray(data.Person)) {
+          // Validate and append each person to the existing array
+          data.Person.forEach((person) => {
+            if (person.type === "representative") {
+              const { name, Designation, mobile, email, Gender } = person;
+              if (!name || !Designation || !mobile || !email || !Gender) {
+                throw new Error("Missing required fields for representative");
+              }
+            }
+            // Append new persons to the existing array
+            startup.Person.push(person);
+          });
+        }
+        break;
+      case 5:
+        // Update the stage field
+        if (data.stage) {
+          startup.Stage = data.stage;
+        }
+
+        // Handle details
+        if (data.Details && Array.isArray(data.Details)) {
+          data.Details.forEach((detail) => {
+            const { question, answer } = detail;
+            if (typeof question !== "string" || typeof answer !== "boolean") {
+              throw new Error("Invalid data format for Details");
+            }
+            // Append new details to the existing array
+            startup.Details.push({ question, answer });
+          });
+        }
+        break;
+      case 6:
+        if (data.bankDetails) {
+          startup.bankDetails = {
+            bankName: data.bankDetails.bankName || startup.bankDetails.bankName,
+            accountNumber:
+              data.bankDetails.accountNumber ||
+              startup.bankDetails.accountNumber,
+            ifscCode: data.bankDetails.ifscCode || startup.bankDetails.ifscCode,
+          };
+        }
+        if (data.documents) {
+          startup.documents = {
+            gmpCertificateNumber:
+              data.documents.gmpCertificateNumber ||
+              startup.documents.gmpCertificateNumber,
+            coppCertificateNumber:
+              data.documents.coppCertificateNumber ||
+              startup.documents.coppCertificateNumber,
+            ayushLicenseCertificateNumber:
+              data.documents.ayushLicenseCertificateNumber ||
+              startup.documents.ayushLicenseCertificateNumber,
+            manufacturingLicenseNumber:
+              data.documents.manufacturingLicenseNumber ||
+              startup.documents.manufacturingLicenseNumber,
+            companyIncorporationCertificateNumber:
+              data.documents.companyIncorporationCertificateNumber ||
+              startup.documents.companyIncorporationCertificateNumber,
+          };
+        }
+        break;
+      // Handle other steps similarly
+      default:
+        return res.status(400).json({ message: "Invalid step" });
+    }
+
+    // Save the updated startup
+    await startup.save();
 
     res
       .status(200)
