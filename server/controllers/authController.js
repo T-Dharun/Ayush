@@ -18,6 +18,9 @@ exports.register = async (req, res) => {
       return res.status(400).json({ msg: "User already exists" });
     }
     user = new User({ name, email, password, role, mobile });
+    if (role === "clerk") {
+      user.otpVerified = true;
+    }
     await user.save();
     //jwt.sign(payload, secret, { expiresIn }, (err, token) => {
     //if (err) throw err;

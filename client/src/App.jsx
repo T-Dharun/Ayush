@@ -11,6 +11,8 @@ import { useEffect,useState } from "react";
 import axiosHeader from "./axiosHeader";
 import AddClerk from "./components/government/AddClerk";
 import ViewStartups from "./components/government/ViewStartups";
+import EntityDetails from "./components/Registration/EntityDetails";
+import AddressDetails from "./components/Registration/AddressDetails";
 const App = () => {
   const [data, setData] = useState(null);
   const { user, loading } = useAuth();
@@ -39,6 +41,7 @@ const App = () => {
       <Routes>
         <Route path='/' element={<LandingPage />} />
         <Route path="/register" element={<Home />} />
+        <Route path="/r" element={<AddressDetails />} />
         <Route path="/login" element={<Login/>} />
         {user && (
           <>

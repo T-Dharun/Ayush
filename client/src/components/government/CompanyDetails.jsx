@@ -31,8 +31,8 @@ const CompanyDetails = () => {
     useEffect(() => {
         fetchCompanyData();
     }, []);
-    const user=JSON.parse(localStorage.getItem('data'));
-    console.log(user.role)
+    // const user=JSON.parse(localStorage.getItem('data'));
+    // console.log(user.role)
     const navigate = useNavigate();
     const verifyCompany = async () => {
         try {
@@ -170,7 +170,7 @@ const CompanyDetails = () => {
             </div>
             <div className="row mt-4">
                 <div className="col-md-12 text-center">
-                    <button className="btn btn-success btn-lg mr-3" onClick={verifyCompany}>{user.role=='clerk'?'Verify and Proceed':'Recognize'}</button>
+                    <button className="btn btn-success btn-lg mr-3" onClick={verifyCompany}>Verify</button>
                     <button className="btn btn-danger m-3 btn-lg mr-3" onClick={rejectCompany}>Reject</button>
                     <button className="btn btn-secondary btn-lg">Chat</button>
                 </div>

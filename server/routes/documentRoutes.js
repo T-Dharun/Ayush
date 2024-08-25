@@ -22,5 +22,9 @@ router.post(
   documentController.uploadFiles
 ); // Pass the controller method here
 router.get("/getdocuments", authMiddleware, documentController.getDocuments);
-
+router.post(
+  "/verifyDocument",
+  authMiddleware,
+  documentController.verifyDocument
+);
 module.exports = router;

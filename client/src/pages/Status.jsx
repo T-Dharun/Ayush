@@ -5,8 +5,10 @@ import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
 function RegistrationProcess() {
+
   const [status, setStatus] = useState(0);
   const navigate = useNavigate();
+
 
   useEffect(() => {
     fetchCompany();
