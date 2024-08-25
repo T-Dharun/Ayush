@@ -61,11 +61,7 @@ app.use("/api/startups", startupRoutes);
 app.use("/api/government", governmentRoutes);
 app.use("/api/documents", documentRoutes);
 
-<<<<<<< HEAD
 app.use('/api/documents', documentRoutes);
 app.use('/api/status',statusRoutes)
-=======
-// Start the server
->>>>>>> a75d07c77848ab7816319b74c9b9406df4f93dc3
 const PORT = process.env.PORT || 5000;
 server.listen(PORT, () => console.log(`Server started on port ${PORT}`));
