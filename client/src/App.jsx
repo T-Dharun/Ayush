@@ -42,7 +42,6 @@ const App = () => {
     <ChakraProvider>
       <Routes>
          {/* //development purpose */}
-      <Route path="/progressBar" element={<ProgressBar />} />
         <Route path='/' element={<LandingPage />} />
         <Route path="/register" element={<Home />} />
         <Route path="/r" element={<Registration />} />
