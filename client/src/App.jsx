@@ -5,7 +5,7 @@ import { ChakraProvider, Spinner } from '@chakra-ui/react';
 import LandingPage from './pages/LandingPage';
 import Bot from './pages/bot';
 import Login from "./components/Login/login";
-import { Home ,Status} from './pages';
+import { Home ,Status,ForgotPassword} from './pages';
 import { useAuth } from './services/AuthContext';
 import { useEffect,useState } from "react";
 import axiosHeader from "./axiosHeader";
@@ -13,6 +13,7 @@ import AddClerk from "./components/government/AddClerk";
 import ViewStartups from "./components/government/ViewStartups";
 import EntityDetails from "./components/Registration/EntityDetails";
 import AddressDetails from "./components/Registration/AddressDetails";
+import { ProgressBar } from "./components/Home/index";
 const App = () => {
   const [data, setData] = useState(null);
   const { user, loading } = useAuth();
@@ -39,13 +40,18 @@ const App = () => {
   return (
     <ChakraProvider>
       <Routes>
+         {/* //development purpose */}
+      <Route path="/progressBar" element={<ProgressBar />} />
         <Route path='/' element={<LandingPage />} />
         <Route path="/register" element={<Home />} />
         <Route path="/r" element={<AddressDetails />} />
+        <Route path="/forgot-password" element={<ForgotPassword />} />
         <Route path="/login" element={<Login/>} />
         {user && (
           <>
             <Route path="/bot" element={<Bot />} />
+           
+            
             <Route path='/guide' element={<Guide />} />
             <Route path='/government' element={<GovernWorkspace />} />
             <Route path='/government/create' element={<AddClerk />} />
