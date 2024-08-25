@@ -1,7 +1,11 @@
 import React from 'react';
 import './progressBar.css';
 
-function ProgressBar({ currentStep }) {
+function ProgressBar({ currentStep ,setStep }) {
+  function navi(step){
+    //alert(step)
+    setStep(step);
+  }
   const data = [
     {
       step: 1,
@@ -67,7 +71,7 @@ function ProgressBar({ currentStep }) {
   return (
     <div className="progressBar">
       {data.map((item, index) => (
-        <div key={index} className="progressBar-item">
+        <div key={index} className="progressBar-item cursor-pointer" onClick={()=>navi(index)}>
           <div className="progressBar-info">
             <div
               className={`progressBar-circle ${item.complete ? 'complete' : ''} ${

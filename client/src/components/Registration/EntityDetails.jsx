@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { ProgressBar } from "../Home";
+import { putEntityDetails } from "../../services/registrationService";
 
 const EntityDetails = ({setStep}) => {
   const [details, setDetails] = useState({});
@@ -7,6 +8,7 @@ const EntityDetails = ({setStep}) => {
 
   const submit = () => {
     setStep(prev=>prev+1);
+    putEntityDetails(details);
     console.log(details);
   };
 
@@ -139,15 +141,12 @@ const EntityDetails = ({setStep}) => {
             />
           </div>
         </div>
-        <div className="flex justify-end mt-8">
-          <button
-            type="button"
-            className="bg-green-600 text-white p-3 rounded-md cursor-pointer hover:opacity-90"
-            onClick={submit}
-          >
-            CONTINUE
-          </button>
-        </div>
+        <button
+        className="bg-blue-400 text-white py-2 px-4 rounded-md hover:bg-blue-500 w-100 mt-3"
+        onClick={submit}
+      >
+        Continue
+      </button>
       </div>
     </section>
   );
