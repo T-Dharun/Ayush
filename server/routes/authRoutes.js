@@ -11,6 +11,8 @@ const {
   modifyUserName,
   sendOTP,
   verifyOTP,
+  resetPassword,
+  forgotPassword,
 } = require("../controllers/authController");
 // Secret key for JWT
 const JWT_SECRET =
@@ -22,6 +24,8 @@ router.post("/register", register);
 router.post("/login", login);
 router.post("/sendOTP", sendOTP);
 router.post("/verifyOTP", verifyOTP);
+router.post("/resetPassword", resetPassword);
+router.post("/forgotPassword", forgotPassword);
 router.put("/modifyUserName", authMiddleware, modifyUserName);
 router.get("/verifyToken", authMiddleware, (req, res) => {
   res.json({ user: req.user });

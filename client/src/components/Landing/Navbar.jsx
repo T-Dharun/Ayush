@@ -194,6 +194,8 @@ const Navbar = () => {
                     onClick={() => {
                       setIsLoggedIn(false);
                       setUserDetails(null); // Clear user details on logout
+                      localStorage.removeItem('user');
+                      locatStore.removeItem('data');
                     }}
                   >
                     Logout
@@ -224,7 +226,7 @@ const Navbar = () => {
                               <span className="text-sm text-gray-600">DashBoard</span>
                             </li>
                           </Link>
-                          {data.role !== 'startup' ? (
+                          {data?.role !== 'stakeholder' ? (
                             <Link to="/government">
                               <li className="py-2 px-4 hover:bg-gray-100 rounded-md cursor-pointer transition duration-200 ease-in-out transform hover:translate-x-2">
                                 <span className="text-sm text-gray-600">Work</span>
@@ -262,7 +264,8 @@ const Navbar = () => {
                   </Link>
                 )}
               </div>
-              {data.role == 'startup' && <Link to="/register">
+              {(data?.role == 'stakeholder'|| !data) && 
+              <Link to="/guide">
                 <button className="px-4 py-2 bg-blue-900 text-white rounded-full hover:bg-blue-700 ml-[20px]">
                   Start Registration
                 </button>
