@@ -188,7 +188,8 @@ exports.sendMail = async (req, res) => {
 };
 
 exports.createStartup = async (req, res) => {
-  const { step, data } = req.body;
+  let { step, data } = req.body;
+  console.log(req.body);
   if (!step || !data) {
     return res.status(400).json({ message: "Step and data are required" });
   }
@@ -198,9 +199,11 @@ exports.createStartup = async (req, res) => {
     let startup = await Startup.findOne({ userId });
     if (!startup) {
       if (step === 1) {
-        // Create new startup if it does not exist
+        // Create new startup if it does not exist`
+        const userid = data.userId;
+        //console.log(data);
         startup = new Startup({
-          userId: data.userId,
+          userId: userid,
           // Initialize fields for step 1
           name: data.name,
           logo: data.logo,
@@ -209,7 +212,9 @@ exports.createStartup = async (req, res) => {
           CINNumber: data.CINNumber,
           panCard: data.panCard,
           capitalInvestment: data.capitalInvestment,
+          progress: `${step}`,
         });
+        //console.log(startup);
       } else {
         return res.status(404).json({ message: "Startup not found" });
       }
@@ -221,14 +226,25 @@ exports.createStartup = async (req, res) => {
         // Fields for step 1 (already handled in creation)
         break;
       case 2:
-        if (Array.isArray(data.Address)) {
-          startup.Address = data.Address; // Update with the provided array of addresses
-        }
-        startup.registeredAddress =
-          data.registeredAddress || startup.registeredAddress;
-        startup.contactPerson = data.contactPerson || startup.contactPerson;
+        //console.log(req.body);
+        const { officeAddress, manufacturingAddress } = req.body.data;
+        startup.set({
+          progress: `${step}`,
+          Address: [{ ...officeAddress }, { ...manufacturingAddress }], // Directly using the manufacturingAddress from frontend
+        });
+        await startup.save();
+        //console.log(officeAddress);
         break;
-      case 3: // Handling representative or other persons
+      case 3:
+        //  console.log(req.body);
+        startup.set({
+          progress: `${step}`,
+          Person: { ...data },
+        });
+        //  console.log(data);
+        await startup.save();
+        //console.log(officeAddress);
+        break;
       case 4:
         if (data.Person && Array.isArray(data.Person)) {
           // Validate and append each person to the existing array
@@ -245,23 +261,16 @@ exports.createStartup = async (req, res) => {
         }
         break;
       case 5:
-        // Update the stage field
-        if (data.stage) {
-          startup.Stage = data.stage;
-        }
-
-        // Handle details
-        if (data.Details && Array.isArray(data.Details)) {
-          data.Details.forEach((detail) => {
-            const { question, answer } = detail;
-            if (typeof question !== "string" || typeof answer !== "boolean") {
-              throw new Error("Invalid data format for Details");
-            }
-            // Append new details to the existing array
-            startup.Details.push({ question, answer });
-          });
-        }
+        //console.log(req.body);
+        startup.set({
+          progress: `${step}`,
+          status: "initial",
+        });
+        //console.log(data);
+        await startup.save();
+        //console.log(officeAddress);
         break;
+
       case 6:
         if (data.bankDetails) {
           startup.bankDetails = {

@@ -1,12 +1,15 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
+import { putEntityDetails } from '../../services/registrationService';
 
-const Final = () => {
+const Final = ({step}) => {
   const [termsAndConditions, setTermsAndConditions] = React.useState(false);
   const [signature, setSignature] = React.useState('');
   const navigate=useNavigate();
-  const submit=()=>{
+  const submit=async()=>{
+    await putEntityDetails({application:'submit',step});
     console.log(signature);
+
     navigate('/')
   }
   const handleTermsAndConditionsChange = (e) => {

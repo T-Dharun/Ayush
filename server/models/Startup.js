@@ -23,10 +23,10 @@ const DocumentSchema = new mongoose.Schema({
 
 // Define the schema for address details
 const AddressSchema = new mongoose.Schema({
-  AddressLine: String,
-  State: String,
-  City: String,
-  Pincode: String,
+  addressLine: String, // Changed to match the frontend
+  state: String,       // Changed to match the frontend
+  district: String,    // Changed to match the frontend
+  pincode: String,     // Changed to match the frontend
   type: { type: String, enum: ["office", "manufacturing"] },
 });
 
@@ -34,11 +34,11 @@ const AddressSchema = new mongoose.Schema({
 const PersonSchema = new mongoose.Schema({
   name: String,
   id: String,
-  Designation: String,
+  designation: String,
   mobile: String,
   email: String,
-  PostalAddress: String,
-  Gender: String,
+  postalAddress: String,
+  gender: String,
   type: { type: String, enum: ["representative", "director", "founder"] },
 });
 

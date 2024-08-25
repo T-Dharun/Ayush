@@ -1,16 +1,19 @@
 import React, { useState } from 'react';
+import { putEntityDetails } from '../../services/registrationService';
 
-const AuthorizedDetails = ({ setStep }) => {
+const AuthorizedDetails = ({ setStep,step }) => {
   const [formData, setFormData] = useState({
     name: '',
     designation: '',
     mobile: '',
     gender: '',
     email: '',
+    postalAddress:''
   });
 
-  const handleSubmit = () => {
+  const handleSubmit = async() => {
     console.log(formData);
+    await putEntityDetails({...formData,step});
     setStep((prev) => prev + 1);
   };
 
@@ -87,6 +90,18 @@ const AuthorizedDetails = ({ setStep }) => {
               onChange={handleChange}
               className="p-2 border rounded-md focus:outline-none"
               placeholder="Enter your email"
+            />
+          </div>
+          <div className="flex flex-col gap-4">
+            <label htmlFor="authorizedEmail" className="font-bold">Address:</label>
+            <input
+              id="postalAddress"
+              type="text"
+              name="postalAddress"
+              value={formData.email}
+              onChange={handleChange}
+              className="p-2 border rounded-md focus:outline-none"
+              placeholder="Enter your Address"
             />
           </div>
         </div>
