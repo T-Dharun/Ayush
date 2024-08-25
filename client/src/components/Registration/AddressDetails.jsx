@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { ProgressBar } from "../Home";
-const AddressDetails = () => {
+const AddressDetails = ({setStep}) => {
   const [officeAddress, setOfficeAddress] = useState({
     addressLine: "",
     state: "",
@@ -14,7 +14,10 @@ const AddressDetails = () => {
     district: "",
     pincode: "",
   });
-
+  const submit=()=>{
+    console.log(officeAddress)
+    setStep(prev=>prev+1);
+  }
   const states = ["Tamil Nadu"];
 
   const districts = {
@@ -94,15 +97,12 @@ const AddressDetails = () => {
           />
         </div>
       </div>
-      <div className="flex justify-end mt-2 p-2">
-        <button
-          type="button"
-          className="bg-blue-600 text-white p-2 rounded-md cursor-pointer hover:opacity-90 m-5"
-          onClick={() => console.log(officeAddress)}
-        >
-          CONTINUE
-        </button>
-      </div>
+      <button
+        className="bg-blue-400 text-white py-2 px-4 rounded-md hover:bg-blue-500 m-5"
+        onClick={submit}
+      >
+        Continue
+      </button>
     </section>
   );
 };

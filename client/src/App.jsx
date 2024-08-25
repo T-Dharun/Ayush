@@ -23,7 +23,6 @@ const App = () => {
       try {
         const response = await axiosHeader.get('auth/me');
         localStorage.setItem('data', JSON.stringify(response.data));
-        console.log(response.data + "Fsadfsad");
         setData(response.data); // Store the data in state
       } catch (error) {
         console.error("Error fetching data:", error);

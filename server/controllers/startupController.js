@@ -265,34 +265,53 @@ exports.createStartup = async (req, res) => {
       case 6:
         if (data.bankDetails) {
           startup.bankDetails = {
-            bankName: data.bankDetails.bankName || startup.bankDetails.bankName,
+            bankName:
+              data.bankDetails.bankName || startup.bankDetails?.bankName,
             accountNumber:
               data.bankDetails.accountNumber ||
-              startup.bankDetails.accountNumber,
-            ifscCode: data.bankDetails.ifscCode || startup.bankDetails.ifscCode,
+              startup.bankDetails?.accountNumber,
+            ifscCode:
+              data.bankDetails.ifscCode || startup.bankDetails?.ifscCode,
           };
         }
+
+        // Preserve file paths if they exist and only update the fields that are provided
         if (data.documents) {
           startup.documents = {
             gmpCertificateNumber:
               data.documents.gmpCertificateNumber ||
-              startup.documents.gmpCertificateNumber,
+              startup.documents?.gmpCertificateNumber,
             coppCertificateNumber:
               data.documents.coppCertificateNumber ||
-              startup.documents.coppCertificateNumber,
+              startup.documents?.coppCertificateNumber,
             ayushLicenseCertificateNumber:
               data.documents.ayushLicenseCertificateNumber ||
-              startup.documents.ayushLicenseCertificateNumber,
+              startup.documents?.ayushLicenseCertificateNumber,
             manufacturingLicenseNumber:
               data.documents.manufacturingLicenseNumber ||
-              startup.documents.manufacturingLicenseNumber,
+              startup.documents?.manufacturingLicenseNumber,
             companyIncorporationCertificateNumber:
               data.documents.companyIncorporationCertificateNumber ||
-              startup.documents.companyIncorporationCertificateNumber,
+              startup.documents?.companyIncorporationCertificateNumber,
+            // Preserve file path data
+            gmpCertificate:
+              startup.documents?.gmpCertificate ||
+              data.documents.gmpCertificate,
+            coppCertificate:
+              startup.documents?.coppCertificate ||
+              data.documents.coppCertificate,
+            ayushLicenseCertificate:
+              startup.documents?.ayushLicenseCertificate ||
+              data.documents.ayushLicenseCertificate,
+            manufacturingLicense:
+              startup.documents?.manufacturingLicense ||
+              data.documents.manufacturingLicense,
+            companyIncorporationCertificate:
+              startup.documents?.companyIncorporationCertificate ||
+              data.documents.companyIncorporationCertificate,
           };
         }
         break;
-      // Handle other steps similarly
       default:
         return res.status(400).json({ message: "Invalid step" });
     }

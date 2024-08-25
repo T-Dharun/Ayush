@@ -45,14 +45,18 @@ exports.uploadFiles = async (req, res) => {
       await s3Client.send(command);
       console.log(`File uploaded successfully: ${filePath}`);
       // Store the file path in the corresponding field in the documents subdocument
+      console.log(
+        `https://${bucketName}.s3.${process.env.AWS_REGION}.amazonaws.com/${filePath}`
+      );
       startup.documents[
         key
       ] = `https://${bucketName}.s3.${process.env.AWS_REGION}.amazonaws.com/${filePath}`;
+      console.log("same", startup.documents[key], "key", key);
     }
     await startup.save();
     res.status(200).send("Files uploaded successfully");
   } catch (err) {
-    console.error("Error uploading files:", err);
+    console.log("Error uploading files:", err);
     res.status(500).send("Error uploading files");
   }
 };
