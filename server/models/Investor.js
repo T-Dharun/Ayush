@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 
-const MentorSchema = new mongoose.Schema({
+const InvestorSchema = new mongoose.Schema({
   name: {
     type: String,
     trim: true,
@@ -64,4 +64,4 @@ const MentorSchema = new mongoose.Schema({
   userId: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true },
 });
 
-module.exports = mongoose.model("Mentor", MentorSchema);
+module.exports = mongoose.model("Investor", InvestorSchema);

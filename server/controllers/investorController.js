@@ -1,7 +1,7 @@
-const Mentor = require("../models/Mentor");
+const Investor = require("../models/Investor");
 const mongoose = require("mongoose");
 
-exports.putMentorData = async (req, res) => {
+exports.putInvestorData = async (req, res) => {
   const { step, data } = req.body;
 
   if (!step || !data) {
@@ -33,46 +33,46 @@ exports.putMentorData = async (req, res) => {
         brief,
       } = data;
 
-      let mentor = await Mentor.findOne({ userId: userObjectId });
-      if (!mentor) {
-        mentor = new Mentor({ userId: userObjectId });
+      let investor = await Investor.findOne({ userId: userObjectId });
+      if (!investor) {
+        investor = new Investor({ userId: userObjectId });
       }
 
-      mentor.network = network;
-      mentor.name = name;
-      mentor.interest = interest;
-      mentor.startupState = startupState;
-      mentor.budget = budget;
-      mentor.investmentCategorySector = investmentCategorySector;
-      mentor.panCard = panCard;
-      mentor.brief = brief;
+      investor.network = network;
+      investor.name = name;
+      investor.interest = interest;
+      investor.startupState = startupState;
+      investor.budget = budget;
+      investor.investmentCategorySector = investmentCategorySector;
+      investor.panCard = panCard;
+      investor.brief = brief;
 
-      await mentor.save();
+      await investor.save();
       return res
         .status(200)
-        .json({ message: "Step 1 data saved successfully", mentor });
+        .json({ message: "Step 1 data saved successfully", investor });
     }
 
     if (step === "2") {
       const { addressLine, state, district, pincode, linkedin, website } = data;
 
-      let mentor = await Mentor.findOne({ userId: userObjectId });
-      if (!mentor) {
-        return res.status(404).json({ message: "Mentor not found" });
+      let investor = await Investor.findOne({ userId: userObjectId });
+      if (!investor) {
+        return res.status(404).json({ message: "Investor not found" });
       }
 
-      // Update mentor with step 2 data
-      mentor.addressLine = addressLine;
-      mentor.state = state;
-      mentor.district = district;
-      mentor.pincode = pincode;
-      mentor.linkedin = linkedin;
-      mentor.website = website;
+      // Update investor with step 2 data
+      investor.addressLine = addressLine;
+      investor.state = state;
+      investor.district = district;
+      investor.pincode = pincode;
+      investor.linkedin = linkedin;
+      investor.website = website;
 
-      await mentor.save();
+      await investor.save();
       return res
         .status(200)
-        .json({ message: "Step 2 data saved successfully", mentor });
+        .json({ message: "Step 2 data saved successfully", investor });
     }
 
     return res.status(400).json({ message: "Invalid step" });
