@@ -18,10 +18,14 @@ const InvestorSchema = new mongoose.Schema({
     default: [],
   },
   startupState: {
-    type: String,
+    type: [String],
     trim: true,
   },
   budget: {
+    type: String,
+    trim: true,
+  },
+  status: {
     type: String,
     trim: true,
   },
