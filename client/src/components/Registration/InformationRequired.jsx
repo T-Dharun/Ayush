@@ -1,5 +1,6 @@
 import React,{useState} from "react";
-function InformationRequired({ setStep }) {
+import { putEntityDetails } from "../../services/registrationService";
+function InformationRequired({ setStep ,step }) {
     const [cardPicked, setCardPicked] = useState(null);
     const [answers, setAnswers] = useState({});
   
@@ -20,7 +21,13 @@ function InformationRequired({ setStep }) {
     const submit = () => {
       if (canContinue) {
         setStep((prev) => prev + 1);
-        console.log(cardPicked, answers);
+        const mergedArray = questions.map((item, index) => ({
+          question:item.question,
+          answer:answers[index] // Update the 'ans' property with the corresponding answer
+        }));
+        console.log(mergedArray);
+        putEntityDetails({mergedArray,cardPicked,step});
+        //console.log(cardPicked, answers,questions);
       }
     };
   
@@ -99,22 +106,22 @@ function InformationRequired({ setStep }) {
       </section>
     );
   }
-const questions = [
+let  questions = [
     {
       question: "Has your startup applied for any IPR (Intellectual Property Right)?*",
-      ans: null
+      answer: null
     },
     {
       question: "Is the startup creating an innovative product/service/process or improving an existing product/service/process*",
-      ans: null
+      answer: null
     },
     {
       question: "Is the startup creating a scalable business model with high potential of employment generation or wealth creation*",
-      ans: null
+      answer: null
     },
     {
       question: "Has your startup received any funding?*",
-      ans: null
+      answer: null
     },
 ];
 const cardData = [

@@ -142,7 +142,8 @@ exports.getStartups = async (req, res) => {
   try {
     // Ensure userId is an ObjectId
     const userId = mongoose.Types.ObjectId(req.user.id);
-
+    console.log(req.user.id);
+    console.log("fasdf");
     const startups = await Startup.find({ userId });
     res.json(startups);
   } catch (err) {
@@ -189,7 +190,7 @@ exports.sendMail = async (req, res) => {
 
 exports.createStartup = async (req, res) => {
   let { step, data } = req.body;
-  console.log(req.body);
+  //console.log(req.body);
   if (!step || !data) {
     return res.status(400).json({ message: "Step and data are required" });
   }
@@ -202,6 +203,7 @@ exports.createStartup = async (req, res) => {
         // Create new startup if it does not exist`
         const userid = data.userId;
         //console.log(data);
+        data = data.details;
         startup = new Startup({
           userId: userid,
           // Initialize fields for step 1
@@ -246,9 +248,10 @@ exports.createStartup = async (req, res) => {
         //console.log(officeAddress);
         break;
       case 4:
-        if (data.Person && Array.isArray(data.Person)) {
+        console.log(data);
+        if (data.founders && Array.isArray(data.founders)) {
           // Validate and append each person to the existing array
-          data.Person.forEach((person) => {
+          data.founders.forEach((person) => {
             if (person.type === "representative") {
               const { name, Designation, mobile, email, Gender } = person;
               if (!name || !Designation || !mobile || !email || !Gender) {
@@ -257,13 +260,44 @@ exports.createStartup = async (req, res) => {
             }
             // Append new persons to the existing array
             startup.Person.push(person);
+            startup.set({
+              progress: `${step}`,
+            });
           });
         }
         break;
+      case 5:
+        //console.log(data);
+        let status;
+        switch (data.cardPicked) {
+          case 0:
+            status = "ideathon";
+            break;
+          case 2:
+            status = "earlytraction";
+            break;
+          case 1:
+            status = "validation";
+            break;
+          case 3:
+            status = "scaling";
+            break;
+          default:
+            status = "";
+            break;
+        }
+        startup.set({
+          progress: `${step}`,
+          Stage: status,
+          Details: data.mergedArray,
+        });
+        //  console.log(data);
+        await startup.save();
       case 7:
         //console.log(req.body);
         startup.set({
           progress: `${step}`,
+          termsAndCondition: true,
           status: "initial",
         });
         //console.log(data);

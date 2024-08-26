@@ -56,6 +56,7 @@ const CertificateDetails = ({ setStep }) => {
     }
 
     try {
+      setStep(prev => prev + 1);
       const uploadResponse = await axiosHeader.post(
         'documents/upload', // Use the relative path here
         formData,
@@ -93,7 +94,7 @@ const CertificateDetails = ({ setStep }) => {
         );
   
         if (createStartupResponse.status === 200) {
-          setStep(prev => prev + 1);
+          
         } else {
           console.error('Failed to create startup:', createStartupResponse.data);
         }

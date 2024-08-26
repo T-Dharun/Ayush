@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { ProgressBar } from "../Home";
 import { putEntityDetails } from "../../services/registrationService";
-
+import axiosHeader from '../../axiosHeader';
 const EntityDetails = ({ step,setStep }) => {
   const [details, setDetails] = useState({
     name: '',
@@ -12,11 +12,10 @@ const EntityDetails = ({ step,setStep }) => {
     panCard: ''
   });
   const [logo, setLogo] = useState(null);
-
-
-  const submit = async() => {
-    setStep(prev => prev + 1);
-    await putEntityDetails({ ...details,logo ,step });
+  const submit = async () => {
+    setStep(prev=>prev+1);
+    await getLogo();
+    await putEntityDetails({details,step});
     console.log(details);
   };
 
@@ -24,6 +23,35 @@ const EntityDetails = ({ step,setStep }) => {
     setLogo(e.target.files[0]);
     console.log(logo);
   };
+  const getLogo = async () => {
+    const formData = new FormData();
+      console.log("companyLogo",logo);
+        if (logo) {
+          formData.append(`${"companyLogo"}`, logo);
+        }
+    try {
+      const uploadResponse = await axiosHeader.post(
+        'documents/upload', // Use the relative path here
+        formData,
+        {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+          },
+        }
+      );
+      if (uploadResponse.status === 200) {
+        console.log("adfsadf")
+        console.log(uploadResponse);
+      } else {
+        console.error('Failed to upload certificates:', uploadResponse.data);
+      }
+    } catch (err) {
+      console.error('Error uploading certificates or creating startup:', err);
+    }
+  };
+
+
+
 
   return (
     <section className="h-screen bg-white overflow-y-auto w-100">
@@ -46,6 +74,7 @@ const EntityDetails = ({ step,setStep }) => {
               placeholder="Company Name"
               className="w-full p-3 pl-5 text-sm text-gray-700 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-transparent"
               onChange={(e) => setDetails({ ...details, name: e.target.value })}
+              required
             />
             <label
               htmlFor="typeOfEntity"
@@ -58,6 +87,7 @@ const EntityDetails = ({ step,setStep }) => {
               placeholder="Select option"
               className="w-full p-3 pl-5 text-sm text-gray-700 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-transparent"
               onChange={(e) => setDetails({ ...details, typeOfEntity: e.target.value })}
+              required
             >
               <option value="private">Private Limited</option>
               <option value="partnership">Partnership</option>
@@ -74,6 +104,7 @@ const EntityDetails = ({ step,setStep }) => {
               placeholder="CIN Number"
               className="w-full p-3 pl-5 text-sm text-gray-700 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-transparent"
               onChange={(e) => setDetails({ ...details, CINNumber: e.target.value })}
+              required
             />
             <label
               htmlFor="capitalInvestment"
@@ -87,6 +118,7 @@ const EntityDetails = ({ step,setStep }) => {
               placeholder="Capital Investment"
               className="w-full p-3 pl-5 text-sm text-gray-700 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-transparent"
               onChange={(e) => setDetails({ ...details, capitalInvestment: e.target.value })}
+              required
             />
           </div>
           <div>
@@ -103,6 +135,7 @@ const EntityDetails = ({ step,setStep }) => {
                 accept="image/*"
                 className="hidden"
                 onChange={handleLogoChange}
+                required
               />
               <label
                 htmlFor="logo"
@@ -128,6 +161,7 @@ const EntityDetails = ({ step,setStep }) => {
               placeholder="Select option"
               className="w-full p-3 pl-5 text-sm text-gray-700 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-transparent"
               onChange={(e) => setDetails({ ...details, sector: e.target.value })}
+              required
             >
               <option value="Ayurvedha">AYURVEDA</option>
               <option value="Yoga">YOGA</option>
@@ -147,6 +181,7 @@ const EntityDetails = ({ step,setStep }) => {
               placeholder="PAN"
               className="w-full p-3 pl-5 text-sm text-gray-700 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-transparent"
               onChange={(e) => setDetails({ ...details, panCard: e.target.value })}
+              required
             />
           </div>
         </div>

@@ -33,6 +33,7 @@ const AddressSchema = new mongoose.Schema({
 // Define the schema for person details
 const PersonSchema = new mongoose.Schema({
   name: String,
+  dinDpin:String,
   id: String,
   designation: String,
   mobile: String,
@@ -45,7 +46,7 @@ const PersonSchema = new mongoose.Schema({
 // Define the schema for additional details
 const DetailsSchema = new mongoose.Schema({
   question: String,
-  answer: Boolean,
+  answer: String,
 });
 
 // Define the main schema for startup
