@@ -15,6 +15,8 @@ import EntityDetails from "./components/Registration/EntityDetails";
 import AddressDetails from "./components/Registration/AddressDetails";
 import { ProgressBar } from "./components/Home/index";
 import Registration from "./pages/Registration";
+import InvestorRegistration from "./pages/InvestorRegistration";
+import MentorRegistration from "./pages/MentorRegistration";
 const App = () => {
   const [data, setData] = useState(null);
   const { user, loading } = useAuth();
@@ -45,6 +47,8 @@ const App = () => {
         <Route path='/' element={<LandingPage />} />
         
         <Route path="/register" element={<Registration />} />
+        <Route path="/register/investor" element={<InvestorRegistration/>} />
+        <Route path="/register/mentor" element={<MentorRegistration/>} />
         <Route path="/forgot-password" element={<ForgotPassword />} />
         <Route path="/login" element={<Login/>} />
         {user && (
