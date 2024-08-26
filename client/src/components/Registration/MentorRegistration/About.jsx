@@ -13,9 +13,7 @@ const About = ({ step, setStep ,network }) => {
 
   const [logo, setLogo] = useState(null);
 
-  const submit = () => {
-    console.log(network)
-    console.log(details);
+  const submit = async () => {
     setStep(prev=>prev+1);
   };
 

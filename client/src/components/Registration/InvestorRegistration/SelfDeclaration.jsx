@@ -1,5 +1,6 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
+import { putInvestorDetails } from '../../../services/investorRegistration';
 
 const SelfDeclaration = ({step}) => {
   const [termsAndConditions, setTermsAndConditions] = React.useState(false);
@@ -7,7 +8,7 @@ const SelfDeclaration = ({step}) => {
   const navigate=useNavigate();
   const submit=async()=>{
     console.log(signature);
-
+    await putInvestorDetails({step});
     navigate('/')
   }
   const handleTermsAndConditionsChange = (e) => {
