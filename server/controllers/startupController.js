@@ -260,7 +260,7 @@ exports.createStartup = async (req, res) => {
           });
         }
         break;
-      case 5:
+      case 7:
         //console.log(req.body);
         startup.set({
           progress: `${step}`,

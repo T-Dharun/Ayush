@@ -21,7 +21,6 @@ const Registration = () => {
             case 3:
                 return <FounderDetails setStep={setStep}/>
             case 4:
-
               return <InformationRequired setStep={setStep}/>;
             case 5:
                 return <CertificateDetails setStep={setStep}/>;
