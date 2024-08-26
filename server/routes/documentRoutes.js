@@ -23,6 +23,12 @@ router.post(
 ); // Pass the controller method here
 router.get("/getdocuments", authMiddleware, documentController.getDocuments);
 router.post(
+  "/uploadimage",
+  upload.any(),
+  authMiddleware,
+  documentController.uploadImage
+);
+router.post(
   "/verifyDocument",
   authMiddleware,
   documentController.verifyDocument

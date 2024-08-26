@@ -4,8 +4,8 @@ const authRoutes = require("./routes/authRoutes");
 const startupRoutes = require("./routes/startupRoutes");
 const governmentRoutes = require("./routes/governmentRoutes");
 const documentRoutes = require("./routes/documentRoutes");
-const statusRoutes = require('./routes/statusRoutes');
-
+const statusRoutes = require("./routes/statusRoutes");
+const investorRoutes = require("./routes/investorRoutes");
 const cookieParser = require("cookie-parser");
 const cors = require("cors");
 const http = require("http");
@@ -60,8 +60,8 @@ app.use("/api/auth", authRoutes);
 app.use("/api/startups", startupRoutes);
 app.use("/api/government", governmentRoutes);
 app.use("/api/documents", documentRoutes);
-
-app.use('/api/documents', documentRoutes);
-app.use('/api/status',statusRoutes)
+app.use("/api/investor", investorRoutes);
+app.use("/api/documents", documentRoutes);
+app.use("/api/status", statusRoutes);
 const PORT = process.env.PORT || 5000;
 server.listen(PORT, () => console.log(`Server started on port ${PORT}`));

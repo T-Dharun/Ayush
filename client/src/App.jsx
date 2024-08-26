@@ -1,6 +1,6 @@
 import { Route, Routes } from "react-router-dom";
 import { GovernWorkspace } from "./pages";
-import { CompanyDetails, Guide } from "./components/index";
+import { CompanyDetails, Guide,Startup,Mentor,Investor } from "./components/index";
 import { ChakraProvider, Spinner } from '@chakra-ui/react';
 import LandingPage from './pages/LandingPage';
 import Bot from './pages/bot';
@@ -15,8 +15,12 @@ import EntityDetails from "./components/Registration/EntityDetails";
 import AddressDetails from "./components/Registration/AddressDetails";
 import { ProgressBar } from "./components/Home/index";
 import Registration from "./pages/Registration";
+
 import InvestorRegistration from "./pages/InvestorRegistration";
 import MentorRegistration from "./pages/MentorRegistration";
+
+import UserType from './components/Registration/UserType';
+
 const App = () => {
   const [data, setData] = useState(null);
   const { user, loading } = useAuth();
@@ -38,7 +42,6 @@ const App = () => {
   if (loading) {
     return <Spinner size="xl" />; // Show a loading spinner or placeholder
   }
-
   return (
     <ChakraProvider>
       <Routes>
@@ -51,10 +54,14 @@ const App = () => {
         <Route path="/register/mentor" element={<MentorRegistration/>} />
         <Route path="/forgot-password" element={<ForgotPassword />} />
         <Route path="/login" element={<Login/>} />
+        {/*testing purposes  */}
+        <Route path="/startup" element={<Startup />} /> 
+        <Route path='UserType' element={<UserType/>}/>
+        <Route path='/mentor' element={<Mentor/>}/>
+        <Route path='/investor' element={<Investor/>}/>
         {user && (
           <>
             <Route path="/bot" element={<Bot />} />
-           
             
             <Route path='/guide' element={<Guide />} />
             <Route path='/government' element={<GovernWorkspace />} />

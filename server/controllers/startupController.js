@@ -143,7 +143,7 @@ exports.getStartups = async (req, res) => {
     // Ensure userId is an ObjectId
     const userId = mongoose.Types.ObjectId(req.user.id);
     console.log(req.user.id);
-    console.log("fasdf")
+    console.log("fasdf");
     const startups = await Startup.find({ userId });
     res.json(startups);
   } catch (err) {
@@ -261,26 +261,35 @@ exports.createStartup = async (req, res) => {
             // Append new persons to the existing array
             startup.Person.push(person);
             startup.set({
-              progress:`${step}`
-            })
-
+              progress: `${step}`,
+            });
           });
         }
         break;
       case 5:
         //console.log(data);
         let status;
-        switch(data.cardPicked){
-          case 0: status='ideathon';break;
-          case 2: status='earlytraction';break;
-          case 1: status='validation';break;
-          case 3: status='scaling';break;
-          default: status='' ;break;
+        switch (data.cardPicked) {
+          case 0:
+            status = "ideathon";
+            break;
+          case 2:
+            status = "earlytraction";
+            break;
+          case 1:
+            status = "validation";
+            break;
+          case 3:
+            status = "scaling";
+            break;
+          default:
+            status = "";
+            break;
         }
         startup.set({
           progress: `${step}`,
-          Stage:status,
-          Details:data.mergedArray
+          Stage: status,
+          Details: data.mergedArray,
         });
         //  console.log(data);
         await startup.save();

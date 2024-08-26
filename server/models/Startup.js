@@ -24,16 +24,16 @@ const DocumentSchema = new mongoose.Schema({
 // Define the schema for address details
 const AddressSchema = new mongoose.Schema({
   addressLine: String, // Changed to match the frontend
-  state: String,       // Changed to match the frontend
-  district: String,    // Changed to match the frontend
-  pincode: String,     // Changed to match the frontend
+  state: String, // Changed to match the frontend
+  district: String, // Changed to match the frontend
+  pincode: String, // Changed to match the frontend
   type: { type: String, enum: ["office", "manufacturing"] },
 });
 
 // Define the schema for person details
 const PersonSchema = new mongoose.Schema({
   name: String,
-  dinDpin:String,
+  dinDpin: String,
   id: String,
   designation: String,
   mobile: String,
@@ -53,7 +53,7 @@ const DetailsSchema = new mongoose.Schema({
 const StartupSchema = new mongoose.Schema({
   name: String,
   typeOfEntity: { type: String, enum: ["private", "partnership"] },
-  logo: String,
+  logo: [String],
   sector: {
     type: String,
     enum: ["Ayurvedha", "Sidha", "Yoga", "Unani", "Homeopathy"],

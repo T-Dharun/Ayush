@@ -2,7 +2,6 @@ import { useState } from "react";
 import { ProgressBar } from "../Home";
 import { putEntityDetails } from "../../services/registrationService";
 import axiosHeader from '../../axiosHeader';
-
 const EntityDetails = ({ step,setStep }) => {
   const [details, setDetails] = useState({
     name: '',
@@ -13,41 +12,36 @@ const EntityDetails = ({ step,setStep }) => {
     panCard: ''
   });
   const [logo, setLogo] = useState(null);
-
   const submit = async () => {
     setStep(prev=>prev+1);
-    await getLogo();
     await putEntityDetails({details,step});
+    await putLogo();
     console.log(details);
   };
 
   const handleLogoChange = (e) => {
     setLogo(e.target.files[0]);
+    console.log(logo);
   };
-  const getLogo = async () => {
+  const putLogo = async () => {
     const formData = new FormData();
-      console.log("companyLogo",logo);
-        if (logo) {
-          formData.append(`${"companyLogo"}`, logo);
-        }
+    if (logo) {
+      formData.append('logo', logo);
+    }
+    // Create a new FormData object to include userType
+    const userType = 'startup'; // Set this dynamically if needed
+    formData.append('userType', userType);
+  
     try {
-      const uploadResponse = await axiosHeader.post(
-        'documents/upload', // Use the relative path here
-        formData,
-        {
-          headers: {
-            'Content-Type': 'multipart/form-data',
-          },
-        }
-      );
-      if (uploadResponse.status === 200) {
-        console.log("adfsadf")
-        console.log(uploadResponse);
-      } else {
-        console.error('Failed to upload certificates:', uploadResponse.data);
-      }
-    } catch (err) {
-      console.error('Error uploading certificates or creating startup:', err);
+      const response = await axiosHeader.post('/documents/uploadimage', formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      });
+  
+      console.log('Image uploaded successfully', response.data);
+    } catch (error) {
+      console.error('Error uploading image', error);
     }
   };
 
