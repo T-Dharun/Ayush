@@ -41,11 +41,7 @@ const Registration = () => {
             case 3:
                 return <FounderDetails setStep={setStep} step={step}/>
             case 4:
-<<<<<<< HEAD
-              return <InformationRequired setStep={setStep}/>;
-=======
               return <InformationRequired setStep={setStep} step={step}/>;
->>>>>>> 12aa46fb58570d83c5fd54246381f4aa1d6dd414
             case 5:
                 return <CertificateDetails setStep={setStep}/>;
             case 6:

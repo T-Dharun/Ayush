@@ -4,7 +4,6 @@ const mongoose = require("mongoose");
 const fs = require("fs");
 const pdfParse = require("pdf-parse");
 const stringSimilarity = require("string-similarity");
-
 const s3Client = new S3Client({
   region: process.env.AWS_REGION,
   credentials: {
@@ -182,5 +181,74 @@ exports.verifyDocument = async (req, res) => {
     return res
       .status(500)
       .json({ message: "Error during verification process.", error });
+  }
+};
+
+const uploadImageToS3 = async (file, filePath) => {
+  const params = {
+    Bucket: process.env.AWS_S3_BUCKET,
+    Key: filePath,
+    Body: file.buffer,
+    ContentType: file.mimetype,
+  };
+
+  const command = new PutObjectCommand(params);
+  await s3Client.send(command);
+  return `https://${process.env.AWS_S3_BUCKET}.s3.${process.env.AWS_REGION}.amazonaws.com/${filePath}`;
+};
+
+exports.uploadImage = async (req, res) => {
+  try {
+    const { userType } = req.body;
+    const userId = req.user.id;
+    const files = req.files;
+
+    let model;
+    switch (userType) {
+      case "startup":
+        model = Startup;
+        break;
+      case "mentor":
+        model = Mentor;
+        break;
+      case "investor":
+        model = Investor;
+        break;
+      default:
+        return res.status(400).send("Invalid user type");
+    }
+
+    const user = await model.findOne({
+      userId: mongoose.Types.ObjectId(userId),
+    });
+
+    if (!user) {
+      return res
+        .status(404)
+        .send(
+          `${userType.charAt(0).toUpperCase() + userType.slice(1)} not found`
+        );
+    }
+
+    const currentDate = new Date().toISOString().split("T")[0];
+    const imageUrls = [];
+
+    for (const file of files) {
+      const filePath = `${userType}_${file.fieldname}_${currentDate}.${
+        file.mimetype.split("/")[1]
+      }`;
+      const imageUrl = await uploadImageToS3(file, filePath);
+      imageUrls.push(imageUrl);
+    }
+
+    user.logo.push(...imageUrls);
+    await user.save();
+
+    res
+      .status(200)
+      .json({ message: "Image(s) uploaded successfully", imageUrls });
+  } catch (err) {
+    console.error("Error uploading image:", err);
+    res.status(500).send("Error uploading image");
   }
 };
