@@ -1,7 +1,8 @@
 import React, { useState } from "react";
 import './register.css'; // Assuming you have a separate CSS file
+import { putEntityDetails } from "../../services/registrationService";
 
-function FounderDetails({setStep}) {
+function FounderDetails({setStep,step}) {
   const [founders, setFounders] = useState([]);
   const [newFounder, setNewFounder] = useState({
     dinDpin: "",
@@ -53,6 +54,7 @@ function FounderDetails({setStep}) {
 
   const submit = () => {
     if (founders.length > 0) {
+      putEntityDetails({founders,step})
       console.log(founders);
       setStep((prev) => prev + 1);
     } else {

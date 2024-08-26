@@ -8,17 +8,22 @@ import AuthorizedDetails from "../components/Registration/AuthorizedDetails";
 import CertificateDetails from "../components/Registration/CertificateDetails";
 import Final from "../components/Registration/Final";
 import { getStep } from "../services/registrationService";
+import { useNavigate } from "react-router-dom";
 
 const Registration = () => {
     const [step, setStep] = useState(0);
-    
+    const navigate=useNavigate();
     useEffect(() => {
         const fetchStep = async () => {
             const response = await getStep();
-            let a=(response[0].progress)
+            
             if(response){
+                let a=(response[0].progress)
                 let s= parseInt(a);
-                console.log(s+" "+a);
+                if(s==7){
+                    alert('You are already registered');
+                    navigate('/');
+                }
                 setStep(s);
             }
         };
@@ -34,16 +39,15 @@ const Registration = () => {
             case 2:
                 return <AuthorizedDetails setStep={setStep}  step={step}/>;
             case 3:
-                return <FounderDetails setStep={setStep}/>
+                return <FounderDetails setStep={setStep} step={step}/>
             case 4:
-
-              return <InformationRequired setStep={setStep}/>;
+              return <InformationRequired setStep={setStep} step={step}/>;
             case 5:
                 return <CertificateDetails setStep={setStep}/>;
             case 6:
                 return <Final setStep={setStep} step={step}/>;
             default:
-                return null; // or some default component or message
+                return 0; // or some default component or message
         }
     };
     console.log(step)

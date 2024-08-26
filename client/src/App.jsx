@@ -41,9 +41,10 @@ const App = () => {
     <ChakraProvider>
       <Routes>
          {/* //development purpose */}
+         {/*<Route path="/register" element={<Home />} />*/}
         <Route path='/' element={<LandingPage />} />
-        <Route path="/register" element={<Home />} />
-        <Route path="/r" element={<Registration />} />
+        
+        <Route path="/register" element={<Registration />} />
         <Route path="/forgot-password" element={<ForgotPassword />} />
         <Route path="/login" element={<Login/>} />
         {user && (
