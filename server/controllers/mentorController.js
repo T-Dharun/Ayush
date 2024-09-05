@@ -3,7 +3,8 @@ const mongoose = require("mongoose");
 
 exports.putMentorData = async (req, res) => {
   const { step, data } = req.body;
-
+  console.log(data);
+  console.log(step);
   if (!step || !data) {
     return res.status(400).json({ message: "Step and data are required" });
   }
@@ -21,7 +22,7 @@ exports.putMentorData = async (req, res) => {
   const userObjectId = mongoose.Types.ObjectId(userId);
 
   try {
-    if (step === "1") {
+    if (step === 1) {
       const {
         network,
         name,
@@ -29,7 +30,7 @@ exports.putMentorData = async (req, res) => {
         startupState,
         interestedCategorySector,
         brief,
-      } = data;
+      } = data.details;
 
       let mentor = await Mentor.findOne({ userId: userObjectId });
       if (!mentor) {
@@ -42,6 +43,7 @@ exports.putMentorData = async (req, res) => {
       mentor.startupState = startupState;
       mentor.interestedCategorySector = interestedCategorySector;
       mentor.brief = brief;
+      mentor.step=step;
 
       await mentor.save();
       return res
@@ -49,8 +51,8 @@ exports.putMentorData = async (req, res) => {
         .json({ message: "Step 1 data saved successfully", mentor });
     }
 
-    if (step === "2") {
-      const { addressLine, state, district, pincode, linkedin, website } = data;
+    if (step === 2) {
+      const { addressLine, state, district, pincode, linkedin, website } = data.address;
 
       let mentor = await Mentor.findOne({ userId: userObjectId });
       if (!mentor) {
@@ -64,13 +66,27 @@ exports.putMentorData = async (req, res) => {
       mentor.pincode = pincode;
       mentor.linkedin = linkedin;
       mentor.website = website;
+      mentor.step=step;
 
       await mentor.save();
       return res
         .status(200)
         .json({ message: "Step 2 data saved successfully", mentor });
     }
+    if (step === 3) {
 
+      let mentor = await Mentor.findOne({ userId: userObjectId });
+      if (!mentor) {
+        return res.status(404).json({ message: "Mentor not found" });
+      }
+
+      // Update mentor with step 2 data
+      mentor.status = "success";
+      await mentor.save();
+      return res
+        .status(200)
+        .json({ message: "Step 2 data saved successfully", mentor });
+    }
     return res.status(400).json({ message: "Invalid step" });
   } catch (error) {
     console.error("Error:", error);

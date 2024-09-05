@@ -8,15 +8,15 @@ import SelfDeclaration from "../components/Registration/MentorRegistration/SelfD
 
 const MentorRegistration = () => {
     const [step, setStep] = useState(0);
+    const [network,setNetwork] = useState('');
     const navigate=useNavigate();
     // useEffect(() => {
     //     const fetchStep = async () => {
     //         const response = await getStep();
             
     //         if(response){
-    //             let a=(response[0].progress)
-    //             let s= parseInt(a);
-    //             if(s==7){
+    //             let s=(response[0].status)
+    //             if(s>2){
     //                 alert('You are already registered');
     //                 navigate('/');
     //             }
@@ -29,9 +29,9 @@ const MentorRegistration = () => {
     const renderComponent = () => {
         switch (step) {
             case 0:
-                return <Network setStep={setStep} step={step}/>
+                return <Network setStep={setStep} network={network} setNetwork={setNetwork} step={step}/>
             case 1:
-                return <About setStep={setStep} step={step}/>
+                return <About setStep={setStep} network={network} step={step}/>
             case 2:
                 return <ContactInfo setStep={setStep} step={step}/>
             case 3:

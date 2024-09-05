@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { putMentorDetails } from '../../../services/mentorRegistration';
 
 const About = ({ step, setStep ,network }) => {
   const [details, setDetails] = useState({
@@ -6,14 +7,17 @@ const About = ({ step, setStep ,network }) => {
     interest: '',
     logo: '',
     startupState: [], // Changed to array for multiple selections
-    InvestmentCategorysector: '',
-    Brief: '',
-    networks:network
+    interestedCategorySector: '',
+    brief: '',
+    network:network
   });
 
   const [logo, setLogo] = useState(null);
 
   const submit = async () => {
+    console.log(details)
+    console.log(network);
+    await putMentorDetails({network,step,details});
     setStep(prev=>prev+1);
   };
 
@@ -149,16 +153,16 @@ const About = ({ step, setStep ,network }) => {
             <div className="flex flex-col">
               <div className="mb-4">
                 <label
-                  htmlFor="InvestmentCategorysector"
+                  htmlFor="interestedCategorySector"
                   className="block font-bold mb-2 text-gray-700"
                 >
-                  Investment Category/Sector:
+                  interested Category/Sector:
                 </label>
                 <select
-                  id="InvestmentCategorysector"
+                  id="interestedCategorySector"
                   className="w-full p-3 text-sm text-gray-700 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-600"
-                  name="InvestmentCategorysector"
-                  value={details.InvestmentCategorysector}
+                  name="interestedCategorySector"
+                  value={details.interestedCategorySector}
                   onChange={handleInputChange}
                   required
                 >
@@ -171,17 +175,17 @@ const About = ({ step, setStep ,network }) => {
               </div>
               <div className="mb-4">
                 <label
-                  htmlFor="Brief"
+                  htmlFor="brief"
                   className="block font-bold mb-2 text-gray-700"
                 >
-                  Brief:
+                  brief:
                 </label>
                 <textarea
-                  id="Brief"
-                  placeholder="Brief"
+                  id="brief"
+                  placeholder="brief"
                   className="w-full p-3 text-sm text-gray-700 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-600"
-                  name="Brief"
-                  value={details.Brief}
+                  name="brief"
+                  value={details.brief}
                   onChange={handleInputChange}
                   required
                 />

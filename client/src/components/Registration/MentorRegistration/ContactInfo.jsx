@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { putMentorDetails } from "../../../services/mentorRegistration";
 
 const ContactInfo = ({ step, setStep }) => {
   const [address, setAddress] = useState({
@@ -12,6 +13,7 @@ const ContactInfo = ({ step, setStep }) => {
 
   const submit = async () => {
     console.log(address);
+    await putMentorDetails({step,address});
     setStep((prev) => prev + 1);
   };
 
