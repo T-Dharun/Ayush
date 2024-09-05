@@ -1,8 +1,8 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import './register.css'; // Assuming you have a separate CSS file
 import { putEntityDetails } from "../../services/registrationService";
 
-function FounderDetails({setStep,step}) {
+function FounderDetails({ setStep, step }) {
   const [founders, setFounders] = useState([]);
   const [newFounder, setNewFounder] = useState({
     dinDpin: "",
@@ -14,16 +14,21 @@ function FounderDetails({setStep,step}) {
     postalAddress: "",
   });
 
+  const [isFormComplete, setIsFormComplete] = useState(false);
+
+  useEffect(() => {
+    // Regular expression for DPIN/DIN validation (8-digit number)
+    const dpinPattern = /^\d{8}$/;
+
+    // Check if all fields are filled and DPIN is valid
+    const allFieldsFilled = Object.values(newFounder).every(field => field.trim() !== "");
+    const isDpinValid = dpinPattern.test(newFounder.dinDpin);
+
+    setIsFormComplete(allFieldsFilled && isDpinValid);
+  }, [newFounder]);
+
   const handleAddFounder = () => {
-    if (
-      newFounder.dinDpin &&
-      newFounder.name &&
-      newFounder.gender &&
-      newFounder.mobile &&
-      newFounder.email &&
-      newFounder.designation &&
-      newFounder.postalAddress
-    ) {
+    if (isFormComplete) {
       setFounders([...founders, newFounder]);
       setNewFounder({
         dinDpin: "",
@@ -35,7 +40,7 @@ function FounderDetails({setStep,step}) {
         postalAddress: "",
       });
     } else {
-      alert("Please fill in all fields.");
+      alert("Please fill in all fields correctly.");
     }
   };
 
@@ -54,7 +59,7 @@ function FounderDetails({setStep,step}) {
 
   const submit = () => {
     if (founders.length > 0) {
-      putEntityDetails({founders,step})
+      putEntityDetails({ founders, step });
       console.log(founders);
       setStep((prev) => prev + 1);
     } else {
@@ -67,84 +72,91 @@ function FounderDetails({setStep,step}) {
       <div className="container mx-auto p-5 flex-grow w-100">
         <h2>Founder Details</h2>
         <div className="mb-4">
-        <div className="grid grid-cols-2 gap-4 mb-4">
-          <div>
-            <label htmlFor="dinDpin">DIN/DPIN Number:</label>
-            <input
-              type="text"
-              id="dinDpin"
-              value={newFounder.dinDpin}
-              onChange={(e) => handleChange("dinDpin", e.target.value)}
-              className="w-full border border-gray-500 p-2"
-            />
+          <div className="grid grid-cols-2 gap-4 mb-4">
+            <div>
+              <label htmlFor="dinDpin">DIN/DPIN Number:</label>
+              <input
+                type="number"
+                id="dinDpin"
+                value={newFounder.dinDpin}
+                onChange={(e) => handleChange("dinDpin", e.target.value)}
+                className="w-full border border-gray-500 p-2"
+              />
+              {!/^\d{8}$/.test(newFounder.dinDpin) && newFounder.dinDpin.length > 0 && (
+                <p className="text-red-500 text-sm">DPIN must be an 8-digit number.</p>
+              )}
+            </div>
+            <div>
+              <label htmlFor="name">Name:</label>
+              <input
+                type="text"
+                id="name"
+                value={newFounder.name}
+                onChange={(e) => handleChange("name", e.target.value)}
+                className="w-full border border-gray-500 p-2"
+              />
+            </div>
+            <div>
+              <label htmlFor="gender">Gender:</label>
+              <select
+                id="gender"
+                value={newFounder.gender}
+                onChange={(e) => handleChange("gender", e.target.value)}
+                className="w-full border border-gray-500 p-2"
+              >
+                <option value="">Select Gender</option>
+                <option value="male">Male</option>
+                <option value="female">Female</option>
+                <option value="other">Other</option>
+              </select>
+            </div>
+            <div>
+              <label htmlFor="mobile">Mobile:</label>
+              <input
+                type="number"
+                id="mobile"
+                value={newFounder.mobile}
+                onChange={(e) => handleChange("mobile", e.target.value)}
+                className="w-full border border-gray-500 p-2"
+              />
+            </div>
+            <div>
+              <label htmlFor="email">Email:</label>
+              <input
+                type="email"
+                id="email"
+                value={newFounder.email}
+                onChange={(e) => handleChange("email", e.target.value)}
+                className="w-full border border-gray-500 p-2"
+              />
+            </div>
+            <div>
+              <label htmlFor="designation">Designation:</label>
+              <select
+                id="designation"
+                value={newFounder.designation}
+                onChange={(e) => handleChange("designation", e.target.value)}
+                className="w-full border border-gray-500 p-2"
+              >
+                <option value="">Select Designation</option>
+                <option value="Founder">Founder</option>
+                <option value="Director">Director</option>
+              </select>
+            </div>
+            <div>
+              <label htmlFor="postalAddress">Postal Address:</label>
+              <textarea
+                id="postalAddress"
+                value={newFounder.postalAddress}
+                onChange={(e) => handleChange("postalAddress", e.target.value)}
+                className="w-full border border-gray-500 p-2"
+              />
+            </div>
           </div>
-          <div>
-            <label htmlFor="name">Name:</label>
-            <input
-              type="text"
-              id="name"
-              value={newFounder.name}
-              onChange={(e) => handleChange("name", e.target.value)}
-              className="w-full border border-gray-500 p-2"
-            />
-          </div>
-          <div>
-            <label htmlFor="gender">Gender:</label>
-            <select
-              id="gender"
-              value={newFounder.gender}
-              onChange={(e) => handleChange("gender", e.target.value)}
-              className="w-full border border-gray-500 p-2"
-            >
-              <option value="">Select Gender</option>
-              <option value="male">Male</option>
-              <option value="female">Female</option>
-              <option value="other">Other</option>
-            </select>
-          </div>
-          <div>
-            <label htmlFor="mobile">Mobile:</label>
-            <input
-              type="text"
-              id="mobile"
-              value={newFounder.mobile}
-              onChange={(e) => handleChange("mobile", e.target.value)}
-              className="w-full border border-gray-500 p-2"
-            />
-          </div>
-          <div>
-            <label htmlFor="email">Email:</label>
-            <input
-              type="email"
-              id="email"
-              value={newFounder.email}
-              onChange={(e) => handleChange("email", e.target.value)}
-              className="w-full border border-gray-500 p-2"
-            />
-          </div>
-          <div>
-            <label htmlFor="designation">Designation:</label>
-            <input
-              type="text"
-              id="designation"
-              value={newFounder.designation}
-              onChange={(e) => handleChange("designation", e.target.value)}
-              className="w-full border border-gray-500 p-2"
-            />
-          </div>
-          <div>
-            <label htmlFor="postalAddress">Postal Address:</label>
-            <textarea
-              id="postalAddress"
-              value={newFounder.postalAddress}
-              onChange={(e) => handleChange("postalAddress", e.target.value)}
-              className="w-full border border-gray-500 p-2"
-            />
-          </div>
-        </div>
           <button
             onClick={handleAddFounder}
             className="p-2 bg-blue-500 text-white rounded"
+            disabled={!isFormComplete}
           >
             Add Founder
           </button>
@@ -168,17 +180,13 @@ function FounderDetails({setStep,step}) {
               {founders.map((founder, index) => (
                 <tr key={index}>
                   <td className="border border-gray-500 p-2">{index + 1}</td>
-                  <td className="border border-gray-500 p-2 table-cell">
-                    {founder.dinDpin}
-                  </td>
-                  <td className="border border-gray-500 p-2 table-cell">{founder.name}</td>
-                  <td className="border border-gray-500 p-2 table-cell">{founder.gender}</td>
-                  <td className="border border-gray-500 p-2 table-cell">{founder.mobile}</td>
-                  <td className="border border-gray-500 p-2 table-cell">{founder.email}</td>
-                  <td className="border border-gray-500 p-2 table-cell">{founder.designation}</td>
-                  <td className="border border-gray-500 p-2 table-cell">
-                    {founder.postalAddress}
-                  </td>
+                  <td className="border border-gray-500 p-2">{founder.dinDpin}</td>
+                  <td className="border border-gray-500 p-2">{founder.name}</td>
+                  <td className="border border-gray-500 p-2">{founder.gender}</td>
+                  <td className="border border-gray-500 p-2">{founder.mobile}</td>
+                  <td className="border border-gray-500 p-2">{founder.email}</td>
+                  <td className="border border-gray-500 p-2">{founder.designation}</td>
+                  <td className="border border-gray-500 p-2">{founder.postalAddress}</td>
                   <td className="border border-gray-500 p-2">
                     <button
                       onClick={() => handleEdit(index)}
@@ -202,8 +210,9 @@ function FounderDetails({setStep,step}) {
       <div className="flex justify-end mt-8 mr-8 mb-8">
         <button
           type="button"
-          className="bg-green-600 text-white p-3 rounded-md cursor-pointer hover:opacity-90"
+          className={`bg-green-600 text-white p-3 rounded-md cursor-pointer hover:opacity-90 ${founders.length > 0 ? '' : 'opacity-50 cursor-not-allowed'}`}
           onClick={submit}
+          disabled={founders.length === 0}
         >
           CONTINUE
         </button>

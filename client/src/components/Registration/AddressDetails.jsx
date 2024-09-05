@@ -1,7 +1,7 @@
-import { useState } from "react";
-import { ProgressBar } from "../Home";
+import { useState, useEffect } from "react";
 import { putEntityDetails } from "../../services/registrationService";
-const AddressDetails = ({step,setStep}) => {
+
+const AddressDetails = ({ step, setStep }) => {
   const [officeAddress, setOfficeAddress] = useState({
     addressLine: "",
     state: "",
@@ -15,12 +15,23 @@ const AddressDetails = ({step,setStep}) => {
     district: "",
     pincode: "",
   });
-  const submit=async()=>{
-    console.log(officeAddress)
+
+  const [isFormComplete, setIsFormComplete] = useState(false);
+
+  useEffect(() => {
+    // Check if all fields are filled in both addresses
+    const isOfficeAddressComplete = Object.values(officeAddress).every(field => field.trim() !== "");
+    const isManufacturingAddressComplete = Object.values(manufacturingAddress).every(field => field.trim() !== "");
+    setIsFormComplete(isOfficeAddressComplete && isManufacturingAddressComplete);
+  }, [officeAddress, manufacturingAddress]);
+
+  const submit = async () => {
+    console.log(officeAddress);
     console.log(manufacturingAddress);
-    await putEntityDetails({officeAddress,manufacturingAddress,step});
-    setStep(prev=>prev+1);
-  }
+    await putEntityDetails({ officeAddress, manufacturingAddress, step });
+    setStep(prev => prev + 1);
+  };
+
   const states = ["Tamil Nadu"];
 
   const districts = {
@@ -76,7 +87,7 @@ const AddressDetails = ({step,setStep}) => {
 
   return (
     <section className="h-screen bg-white overflow-y-auto flex flex-col w-100 pt-5">
-      <div className="container mx-auto p-2 flex-grow  w-75">
+      <div className="container mx-auto p-2 flex-grow w-75">
         <h1 className="text-xl font-bold mb-2">Address Details</h1>
         <p className="text-sm mb-4">
           Please provide the information below to validate the address details of your startup company.
@@ -101,8 +112,9 @@ const AddressDetails = ({step,setStep}) => {
         </div>
       </div>
       <button
-        className="bg-blue-400 text-white py-2 px-4 rounded-md hover:bg-blue-500 m-5"
+        className={`bg-blue-400 text-white py-2 px-4 rounded-md hover:bg-blue-500 m-5 ${isFormComplete ? '' : 'opacity-50 cursor-not-allowed'}`}
         onClick={submit}
+        disabled={!isFormComplete}
       >
         Continue
       </button>

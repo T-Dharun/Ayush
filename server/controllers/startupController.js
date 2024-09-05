@@ -194,7 +194,7 @@ exports.createStartup = async (req, res) => {
   if (!step || !data) {
     return res.status(400).json({ message: "Step and data are required" });
   }
-
+  console.log(data);
   try {
     const userId = mongoose.Types.ObjectId(req.user.id);
     let startup = await Startup.findOne({ userId });
@@ -225,7 +225,18 @@ exports.createStartup = async (req, res) => {
     // Update startup fields based on the step
     switch (step) {
       case 1:
-        // Fields for step 1 (already handled in creation)
+        //console.log(data);
+        startup.set({
+          // Initialize fields for step 1
+          name: data.name,
+          logo: data.logo,
+          typeOfEntity: data.typeOfEntity,
+          sector: data.sector,
+          CINNumber: data.CINNumber,
+          panCard: data.panCard,
+          capitalInvestment: data.capitalInvestment,
+          progress: `${step}`,
+        });
         break;
       case 2:
         //console.log(req.body);

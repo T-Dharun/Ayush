@@ -247,6 +247,22 @@ const CompanyDetails = () => {
                                             <th>GMP Certificate</th>
                                             <td><a href={companyData.documents.gmpCertificate} target="_blank" rel="noopener noreferrer">View Here</a></td>
                                         </tr>
+                                        <tr>
+                                            <th>COPP Certificate</th>
+                                            <td><a href={companyData.documents.coppCertificate} target="_blank" rel="noopener noreferrer">View Here</a></td>
+                                        </tr>
+                                        <tr>
+                                            <th>AYUSH License Certificate</th>
+                                            <td><a href={companyData.documents.ayushLicenseCertificate} target="_blank" rel="noopener noreferrer">View Here</a></td>
+                                        </tr>
+                                        <tr>
+                                            <th>Manufacturing License</th>
+                                            <td><a href={companyData.documents.manufacturingLicense} target="_blank" rel="noopener noreferrer">View Here</a></td>
+                                        </tr>
+                                        <tr>
+                                            <th>Company Incorporation Number</th>
+                                            <td><a href={companyData.documents.companyIncorporationCertificate} target="_blank" rel="noopener noreferrer">View Here</a></td>
+                                        </tr>
                                     </tbody>
                                 </table>
                             </Card.Body>

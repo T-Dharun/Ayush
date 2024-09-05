@@ -1,5 +1,6 @@
-import React, { useState,useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import axiosHeader from '../../axiosHeader';
+
 const CertificateDetails = ({ setStep }) => {
   const [details, setDetails] = useState({
     gmpCertificate: { file: null, number: '', uploaded: false },
@@ -13,13 +14,17 @@ const CertificateDetails = ({ setStep }) => {
       ifscCode: '',
     },
   });
-  const[error,setError]=useState('');
+
+  const [error, setError] = useState('');
+  const [isFormComplete, setIsFormComplete] = useState(false);
+
   const handleCertificateChange = (e, field) => {
     setDetails((prevDetails) => ({
       ...prevDetails,
-      [field]: { ...prevDetails[field], file: e.target.files[0] ,uploaded: true},
+      [field]: { ...prevDetails[field], file: e.target.files[0], uploaded: true },
     }));
   };
+
   const handleCertificateNumberChange = (e, field) => {
     setDetails((prevDetails) => ({
       ...prevDetails,
@@ -33,96 +38,129 @@ const CertificateDetails = ({ setStep }) => {
       bankDetails: { ...prevDetails.bankDetails, [field]: e.target.value },
     }));
   };
-  
+
+  useEffect(() => {
+    const areAllFieldsFilled = Object.keys(details).every((key) => {
+      if (key === 'bankDetails') {
+        return Object.values(details[key]).every((value) => value.trim() !== '');
+      }
+      return details[key].file && details[key].number.trim() !== '';
+    });
+
+    const isCertificateNumbersValid = [
+      details.gmpCertificate.number,
+      details.coppCertificate.number,
+      details.ayushLicenseCertificate.number,
+      details.manufacturingLicense.number,
+      details.companyIncorporationCertificate.number
+    ].every(number => validateCertificateNumber(number)); // Validate using custom function
+
+    setIsFormComplete(areAllFieldsFilled && isCertificateNumbersValid);
+  }, [details]);
+
+  const validateCertificateNumber = (number) => {
+    const patterns = {
+      gmpCertificate: /^GMP-\w{5}-\d{4}$/, // Example pattern for GMP Certificate
+      coppCertificate: /^COPP-\d{4}-\w{5}$/, // Example pattern for COPP Certificate
+      ayushLicenseCertificate: /^AYUSH-\w{5}-\d{4}$/, // Example pattern for AYUSH License Certificate
+      manufacturingLicense: /^MFG-\w{4}-\d{4}$/, // Example pattern for Manufacturing License
+      companyIncorporationCertificate: /^INC-\d{4}-\w{5}$/ // Example pattern for Company Incorporation Certificate
+    };
+    
+    const type = Object.keys(details).find(key => details[key].number === number);
+    return type ? patterns[type]?.test(number) : false;
+  };
+
   const submit = async () => {
-    const formData = new FormData();
-    // Append certificate files and numbers
-    for (const [key, { file, number }] of Object.entries(details)) {
-      console.log(key,file);
-      if (key !== 'bankDetails') {
-        if (file) {
-          formData.append(`${key}`, file);
-          console.log(key); 
+    if (isFormComplete) {
+      const formData = new FormData();
+      // Append certificate files and numbers
+      for (const [key, { file, number }] of Object.entries(details)) {
+        if (key !== 'bankDetails') {
+          if (file) {
+            formData.append(`${key}`, file);
+          }
         }
       }
-    }
-    const certificatesNumbers = {
-      gmpCertificateNumber:details.gmpCertificate.number,
-      coppCertificateNumber:details.coppCertificate.number,
-      ayushLicenseCertificateNumber:details.ayushLicenseCertificate.number,
-      manufacturingLicenseNumber:details.manufacturingLicense.number,
-      companyIncorporationCertificateNumber:details.companyIncorporationCertificate.number,
-    }
-    
-    for (const [key, value] of Object.entries(certificatesNumbers)) {
-      formData.append(key, value);
-    }
-    try {
-      
-      const verifyResponse = await axiosHeader.post(
-        'documents/verifyDocument',
-        formData,
-        {
-          headers: {
-            'Content-Type': 'multipart/form-data',
-          },
-        }
-      )
-      if (verifyResponse.status === 200) {
-        setStep(prev => prev + 1);
-      const uploadResponse = await axiosHeader.post(
-        'documents/upload', // Use the relative path here
-        formData,
-        {
-          headers: {
-            'Content-Type': 'multipart/form-data',
-          },
-        }
-      );
-      if (uploadResponse.status === 200) {
-         //After successful upload, collect data and send to createStartup endpoint
-        const data = {
-          bankDetails: {
-            bankName: details.bankDetails.name,
-            accountNumber: details.bankDetails.accountNo,
-            ifscCode: details.bankDetails.ifscCode,
-          },
-          documents: {
-            gmpCertificateNumber: details.gmpCertificate.number,
-            coppCertificateNumber: details.coppCertificate.number,
-            ayushLicenseCertificateNumber: details.ayushLicenseCertificate.number,
-            manufacturingLicenseNumber: details.manufacturingLicense.number,
-            companyIncorporationCertificateNumber: details.companyIncorporationCertificate.number,
-          },
-        };
-  
-        const createStartupResponse = await axiosHeader.post(
-          'startups/createStartup',
-          { step: 6, data },
+      const certificatesNumbers = {
+        gmpCertificateNumber: details.gmpCertificate.number,
+        coppCertificateNumber: details.coppCertificate.number,
+        ayushLicenseCertificateNumber: details.ayushLicenseCertificate.number,
+        manufacturingLicenseNumber: details.manufacturingLicense.number,
+        companyIncorporationCertificateNumber: details.companyIncorporationCertificate.number,
+      };
+
+      for (const [key, value] of Object.entries(certificatesNumbers)) {
+        formData.append(key, value);
+      }
+
+      try {
+        const verifyResponse = await axiosHeader.post(
+          'documents/verifyDocument',
+          formData,
           {
             headers: {
-              'Content-Type': 'application/json',
+              'Content-Type': 'multipart/form-data',
             },
           }
         );
-  
-        if (createStartupResponse.status === 200) {
-          
+        if (verifyResponse.status === 200) {
+          setStep(prev => prev + 1);
+          const uploadResponse = await axiosHeader.post(
+            'documents/upload',
+            formData,
+            {
+              headers: {
+                'Content-Type': 'multipart/form-data',
+              },
+            }
+          );
+          if (uploadResponse.status === 200) {
+            const data = {
+              bankDetails: {
+                bankName: details.bankDetails.name,
+                accountNumber: details.bankDetails.accountNo,
+                ifscCode: details.bankDetails.ifscCode,
+              },
+              documents: {
+                gmpCertificateNumber: details.gmpCertificate.number,
+                coppCertificateNumber: details.coppCertificate.number,
+                ayushLicenseCertificateNumber: details.ayushLicenseCertificate.number,
+                manufacturingLicenseNumber: details.manufacturingLicense.number,
+                companyIncorporationCertificateNumber: details.companyIncorporationCertificate.number,
+              },
+            };
+
+            const createStartupResponse = await axiosHeader.post(
+              'startups/createStartup',
+              { step: 6, data },
+              {
+                headers: {
+                  'Content-Type': 'application/json',
+                },
+              }
+            );
+
+            if (createStartupResponse.status === 200) {
+              // Handle success case if needed
+            } else {
+              setError(createStartupResponse.data.message);
+              console.error('Failed to create startup:', createStartupResponse.data);
+            }
+          } else {
+            setError(uploadResponse.data.message);
+            console.error('Failed to upload certificates:', uploadResponse.data);
+          }
         } else {
-          setError(createStartupResponse.data.message);
-          console.error('Failed to create startup:', createStartupResponse.data);
+          setError("Failed to verify certificates or check your documents legitimacy. Please try again.");
+          console.error('Failed to verify certificates:', verifyResponse.data);
         }
-      } else {
-        setError(uploadResponse.data.message);
-        console.error('Failed to upload certificates:', uploadResponse.data);
+      } catch (err) {
+        setError(err.response.data);
+        console.error('Error uploading certificates or creating startup:', err);
       }
     } else {
-      setError("Failed to verify certificates or check your documents legitimatety. Please try again.");
-      console.error('iledFa to verify certificates:', verifyResponse.data);
-    }
-    } catch (err) {
-      setError(err.response.data);
-      console.error('Error uploading certificates or creating startup:', err);
+      setError('Please complete all fields and ensure certificate numbers are in the correct format.');
     }
   };
 
@@ -206,13 +244,14 @@ const CertificateDetails = ({ setStep }) => {
         </section>
       </div>
 
-      {error && <p className="text-red-500">{error}</p>}
       <button
-        className="bg-blue-400 text-white py-2 px-4 rounded-md hover:bg-blue-500"
         onClick={submit}
+        className={`py-2 px-4 rounded-md text-white ${isFormComplete ? 'bg-blue-500' : 'bg-gray-400 cursor-not-allowed'}`}
+        disabled={!isFormComplete}
       >
         Continue
       </button>
+      {error && <p className="text-red-500">{error}</p>}
     </div>
   );
 };

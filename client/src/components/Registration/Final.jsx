@@ -2,16 +2,27 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { putEntityDetails } from '../../services/registrationService';
 
-const Final = ({step}) => {
+const Final = ({ step }) => {
   const [termsAndConditions, setTermsAndConditions] = React.useState(false);
   const [signature, setSignature] = React.useState('');
-  const navigate=useNavigate();
-  const submit=async()=>{
-    await putEntityDetails({application:'submit',step});
-    console.log(signature);
+  const [isFormComplete, setIsFormComplete] = React.useState(false);
+  const navigate = useNavigate();
 
-    navigate('/')
-  }
+  React.useEffect(() => {
+    // Check if all required fields are filled
+    setIsFormComplete(termsAndConditions && signature.trim() !== '');
+  }, [termsAndConditions, signature]);
+
+  const submit = async () => {
+    if (isFormComplete) {
+      await putEntityDetails({ application: 'submit', step });
+      console.log(signature);
+      navigate('/');
+    } else {
+      alert('Please complete all fields before submitting.');
+    }
+  };
+
   const handleTermsAndConditionsChange = (e) => {
     setTermsAndConditions(e.target.checked);
   };
@@ -25,9 +36,9 @@ const Final = ({step}) => {
       <h2 className="text-2xl font-bold mb-4">Terms and Conditions</h2>
       <div className="bg-white p-4 rounded-md shadow-md">
         <p className="text-gray-600 mb-4">
-        Please review the 
-        <a href='https://www.ayush.gov.in/'className='text-primary hover:text-black' target='_blank'> Terms and Conditions </a>
-         for AYUSH startup registration before proceeding. By continuing, you agree to comply with the guidelines set forth by the Ministry of AYUSH
+          Please review the 
+          <a href='https://www.ayush.gov.in/' className='text-primary hover:text-black' target='_blank' rel='noopener noreferrer'> Terms and Conditions </a>
+          for AYUSH startup registration before proceeding. By continuing, you agree to comply with the guidelines set forth by the Ministry of AYUSH.
         </p>
         <div className="flex items-center mb-4">
           <input
@@ -57,8 +68,9 @@ const Final = ({step}) => {
         />
       </div>
       <button
-        className="bg-blue-400 text-white py-2 px-4 rounded-md hover:bg-blue-500 w-100 mt-3"
+        className={`bg-blue-400 text-white py-2 px-4 rounded-md hover:bg-blue-500 w-100 mt-3 ${isFormComplete ? '' : 'opacity-50 cursor-not-allowed'}`}
         onClick={submit}
+        disabled={!isFormComplete}
       >
         Submit
       </button>

@@ -1,24 +1,32 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { putEntityDetails } from '../../services/registrationService';
 
-const AuthorizedDetails = ({ setStep,step }) => {
+const AuthorizedDetails = ({ setStep, step }) => {
   const [formData, setFormData] = useState({
     name: '',
     designation: '',
     mobile: '',
     gender: '',
     email: '',
-    postalAddress:''
+    postalAddress: ''
   });
 
-  const handleSubmit = async() => {
+  const [isFormComplete, setIsFormComplete] = useState(false);
+
+  useEffect(() => {
+    // Check if all fields are filled
+    const allFieldsFilled = Object.values(formData).every(field => field.trim() !== "");
+    setIsFormComplete(allFieldsFilled);
+  }, [formData]);
+
+  const handleSubmit = async () => {
     console.log(formData);
-    await putEntityDetails({...formData,step});
-    setStep((prev) => prev + 1);
+    await putEntityDetails({ ...formData, step });
+    setStep(prev => prev + 1);
   };
 
   const handleChange = (e) => {
-    setFormData((prevFormData) => ({
+    setFormData(prevFormData => ({
       ...prevFormData,
       [e.target.name]: e.target.value,
     }));
@@ -44,15 +52,17 @@ const AuthorizedDetails = ({ setStep,step }) => {
           </div>
           <div className="flex flex-col gap-4">
             <label htmlFor="authorizedDesignation" className="font-bold">Designation:</label>
-            <input
+            <select
               id="authorizedDesignation"
-              type="text"
               name="designation"
               value={formData.designation}
               onChange={handleChange}
               className="p-2 border rounded-md focus:outline-none"
-              placeholder="Enter your designation"
-            />
+            >
+              <option value="">Select Designation</option>
+              <option value="Founder">Founder</option>
+              <option value="Director">Director</option>
+            </select>
           </div>
           <div className="flex flex-col gap-4">
             <label htmlFor="authorizedMobile" className="font-bold">Mobile No.:</label>
@@ -93,12 +103,12 @@ const AuthorizedDetails = ({ setStep,step }) => {
             />
           </div>
           <div className="flex flex-col gap-4">
-            <label htmlFor="authorizedEmail" className="font-bold">Address:</label>
+            <label htmlFor="postalAddress" className="font-bold">Address:</label>
             <input
               id="postalAddress"
               type="text"
               name="postalAddress"
-              value={formData.email}
+              value={formData.postalAddress}
               onChange={handleChange}
               className="p-2 border rounded-md focus:outline-none"
               placeholder="Enter your Address"
@@ -106,8 +116,9 @@ const AuthorizedDetails = ({ setStep,step }) => {
           </div>
         </div>
         <button
-          className="bg-blue-400 text-white py-2 px-4 rounded-md hover:bg-blue-500"
+          className={`bg-blue-400 text-white py-2 px-4 rounded-md hover:bg-blue-500 ${isFormComplete ? '' : 'opacity-50 cursor-not-allowed'}`}
           onClick={handleSubmit}
+          disabled={!isFormComplete}
         >
           Continue
         </button>
