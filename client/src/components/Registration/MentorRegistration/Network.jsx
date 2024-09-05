@@ -7,8 +7,8 @@ const Network = ({setStep,step,setNetwork,network}) => {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-
     setStep(prev=>prev+1)
+    
 //    alert(`You are a member of: ${network}`);
   };
 
