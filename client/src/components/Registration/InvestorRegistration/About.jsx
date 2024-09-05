@@ -1,21 +1,23 @@
 import React, { useState } from 'react';
+import { putInvestorDetails } from '../../../services/investorRegistration';
 
-const About = ({ step, setStep }) => {
+const About = ({ step, setStep ,network }) => {
   const [details, setDetails] = useState({
     name: '',
     interest: '',
     logo: '',
     startupState: [], // Changed to array for multiple selections
-    Budget: '',
-    InvestmentCategorysector: 'AYUSH',
+    budget: '',
+    investmentCategorysector: 'AYUSH',
     panCard: '',
-    Brief: '',
+    brief: '',
   });
 
   const [logo, setLogo] = useState(null);
 
-  const submit = () => {
+  const submit = async () => {
     console.log(details);
+    await putInvestorDetails({details,step,network});
     setStep(prev=>prev+1);
   };
 
@@ -169,34 +171,34 @@ const About = ({ step, setStep }) => {
             <div className="flex flex-col">
               <div className="mb-4">
                 <label
-                  htmlFor="Budget"
+                  htmlFor="budget"
                   className="block font-bold mb-2 text-gray-700"
                 >
-                  Budget:
+                  budget:
                 </label>
                 <input
-                  id="Budget"
+                  id="budget"
                   type="number"
-                  placeholder="Budget"
+                  placeholder="budget"
                   className="w-full p-3 text-sm text-gray-700 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-600"
-                  name="Budget"
-                  value={details.Budget}
+                  name="budget"
+                  value={details.budget}
                   onChange={handleInputChange}
                   required
                 />
               </div>
               <div className="mb-4">
                 <label
-                  htmlFor="InvestmentCategorysector"
+                  htmlFor="investmentCategorysector"
                   className="block font-bold mb-2 text-gray-700"
                 >
                   Investment Category/Sector:
                 </label>
                 <select
-                  id="InvestmentCategorysector"
+                  id="investmentCategorysector"
                   className="w-full p-3 text-sm text-gray-700 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-600"
-                  name="InvestmentCategorysector"
-                  value={details.InvestmentCategorysector}
+                  name="investmentCategorysector"
+                  value={details.investmentCategorysector}
                   onChange={handleInputChange}
                   required
                 >
@@ -209,17 +211,17 @@ const About = ({ step, setStep }) => {
               </div>
               <div className="mb-4">
                 <label
-                  htmlFor="Brief"
+                  htmlFor="brief"
                   className="block font-bold mb-2 text-gray-700"
                 >
-                  Brief:
+                  brief:
                 </label>
                 <textarea
-                  id="Brief"
-                  placeholder="Brief"
+                  id="brief"
+                  placeholder="brief"
                   className="w-full p-3 text-sm text-gray-700 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-600"
-                  name="Brief"
-                  value={details.Brief}
+                  name="brief"
+                  value={details.brief}
                   onChange={handleInputChange}
                   required
                 />

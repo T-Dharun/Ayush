@@ -3,7 +3,7 @@ const mongoose = require("mongoose");
 
 exports.putInvestorData = async (req, res) => {
   const { step, data } = req.body;
-
+  console.log(req.body);
   if (!step || !data) {
     return res.status(400).json({ message: "Step and data are required" });
   }
@@ -21,9 +21,9 @@ exports.putInvestorData = async (req, res) => {
   const userObjectId = mongoose.Types.ObjectId(userId);
 
   try {
-    if (step === "1") {
+
+    if (step === 1) {
       const {
-        network,
         name,
         interest,
         startupState,
@@ -31,8 +31,8 @@ exports.putInvestorData = async (req, res) => {
         investmentCategorySector,
         panCard,
         brief,
-      } = data;
-
+      } = data.details;
+      const network=data.network;
       let investor = await Investor.findOne({ userId: userObjectId });
       if (!investor) {
         investor = new Investor({ userId: userObjectId });
@@ -53,8 +53,8 @@ exports.putInvestorData = async (req, res) => {
         .json({ message: "Step 1 data saved successfully", investor });
     }
 
-    if (step === "2") {
-      const { addressLine, state, district, pincode, linkedin, website } = data;
+    if (step === 2) {
+      const { addressLine, state, district, pincode, linkedin, website } = data.address;
 
       let investor = await Investor.findOne({ userId: userObjectId });
       if (!investor) {
@@ -74,7 +74,19 @@ exports.putInvestorData = async (req, res) => {
         .status(200)
         .json({ message: "Step 2 data saved successfully", investor });
     }
+    if (step === 3) {
 
+      let investor = await Investor.findOne({ userId: userObjectId });
+      if (!investor) {
+        return res.status(404).json({ message: "Investor not found" });
+      }
+      investor.status = "success";
+
+      await investor.save();
+      return res
+        .status(200)
+        .json({ message: "Step 3 data saved successfully", investor });
+    }
     return res.status(400).json({ message: "Invalid step" });
   } catch (error) {
     console.error("Error:", error);

@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { putInvestorDetails } from "../../../services/investorRegistration";
 
 const ContactInfo = ({ step, setStep }) => {
   const [address, setAddress] = useState({
@@ -11,7 +12,7 @@ const ContactInfo = ({ step, setStep }) => {
   });
 
   const submit = async () => {
-    console.log(address);
+    await putInvestorDetails({address,step});
     setStep((prev) => prev + 1);
   };
 
