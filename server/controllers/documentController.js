@@ -1,5 +1,7 @@
 const { S3Client, PutObjectCommand } = require("@aws-sdk/client-s3");
 const Startup = require("../models/Startup");
+const Mentor = require('../models/Mentor');
+const Investor = require('../models/Investor');
 const mongoose = require("mongoose");
 const fs = require("fs");
 const pdfParse = require("pdf-parse");

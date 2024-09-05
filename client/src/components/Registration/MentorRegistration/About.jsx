@@ -1,4 +1,6 @@
 import React, { useState } from 'react';
+import { putMentorDetails } from '../../../services/mentorRegistration';
+import axiosHeader from '../../../axiosHeader';
 
 const About = ({ step, setStep ,network }) => {
   const [details, setDetails] = useState({
@@ -6,26 +8,26 @@ const About = ({ step, setStep ,network }) => {
     interest: '',
     logo: '',
     startupState: [], // Changed to array for multiple selections
-    InvestmentCategorysector: '',
-    Brief: '',
-    networks:network
+    interestedCategorySector: '',
+    brief: '',
+    network:network
   });
 
   const [logo, setLogo] = useState(null);
 
   const submit = async () => {
+    console.log(details)
+    console.log(network);
+    await putMentorDetails({network,step,details});
     setStep(prev=>prev+1);
+    await putLogo();
+    
   };
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setDetails({ ...details, [name]: value });
   };
-
-  const handleLogoChange = (e) => {
-    setLogo(e.target.files[0]);
-  };
-
   const handleStageClick = (stage) => {
     setDetails((prevDetails) => {
       const newStages = prevDetails.startupState.includes(stage)
@@ -34,6 +36,34 @@ const About = ({ step, setStep ,network }) => {
       return { ...prevDetails, startupState: newStages };
     });
   };
+
+  const handleLogoChange = (e) => {
+    setLogo(e.target.files[0]);
+    console.log(logo);
+  };
+  const putLogo = async () => {
+    const formData = new FormData();
+    if (logo) {
+      formData.append('logo', logo);
+    }
+    // Create a new FormData object to include userType
+    const userType = 'mentor'; // Set this dynamically if needed
+    formData.append('userType', userType);
+  
+    try {
+      const response = await axiosHeader.post('/documents/uploadimage', formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      });
+  
+      console.log('Image uploaded successfully', response.data);
+    } catch (error) {
+      console.error('Error uploading image', error);
+    }
+  };
+
+
 
   return (
     <section className="h-screen bg-white overflow-hidden flex justify-center items-center w-100">
@@ -149,16 +179,16 @@ const About = ({ step, setStep ,network }) => {
             <div className="flex flex-col">
               <div className="mb-4">
                 <label
-                  htmlFor="InvestmentCategorysector"
+                  htmlFor="interestedCategorySector"
                   className="block font-bold mb-2 text-gray-700"
                 >
-                  Investment Category/Sector:
+                  interested Category/Sector:
                 </label>
                 <select
-                  id="InvestmentCategorysector"
+                  id="interestedCategorySector"
                   className="w-full p-3 text-sm text-gray-700 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-600"
-                  name="InvestmentCategorysector"
-                  value={details.InvestmentCategorysector}
+                  name="interestedCategorySector"
+                  value={details.interestedCategorySector}
                   onChange={handleInputChange}
                   required
                 >
@@ -171,17 +201,17 @@ const About = ({ step, setStep ,network }) => {
               </div>
               <div className="mb-4">
                 <label
-                  htmlFor="Brief"
+                  htmlFor="brief"
                   className="block font-bold mb-2 text-gray-700"
                 >
-                  Brief:
+                  brief:
                 </label>
                 <textarea
-                  id="Brief"
-                  placeholder="Brief"
+                  id="brief"
+                  placeholder="brief"
                   className="w-full p-3 text-sm text-gray-700 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-600"
-                  name="Brief"
-                  value={details.Brief}
+                  name="brief"
+                  value={details.brief}
                   onChange={handleInputChange}
                   required
                 />

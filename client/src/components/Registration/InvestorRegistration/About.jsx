@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { putInvestorDetails } from '../../../services/investorRegistration';
+import axiosHeader from '../../../axiosHeader';
 
 const About = ({ step, setStep ,network }) => {
   const [details, setDetails] = useState({
@@ -12,13 +13,14 @@ const About = ({ step, setStep ,network }) => {
     panCard: '',
     brief: '',
   });
-
   const [logo, setLogo] = useState(null);
 
   const submit = async () => {
     console.log(details);
     await putInvestorDetails({details,step,network});
     setStep(prev=>prev+1);
+    await putLogo(logo);
+
   };
 
   const handleInputChange = (e) => {
@@ -38,6 +40,28 @@ const About = ({ step, setStep ,network }) => {
       return { ...prevDetails, startupState: newStages };
     });
   };
+  const putLogo = async () => {
+    const formData = new FormData();
+    if (logo) {
+      formData.append('logo', logo);
+    }
+    // Create a new FormData object to include userType
+    const userType = 'investor'; // Set this dynamically if needed
+    formData.append('userType', userType);
+  
+    try {
+      const response = await axiosHeader.post('/documents/uploadimage', formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      });
+  
+      console.log('Image uploaded successfully', response.data);
+    } catch (error) {
+      console.error('Error uploading image', error);
+    }
+  };
+
 
   return (
     <section className="h-screen bg-white overflow-hidden flex justify-center items-center w-100">

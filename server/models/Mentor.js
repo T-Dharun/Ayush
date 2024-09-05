@@ -14,12 +14,12 @@ const MentorSchema = new mongoose.Schema({
     trim: true,
   },
   logo: {
-    type: [String],
-    default: [],
+    type:[String],
+    default:[]
   },
   startupState: {
-    type: String,
-    trim: true,
+    type: [String],
+    default:[]
   },
   interestedCategorySector: {
     type: String,
@@ -52,6 +52,13 @@ const MentorSchema = new mongoose.Schema({
   website: {
     type: String,
     trim: true,
+  },
+  status:{
+    type:String,
+    trim:true
+  },
+  step:{
+    type:Number
   },
   userId: {
     type: mongoose.Schema.Types.ObjectId,
