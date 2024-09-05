@@ -24,7 +24,7 @@ const Navbar = () => {
 
   useEffect(() => {
     const handleScroll = () => {
-      setIsScrolled(window.scrollY > 200);
+      setIsScrolled(window.scrollY > 100);
     };
 
     window.addEventListener('scroll', handleScroll);
@@ -58,10 +58,10 @@ const Navbar = () => {
 
   return (
     <nav
-      className={`bg-white text-black fixed top-0 left-0 w-full z-50 p-4 transition-all duration-300 
-        ${isAnalyticsPage || isScrolled ? 'rounded-none mt-0' : 'rounded-[70px] mt-[110px]'}`}
+      className={`bg-white text-black fixed top-0 left-0 w-full z-50 sticky p-4 transition-all duration-300 
+     `}
     >
-      <div className="container mx-auto flex justify-between items-center">
+      <div className="container mx-auto flex justify-between items-a-center">
         <div className="flex items-center space-x-4">
           <button className="md:hidden text-gray-800">
             <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -195,7 +195,7 @@ const Navbar = () => {
                       setIsLoggedIn(false);
                       setUserDetails(null); // Clear user details on logout
                       localStorage.removeItem('user');
-                      locatStore.removeItem('data');
+                      localStore.removeItem('data');
                     }}
                   >
                     Logout
