@@ -1,5 +1,4 @@
-import React, { useState } from 'react';
-import axios from 'axios';
+import React, { useState,useEffect } from 'react';
 import axiosHeader from '../../axiosHeader';
 const CertificateDetails = ({ setStep }) => {
   const [details, setDetails] = useState({
@@ -14,14 +13,13 @@ const CertificateDetails = ({ setStep }) => {
       ifscCode: '',
     },
   });
-
+  const[error,setError]=useState('');
   const handleCertificateChange = (e, field) => {
     setDetails((prevDetails) => ({
       ...prevDetails,
       [field]: { ...prevDetails[field], file: e.target.files[0] ,uploaded: true},
     }));
   };
-
   const handleCertificateNumberChange = (e, field) => {
     setDetails((prevDetails) => ({
       ...prevDetails,
@@ -35,7 +33,7 @@ const CertificateDetails = ({ setStep }) => {
       bankDetails: { ...prevDetails.bankDetails, [field]: e.target.value },
     }));
   };
-
+  
   const submit = async () => {
     const formData = new FormData();
     // Append certificate files and numbers
@@ -48,15 +46,30 @@ const CertificateDetails = ({ setStep }) => {
         }
       }
     }
-
-    // Append bank details
-    const { bankDetails } = details;
-    for (const [key, value] of Object.entries(bankDetails)) {
+    const certificatesNumbers = {
+      gmpCertificateNumber:details.gmpCertificate.number,
+      coppCertificateNumber:details.coppCertificate.number,
+      ayushLicenseCertificateNumber:details.ayushLicenseCertificate.number,
+      manufacturingLicenseNumber:details.manufacturingLicense.number,
+      companyIncorporationCertificateNumber:details.companyIncorporationCertificate.number,
+    }
+    
+    for (const [key, value] of Object.entries(certificatesNumbers)) {
       formData.append(key, value);
     }
-
     try {
-      setStep(prev => prev + 1);
+      
+      const verifyResponse = await axiosHeader.post(
+        'documents/verifyDocument',
+        formData,
+        {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+          },
+        }
+      )
+      if (verifyResponse.status === 200) {
+        setStep(prev => prev + 1);
       const uploadResponse = await axiosHeader.post(
         'documents/upload', // Use the relative path here
         formData,
@@ -96,12 +109,19 @@ const CertificateDetails = ({ setStep }) => {
         if (createStartupResponse.status === 200) {
           
         } else {
+          setError(createStartupResponse.data.message);
           console.error('Failed to create startup:', createStartupResponse.data);
         }
       } else {
+        setError(uploadResponse.data.message);
         console.error('Failed to upload certificates:', uploadResponse.data);
       }
+    } else {
+      setError("Failed to verify certificates or check your documents legitimatety. Please try again.");
+      console.error('iledFa to verify certificates:', verifyResponse.data);
+    }
     } catch (err) {
+      setError(err.response.data);
       console.error('Error uploading certificates or creating startup:', err);
     }
   };
@@ -186,6 +206,7 @@ const CertificateDetails = ({ setStep }) => {
         </section>
       </div>
 
+      {error && <p className="text-red-500">{error}</p>}
       <button
         className="bg-blue-400 text-white py-2 px-4 rounded-md hover:bg-blue-500"
         onClick={submit}

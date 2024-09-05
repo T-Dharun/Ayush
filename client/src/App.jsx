@@ -56,13 +56,12 @@ const App = () => {
         <Route path="/login" element={<Login/>} />
         {/*testing purposes  */}
         <Route path="/startup" element={<Startup />} /> 
-        <Route path='UserType' element={<UserType/>}/>
+        <Route path='/UserType' element={<UserType/>}/>
         <Route path='/mentor' element={<Mentor/>}/>
         <Route path='/investor' element={<Investor/>}/>
         {user && (
           <>
             <Route path="/bot" element={<Bot />} />
-            
             <Route path='/guide' element={<Guide />} />
             <Route path='/government' element={<GovernWorkspace />} />
             <Route path='/government/create' element={<AddClerk />} />

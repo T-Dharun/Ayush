@@ -48,7 +48,7 @@ const Newsletter = () => {
   };
 
   return (
-    <div className="w-full px-4 py-12 text-white bg-gray-800">
+    <div className="w-full px-4 py-12 text-white bg-gray-800 m-2">
       <div className="mx-auto grid max-w-screen-xl lg:grid-cols-5">
         <div className="my-4 lg:col-span-3">
           <h1 className="py-2 text-xl font-bold sm:text-2xl md:text-3xl">

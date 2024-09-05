@@ -5,10 +5,10 @@ import axiosHeader from '../../axiosHeader';
 const EntityDetails = ({ step,setStep }) => {
   const [details, setDetails] = useState({
     name: '',
-    typeOfEntity: '',
+    typeOfEntity: 'private',
     CINNumber: '',
     capitalInvestment: '',
-    sector: '',
+    sector: 'Ayurvedha',
     panCard: ''
   });
   const [logo, setLogo] = useState(null);

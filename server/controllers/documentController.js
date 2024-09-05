@@ -11,7 +11,150 @@ const s3Client = new S3Client({
     secretAccessKey: process.env.AWS_SECRET_KEY,
   },
 });
+const verifyDocumentAuthenticity = async (fileBuffer, expectedData) => {
+  try {
+    const pdfData = await pdfParse(fileBuffer);
+    const extractedText = pdfData.text.toLowerCase();
 
+    // Check if expectedData is valid before accessing its fields
+    if (
+      !expectedData ||
+      !expectedData.certificateNumber ||
+      !expectedData.holderName
+    ) {
+      console.error("Invalid expectedData:", expectedData);
+      return false;
+    }
+
+    const { certificateNumber, holderName } = expectedData;
+
+    // Iterate over the expectedData fields to check for matches in the document
+    for (const [field, expectedValue] of Object.entries(expectedData)) {
+      if (!expectedValue) continue; // Skip if expectedValue is undefined or null
+      const normalizedExpectedValue = expectedValue.toString().toLowerCase();
+
+      // Check if the extracted text includes the expected value
+      let isMatch = extractedText.includes(normalizedExpectedValue);
+
+      if (!isMatch) {
+        // If no direct match, check for similarity in the document's lines
+        const lines = extractedText
+          .split("\n")
+          .map((line) => line.trim())
+          .filter((line) => line.length > 0);
+
+        const { bestMatch } = stringSimilarity.findBestMatch(
+          normalizedExpectedValue,
+          lines.map((line) => line.toLowerCase())
+        );
+
+        if (bestMatch.rating >= 0.8) {
+          // If similarity is high enough, consider it a match
+          isMatch = true;
+        }
+      }
+
+      if (!isMatch) {
+        console.log(
+          `Mismatch found for field "${field}": Expected "${expectedValue}" not found in document.`
+        );
+        return false;
+      }
+    }
+
+    return true;
+  } catch (error) {
+    console.error("Error during document verification:", error);
+    return false;
+  }
+};
+
+const getDocumentsData = async (certificateNumber, certificateType) => {
+  if (!certificateNumber || !certificateType) {
+    return { error: "Missing required fields" };
+  }
+  try {
+    // Determine which collection to query based on certificateType
+    let collectionName;
+    switch (certificateType) {
+      case "ayushLicenseCertificate":
+        collectionName = "AYUSH"; // Replace with your collection name
+        break;
+      case "manufacturingLicense":
+        collectionName = "ManufacturingLicense"; // Replace with your collection name
+        break;
+      case "companyIncorporationCertificate":
+        collectionName = "CompanyIncorporation"; // Replace with your collection name
+        break;
+      case "coppCertificate":
+        collectionName = "COPP";
+        break;
+      case "gmpCertificate":
+        collectionName = "GMP";
+        break;
+      default:
+        return { error: "Invalid certificateType" };
+    }
+
+    // Query the collection
+    const collection = mongoose.connection.collection(collectionName);
+    const data = await collection.findOne({ certificateNumber });
+
+    if (!data) {
+      return { error: "Certificate not found" };
+    }
+    return data;
+  } catch (error) {
+    console.error("Error fetching certificate data:", error);
+    return data;
+  }
+};
+exports.verifyDocument = async (req, res) => {
+  const files = req.files;
+  const userId = mongoose.Types.ObjectId(req.user.id);
+  const {
+    gmpCertificateNumber,
+    coppCertificateNumber,
+    ayushLicenseCertificateNumber,
+    manufacturingLicenseNumber,
+    companyIncorporationCertificateNumber,
+  } = req.body;
+  const certificateData = {
+    gmpCertificate: gmpCertificateNumber,
+    coppCertificate: coppCertificateNumber,
+    ayushLicenseCertificate: ayushLicenseCertificateNumber,
+    manufacturingLicense: manufacturingLicenseNumber,
+    companyIncorporationCertificate: companyIncorporationCertificateNumber,
+  };
+  let startup = await Startup.findOne({ userId });
+  if (!startup) {
+    return res.status(404).send("Startup not found");
+  }
+  if (!startup.documents) {
+    startup.documents = {};
+  }
+  for (const key of Object.keys(files)) {
+    //check the authenticity of the document
+    const originalData = await getDocumentsData(certificateData[key], key);
+    if (!originalData || originalData.error) {
+      return res.status(400).send(`Error fetching data for ${key}`);
+    }
+    const expected = {
+      certificateNumber: originalData.certificateNumber,
+      holderName: originalData.holderName,
+    };
+    const isAuthentic = await verifyDocumentAuthenticity(
+      files[key][0].buffer,
+      expected
+    );
+    if (!isAuthentic) {
+      return res.status(400).send(`Document ${key} is not authentic`);
+    }
+    console.log("same", startup.documents[key], "key", key);
+    //const isAuthentic = await verifyDocumentAuthenticity();
+  }
+  return res.status(200).send("Document verification successful");
+};
 exports.uploadFiles = async (req, res) => {
   try {
     const files = req.files;
@@ -29,6 +172,8 @@ exports.uploadFiles = async (req, res) => {
     const currentDate = new Date().toISOString().split("T")[0];
 
     for (const key of Object.keys(files)) {
+      //check the authenticity of the document
+      //const isAuthentic = await verifyDocumentAuthenticity();
       // Use Object.keys to iterate over file keys
       const file = files[key][0]; // Access the first file in the array (assuming single file per field)
       const filePath = `${key}_${currentDate}.pdf`;
@@ -92,71 +237,8 @@ exports.getDocuments = async (req, res) => {
  * @param {Object} input.data - An object with key-value pairs to verify against the PDF content.
  * @returns {Promise<boolean>} - Returns true if all fields match; otherwise, false.
  */
-const verifyDocumentAuthenticity = async ({ filepath, data }) => {
-  try {
-    // Read the PDF file from the specified filepath
-    const dataBuffer = fs.readFileSync(filepath);
 
-    // Extract text from the PDF
-    const pdfData = await pdfParse(dataBuffer);
-    const extractedText = pdfData.text;
-
-    // Iterate over each field in the data object
-    for (const [field, expectedValue] of Object.entries(data)) {
-      if (!expectedValue) {
-        // If the expected value is null, undefined, or empty, skip comparison for this field
-        continue;
-      }
-
-      // Normalize both extracted text and expected value for comparison
-      const normalizedExtractedText = extractedText.toLowerCase();
-      const normalizedExpectedValue = expectedValue.toString().toLowerCase();
-
-      // Check for exact match
-      let isMatch = normalizedExtractedText.includes(normalizedExpectedValue);
-
-      // If exact match not found, attempt fuzzy matching
-      if (!isMatch) {
-        // Split the extracted text into lines for better matching
-        const lines = extractedText
-          .split("\n")
-          .map((line) => line.trim())
-          .filter((line) => line.length > 0);
-
-        // Find the best similarity match for the expected value among all lines
-        const { bestMatch } = stringSimilarity.findBestMatch(
-          normalizedExpectedValue,
-          lines.map((line) => line.toLowerCase())
-        );
-
-        // Define a similarity threshold (e.g., 0.8 out of 1)
-        const similarityThreshold = 0.8;
-
-        if (bestMatch.rating >= similarityThreshold) {
-          isMatch = true;
-        }
-      }
-
-      // If the current field does not match, return false immediately
-      if (!isMatch) {
-        console.log(
-          `Mismatch found for field "${field}": Expected "${expectedValue}" not found in document.`
-        );
-        return false;
-      } else {
-        console.log(`Field "${field}" matched successfully.`);
-      }
-    }
-
-    // If all fields matched
-    return true;
-  } catch (error) {
-    console.error("Error during document verification:", error);
-    return false;
-  }
-};
-
-exports.verifyDocument = async (req, res) => {
+exports.verifyDocumentsextra = async (req, res) => {
   const { filepath, data } = req.body;
 
   if (!filepath || !data) {

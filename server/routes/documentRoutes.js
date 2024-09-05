@@ -31,6 +31,14 @@ router.post(
 router.post(
   "/verifyDocument",
   authMiddleware,
+  upload.fields([
+    { name: "gmpCertificate" },
+    { name: "coppCertificate" },
+    { name: "ayushLicenseCertificate" },
+    { name: "manufacturingLicense" },
+    { name: "companyIncorporationCertificate" },
+  ]),
   documentController.verifyDocument
 );
+router.post("");
 module.exports = router;
