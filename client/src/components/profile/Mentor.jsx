@@ -5,6 +5,7 @@ import linkedin from "../../assets/linkedin.jpeg"; // Example social media icons
 import twitter from "../../assets/x.webp";
 import facebook from "../../assets/facebook.png";
 import Post from "../social/posts";
+import axiosHeader from "../../axiosHeader";
 // Data object for mentors
 const mentorData = {
   logo: mentorLogo,
@@ -38,6 +39,50 @@ const MentorProfile = () => {
 
   const handleToggle = () => {
     setIsExpanded(!isExpanded);
+  };
+  const [email, setEmail] = useState("");
+  const [status, setStatus] = useState({ message: "", error: false });
+  const [loading, setLoading] = useState(false);
+
+  const validateEmail = (email) => {
+    // Simple email validation regex
+    const re =
+      /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@(([^<>()[\]\\.,;:\s@"]+\.)+[^<>()[\]\\.,;:\s@"]{2,})$/i;
+    return re.test(String(email).toLowerCase());
+  };
+  const handleSubscribe = async (e) => {
+    e.preventDefault();
+  
+    if (!validateEmail(email)) {
+      setStatus({ message: "Please enter a valid email address.", error: true });
+      return;
+    }
+  
+    setLoading(true);
+    setStatus({ message: "", error: false });
+  
+    try {
+      const response = await axiosHeader.post("/startups/sendmail", { 
+        to: email, 
+        subject: "Welcome to Ayush Startup Registration", 
+        text: "Thank you for subscribing to our newsletter! Stay tuned for the latest updates.", 
+        html: "<p>Thank you for subscribing to our newsletter! Stay tuned for the latest updates.</p>"
+      });
+  
+      setStatus({
+        message: "Subscription successful! Please check your email for confirmation.",
+        error: false,
+      });
+      setEmail("");
+    } catch (error) {
+      console.error("Error subscribing to newsletter:", error);
+      setStatus({
+        message: error.response?.data?.message || "An error occurred. Please try again later.",
+        error: true,
+      });
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -96,7 +141,53 @@ const MentorProfile = () => {
               <p className="font-bold text-lg">{item[1]}</p>
             </div>
           ))}
+          
         </div>
+        <div className="w-full px-6 py-10 bg-gradient-to-r from-indigo-600 to-blue-500 rounded-lg mt-8 shadow-lg">
+  <div className="mx-auto max-w-screen-lg lg:grid lg:grid-cols-5 lg:gap-6 items-center">
+    {/* Left Side: Text */}
+    <div className="lg:col-span-3 text-white">
+      <h1 className="text-2xl font-extrabold sm:text-3xl mb-2">
+        Stay Updated with {mentorData.name}
+      </h1>
+      <p className="font-medium text-lg mb-4">
+        Subscribe to our newsletter for expert tips and latest updates on how to successfully register your Ayush startup.
+      </p>
+    </div>
+    {/* Right Side: Form */}
+    <div className="lg:col-span-2">
+      <form
+        onSubmit={handleSubscribe}
+        className="flex flex-col sm:flex-row items-center justify-center w-full"
+      >
+        <input
+          type="email"
+          placeholder="Enter your email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          className="flex-grow rounded-lg p-3 text-black mb-4 sm:mb-0 sm:mr-4 focus:outline-none"
+          required
+        />
+        <button
+          type="submit"
+          className="w-full sm:w-auto bg-white text-indigo-600 font-bold px-6 py-3 rounded-lg hover:bg-gray-100 transition-all"
+          disabled={loading}
+        >
+          {loading ? "Subscribing..." : "Subscribe"}
+        </button>
+      </form>
+      {status.message && (
+        <p
+          className={`mt-3 text-center ${
+            status.error ? "text-red-500" : "text-green-500"
+          }`}
+        >
+          {status.message}
+        </p>
+      )}
+    </div>
+  </div>
+</div>
       </div>
     </div>
     <Post/>
