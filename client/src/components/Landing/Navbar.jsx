@@ -106,11 +106,11 @@ const Navbar = () => {
                 <div className="flex justify-around py-4">
                   <div className="space-y-2">
                     <h4 className="font-bold text-gray-800">Startup Literacy</h4>
-                    <a href="#" className="block text-gray-600 hover:text-black">Learning & Development</a>
-                    <a href="#" className="block text-gray-600 hover:text-black">InnovateTN - FabLabs</a>
-                    <a href="#" className="block text-gray-600 hover:text-black">Hackathon</a>
-                    <a href="#" className="block text-gray-600 hover:text-black">MentorTN</a>
-                    <a href="#" className="block text-gray-600 hover:text-black">Brand Labs</a>
+                   <Link to='/courses' className='p-1'><p className="block text-gray-600 hover:text-black">Learning & Development</p></Link>
+                   <Link to='' className='p-1'><p className="block text-gray-600 hover:text-black">InnovateTN - FabLabs</p></Link>
+                   <Link to='' className='p-1'><p className="block text-gray-600 hover:text-black">Hackathon</p></Link>
+                   <Link to='' className='p-1'><p className="block text-gray-600 hover:text-black">MentorTN</p></Link>
+                   <Link to='' className='p-1'><p className="block text-gray-600 hover:text-black">Brand Labs</p></Link>
                   </div>
                   <div className="space-y-2">
                     <h4 className="font-bold text-gray-800">Innovation Landscape</h4>
@@ -210,7 +210,7 @@ const Navbar = () => {
                   <div className="relative">
                     <div className="flex items-center cursor-pointer text-gray-700 hover:text-gray-900 transition duration-300 ease-in-out transform hover:scale-110 ml-[40px]"
                       onClick={togglePopup}>
-                      <FaUserCircle size={24} color="black" />
+                      <FaUserCircle size={30} color="black" />
                       <span className="text-sm text-gray-500 ml-2">Profile</span>
                     </div>
                     {isPopupOpen && (
@@ -265,7 +265,7 @@ const Navbar = () => {
                 )}
               </div>
               {(data?.role == 'stakeholder'|| !data) && 
-              <Link to="/guide">
+              <Link to="/userType">
                 <button className="px-4 py-2 bg-blue-900 text-white rounded-full hover:bg-blue-700 ml-[20px]">
                   Start Registration
                 </button>

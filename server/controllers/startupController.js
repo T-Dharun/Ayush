@@ -155,9 +155,9 @@ exports.getStartups = async (req, res) => {
 exports.getStartupById = async (req, res) => {
   try {
     // Ensure req.params.id is an ObjectId
-    const startupId = mongoose.Types.ObjectId(req.params.id);
-
-    const startup = await Startup.findById(startupId);
+    const userId = mongoose.Types.ObjectId(req.user.id);
+    //const startupId = mongoose.Types.ObjectId(req.params.id);
+    const startup = await Startup.findOne({ userId });
     if (!startup) {
       return res.status(404).json({ msg: "Startup not found" });
     }
@@ -298,7 +298,7 @@ exports.createStartup = async (req, res) => {
         startup.set({
           progress: `${step}`,
           termsAndCondition: true,
-          status: "initial",
+          status: "pending",
         });
         //console.log(data);
         await startup.save();

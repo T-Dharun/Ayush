@@ -8,7 +8,6 @@ import {
   Input,
   Button,
   VStack,
-  HStack,
 } from "@chakra-ui/react";
 import { ArrowForwardIcon, CloseIcon } from "@chakra-ui/icons";
 
@@ -58,10 +57,10 @@ const Chat = () => {
   return (
     <Flex
       direction="column"
-      w="300px"
-      h="400px"
-      bg="gray.800"
-      borderRadius="md"
+      w="350px"
+      h="450px"
+      bg="white"
+      borderRadius="lg"
       boxShadow="lg"
       overflow="hidden"
       position="fixed"
@@ -70,11 +69,12 @@ const Chat = () => {
     >
       {/* Header */}
       <Flex
-        bg="gray.900"
+        bg="teal.400"
         p="4"
         color="white"
         alignItems="center"
         justifyContent="space-between"
+        borderTopRadius="lg"
       >
         <Text fontWeight="bold">Chat App</Text>
         <IconButton
@@ -93,14 +93,14 @@ const Chat = () => {
         p="4"
         spacing="4"
         overflowY="auto"
-        bg="gray.700"
+        bg="gray.50"
       >
         {messages.map((msg, index) => (
           <Flex
             key={index}
             alignSelf={msg.sender === userId ? "flex-end" : "flex-start"} 
-            bg={msg.sender === userId ? "blue.500" : "gray.600"} 
-            color="white"
+            bg={msg.sender === userId ? "teal.300" : "gray.200"} 
+            color={msg.sender === userId ? "white" : "black"}
             borderRadius="lg"
             p="3"
             maxW="80%"
@@ -113,17 +113,18 @@ const Chat = () => {
       </VStack>
 
       {/* Input Area */}
-      <Flex p="4" bg="gray.900" borderTop="1px solid" borderColor="gray.600">
+      <Flex p="4" bg="gray.100" borderTop="1px solid" borderColor="gray.300">
         <Input
-          placeholder="hi"
+          placeholder="Type your message..."
           value={message}
           onChange={(e) => setMessage(e.target.value)}
           mr="2"
-          bg="gray.600"
-          color="white"
+          bg="white"
+          color="black"
           _placeholder={{ color: "gray.400" }}
+          borderRadius="md"
         />
-        <Button onClick={sendMessage} colorScheme="blue">
+        <Button onClick={sendMessage} colorScheme="teal" borderRadius="md">
           Send
         </Button>
       </Flex>

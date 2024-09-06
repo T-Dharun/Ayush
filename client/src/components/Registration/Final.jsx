@@ -10,7 +10,7 @@ const Final = ({step}) => {
     await putEntityDetails({application:'submit',step});
     console.log(signature);
 
-    navigate('/')
+    navigate('/status')
   }
   const handleTermsAndConditionsChange = (e) => {
     setTermsAndConditions(e.target.checked);

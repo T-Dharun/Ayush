@@ -3,7 +3,7 @@ import Header from '../components/Landing/Header';
 import './Status.css';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
-
+import CertificateGenerator from './CertificateGenerator';
 function RegistrationProcess() {
 
   const [status, setStatus] = useState(0);
@@ -87,7 +87,7 @@ function RegistrationProcess() {
           <div className="status-text">Status: Completed</div>
         </div>
         <div className="download-button1">
-          <button>Download Your Certificate</button>
+          <CertificateGenerator />
         </div>
       </div>
     </>
