@@ -75,6 +75,7 @@ const StartupSchema = new mongoose.Schema({
   ieCode: String,
   termsAndCondition: Boolean,
   capitalInvestment: Number,
+  message:String,
   Stage: {
     type: String,
     enum: ["ideathon", "earlytraction", "validation", "scaling"],

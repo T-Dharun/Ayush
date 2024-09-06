@@ -27,7 +27,7 @@ export default function Guide() {
           </ul>
         </div>
       </div>
-      <button className="guide-btn" onClick={()=>navigate('/register')}>Next</button>
+      <button className="guide-btn" onClick={()=>navigate('/UserType')}>Next</button>
       <FAQ/>
     </div>
   );

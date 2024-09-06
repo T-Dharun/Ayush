@@ -56,7 +56,6 @@ exports.updateStartupStatus = async (req, res, status) => {
     startup.status = status;
     await startup.save();
     console.log(status + " " + req.user.role);
-
     const responseMessage = {
       msg: status === 'rejected' ? (req.body.message || 'Document mismatch') : `Startup ${status}`,
       status,
@@ -68,8 +67,12 @@ exports.updateStartupStatus = async (req, res, status) => {
     // Only proceed to send an email if the status is 'rejected'
     if (status === 'rejected') {
       const message = req.body.message || "Officials Reject the Application, Please check the necessary documents";
+      
+      
       console.log(message);
       const startup = await Startup.findById(req.params.id);
+      startup.message=message;
+      await startup.save();
       if (!startup) {
         return res.status(404).json({ msg: 'Startup not found' });
       }

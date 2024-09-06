@@ -143,7 +143,6 @@ exports.getStartups = async (req, res) => {
     // Ensure userId is an ObjectId
     const userId = mongoose.Types.ObjectId(req.user.id);
     console.log(req.user.id);
-    console.log("fasdf");
     const startups = await Startup.find({ userId });
     res.json(startups);
   } catch (err) {
@@ -309,7 +308,7 @@ exports.createStartup = async (req, res) => {
         startup.set({
           progress: `${step}`,
           termsAndCondition: true,
-          status: "initial",
+          status: "pending",
         });
         //console.log(data);
         await startup.save();
@@ -327,6 +326,8 @@ exports.createStartup = async (req, res) => {
             ifscCode:
               data.bankDetails.ifscCode || startup.bankDetails?.ifscCode,
           };
+          startup.progress=`6`
+          startup.status="initial";
         }
 
         // Preserve file paths if they exist and only update the fields that are provided

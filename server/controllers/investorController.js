@@ -1,15 +1,19 @@
 const Investor = require("../models/Investor");
+const User=require("../models/User");
 const mongoose = require("mongoose");
 
 exports.putInvestorData = async (req, res) => {
   const { step, data } = req.body;
   console.log(req.body);
+  
+
   if (!step || !data) {
     return res.status(400).json({ message: "Step and data are required" });
   }
 
   // Ensure userId is available from the request (auth middleware should add this)
   const userId = req.user.id;
+  
   if (!userId) {
     return res.status(401).json({ message: "User not authenticated" });
   }
@@ -75,14 +79,20 @@ exports.putInvestorData = async (req, res) => {
         .json({ message: "Step 2 data saved successfully", investor });
     }
     if (step === 3) {
+      let user = await User.findOne({ _id:userObjectId});
+      
+      user.role='investor'
+      await user.save();
 
+      console.log("Hello");
+      console.log(user);
       let investor = await Investor.findOne({ userId: userObjectId });
       if (!investor) {
         return res.status(404).json({ message: "Investor not found" });
       }
       investor.status = "success";
-
       await investor.save();
+      console.log(user);
       return res
         .status(200)
         .json({ message: "Step 3 data saved successfully", investor });

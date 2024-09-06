@@ -1,6 +1,6 @@
 const Mentor = require("../models/Mentor");
 const mongoose = require("mongoose");
-
+const User=require("../models/User");
 exports.putMentorData = async (req, res) => {
   const { step, data } = req.body;
   console.log(data);
@@ -74,6 +74,10 @@ exports.putMentorData = async (req, res) => {
         .json({ message: "Step 2 data saved successfully", mentor });
     }
     if (step === 3) {
+      let user = await User.findOne({ _id:userObjectId});
+      
+      user.role='mentor'
+      await user.save();
 
       let mentor = await Mentor.findOne({ userId: userObjectId });
       if (!mentor) {

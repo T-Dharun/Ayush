@@ -11,63 +11,40 @@ const ContactInfo = ({ step, setStep }) => {
     website: "",
   });
 
-  const submit = async () => {
-    console.log(address);
-    await putMentorDetails({step,address});
-    setStep((prev) => prev + 1);
-  };
+  const [isButtonDisabled, setIsButtonDisabled] = useState(true);
 
-  const states = ["Tamil Nadu"];
-
-  const districts = {
-    TamilNadu: [
-      "Ariyalur",
-      "Chengalpattu",
-      "Chennai",
-      "Coimbatore",
-      "Cuddalore",
-      "Dharmapuri",
-      "Dindigul",
-      "Erode",
-      "Kallakurichi",
-      "Kancheepuram",
-      "Karur",
-      "Krishnagiri",
-      "Madurai",
-      "Nagapattinam",
-      "Namakkal",
-      "Nilgiris",
-      "Perambalur",
-      "Pudukkottai",
-      "Ramanathapuram",
-      "Ranipet",
-      "Salem",
-      "Sivaganga",
-      "Tenkasi",
-      "Thanjavur",
-      "Theni",
-      "Thoothukudi",
-      "Tiruchirappalli",
-      "Tirunelveli",
-      "Tirupathur",
-      "Tiruppur",
-      "Tiruvallur",
-      "Tiruvannamalai",
-      "Tiruvarur",
-      "Vellore",
-      "Viluppuram",
-      "Virudhunagar",
-    ],
+  const validateForm = () => {
+    const { addressLine, state, district, pincode, linkedin, website } = address;
+    if (addressLine && state && district && pincode && linkedin && website) {
+      setIsButtonDisabled(false);
+    } else {
+      setIsButtonDisabled(true);
+    }
   };
 
   const handleAddressChange = (e) => {
     const { name, value } = e.target;
-    if (name === "state" && value !== "Tamil Nadu") {
-      alert("Please select Tamil Nadu as the state. This page only works for Tamil Nadu.");
-      setAddress((prevAddress) => ({ ...prevAddress, state: "", district: "" }));
-    } else {
-      setAddress((prevAddress) => ({ ...prevAddress, [name]: value }));
-    }
+    setAddress((prevAddress) => ({ ...prevAddress, [name]: value }));
+    validateForm();
+  };
+
+  const submit = async () => {
+    console.log(address);
+    await putMentorDetails({ step, address });
+    setStep((prev) => prev + 1);
+  };
+
+  const states = [
+    "Andhra Pradesh", "Arunachal Pradesh", "Assam", "Bihar", "Chhattisgarh", "Goa", "Gujarat", 
+    "Haryana", "Himachal Pradesh", "Jharkhand", "Karnataka", "Kerala", "Madhya Pradesh", 
+    "Maharashtra", "Manipur", "Meghalaya", "Mizoram", "Nagaland", "Odisha", "Punjab", 
+    "Rajasthan", "Sikkim", "Tamil Nadu", "Telangana", "Tripura", "Uttar Pradesh", 
+    "Uttarakhand", "West Bengal"
+  ];
+
+  const districts = {
+    "Tamil Nadu": ["Ariyalur", "Chennai", "Coimbatore", "Madurai", "Salem", "Tiruchirappalli"],
+    // Add other districts for each state
   };
 
   return (
@@ -88,134 +65,119 @@ const ContactInfo = ({ step, setStep }) => {
         </div>
       </div>
       <button
-        className="bg-blue-400 text-white py-2 px-4 rounded-md hover:bg-blue-500 m-5"
+        className={`bg-blue-400 text-white py-2 px-4 rounded-md hover:bg-blue-500 m-5 ${isButtonDisabled ? "opacity-50 cursor-not-allowed" : ""}`}
         onClick={submit}
+        disabled={isButtonDisabled}
       >
         Continue
       </button>
     </section>
   );
 };
-const AddressForm = ({ address, setAddress, districts, states, handleAddressChange }) => {
-    return (
-      <div>
-        <h2 className="text-lg font-bold mb-1">Address</h2>
+
+const AddressForm = ({ address, states, handleAddressChange, districts }) => {
+  return (
+    <div>
+      <h2 className="text-lg font-bold mb-1">Address</h2>
+      <div className="grid grid-cols-2 gap-4">
+        <div>
+          <label htmlFor="addressLine" className="block font-bold mb-1 text-gray-700 text-sm">
+            Address Line:
+          </label>
+          <textarea
+            id="addressLine"
+            name="addressLine"
+            value={address.addressLine}
+            onChange={handleAddressChange}
+            className="w-full p-2 pl-4 text-sm text-gray-700 border border-gray-300 rounded-md"
+          />
+        </div>
+        <div>
+          <label htmlFor="state" className="block font-bold mb-1 text-gray-700 text-sm mt-2">
+            State:
+          </label>
+          <select
+            id="state"
+            name="state"
+            value={address.state}
+            onChange={handleAddressChange}
+            className="w-full p-2 pl-4 text-sm text-gray-700 border border-gray-300 rounded-md"
+          >
+            <option value="">Select a State</option>
+            {states.map((state) => (
+              <option key={state} value={state}>
+                {state}
+              </option>
+            ))}
+          </select>
+        </div>
+      </div>
+      {address.state && (
         <div className="grid grid-cols-2 gap-4">
           <div>
-            <label
-              htmlFor="addressLine"
-              className="block font-bold mb-1 text-gray-700 text-sm"
-            >
-              Address Line:
-            </label>
-            <textarea
-              id="addressLine"
-              name="addressLine"
-              value={address.addressLine}
-              onChange={handleAddressChange}
-              className="w-full p-2 pl-4 text-sm text-gray-700 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-transparent"
-            />
-          </div>
-          <div>
-            <label
-              htmlFor="state"
-              className="block font-bold mb-1 text-gray-700 text-sm mt-2"
-            >
-              State:
+            <label htmlFor="district" className="block font-bold mb-1 text-gray-700 text-sm mt-2">
+              District:
             </label>
             <select
-              id="state"
-              name="state"
-              value={address.state}
+              id="district"
+              name="district"
+              value={address.district}
               onChange={handleAddressChange}
-              className="w-full p-2 pl-4 text-sm text-gray-700 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-transparent"
+              className="w-full p-2 pl-4 text-sm text-gray-700 border border-gray-300 rounded-md"
             >
-              <option value="">Select a State</option>
-              {states.map((state) => (
-                <option key={state} value={state}>
-                  {state}
+              <option value="">Select a District</option>
+              {districts[address.state]?.map((district) => (
+                <option key={district} value={district}>
+                  {district}
                 </option>
               ))}
             </select>
           </div>
+          <div>
+            <label htmlFor="pincode" className="block font-bold mb-1 text-gray-700 text-sm mt-2">
+              Pincode:
+            </label>
+            <input
+              id="pincode"
+              type="number"
+              name="pincode"
+              value={address.pincode}
+              onChange={handleAddressChange}
+              className="w-full p-2 pl-4 text-sm text-gray-700 border border-gray-300 rounded-md"
+            />
+          </div>
         </div>
-        {address.state && (
-          <div className="grid grid-cols-2 gap-4">
-            <div>
-              <label
-                htmlFor="district"
-                className="block font-bold mb-1 text-gray-700 text-sm mt-2"
-              >
-                District:
-              </label>
-              <select
-                id="district"
-                name="district"
-                value={address.district}
-                onChange={handleAddressChange}
-                className="w-full p-2 pl-4 text-sm text-gray-700 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-transparent"
-              >
-                <option value="">Select a District</option>
-                {districts["TamilNadu"].map((district) => (
-                  <option key={district} value={district}>
-                    {district}
-                  </option>
-                ))}
-              </select>
-            </div>
-            <div>
-              <label
-                htmlFor="pincode"
-                className="block font-bold mb-1 text-gray-700 text-sm mt-2"
-              >
-                Pincode:
-              </label>
-              <input
-                id="pincode"
-                type="text"
-                name="pincode"
-                value={address.pincode}
-                onChange={handleAddressChange}
-                className="w-full p-2 pl-4 text-sm text-gray-700 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-transparent"
-              />
-            </div>
-          </div>
-        )}
-        <div className="grid grid-cols-2 gap-4">
-          <div>
-            <label
-              htmlFor="linkedin"
-              className="block font-bold mb-1 text-gray-700 text-sm mt-2"
-            >
-              LinkedIn:
-            </label>
-            <input
-              id="linkedin"
-              type="text"
-              name="linkedin"
-              value={address.linkedin}
-              onChange={handleAddressChange}
-              className="w-full p-2 pl-4 text-sm text-gray-700 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-transparent"
-            />
-          </div>
-          <div>
-            <label
-              htmlFor="website"
-              className="block font-bold mb-1 text-gray-700 text-sm mt-2"
-            >
-              Website:
-            </label>
-            <input
-              id="website"
-              type="text"
-              name="website"
-              value={address.website}
-              onChange={handleAddressChange}
-              className="w-full p-2 pl-4 text-sm text-gray-700 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-transparent"
-            />
-          </div>
+      )}
+      <div className="grid grid-cols-2 gap-4">
+        <div>
+          <label htmlFor="linkedin" className="block font-bold mb-1 text-gray-700 text-sm mt-2">
+            LinkedIn:
+          </label>
+          <input
+            id="linkedin"
+            type="text"
+            name="linkedin"
+            value={address.linkedin}
+            onChange={handleAddressChange}
+            className="w-full p-2 pl-4 text-sm text-gray-700 border border-gray-300 rounded-md"
+          />
+        </div>
+        <div>
+          <label htmlFor="website" className="block font-bold mb-1 text-gray-700 text-sm mt-2">
+            Website:
+          </label>
+          <input
+            id="website"
+            type="text"
+            name="website"
+            value={address.website}
+            onChange={handleAddressChange}
+            className="w-full p-2 pl-4 text-sm text-gray-700 border border-gray-300 rounded-md"
+          />
         </div>
       </div>
-    );
-  };
+    </div>
+  );
+};
+
 export default ContactInfo;

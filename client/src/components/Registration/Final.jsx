@@ -17,10 +17,10 @@ const Final = ({ step }) => {
     if (isFormComplete) {
       await putEntityDetails({ application: 'submit', step });
       console.log(signature);
-      navigate('/');
+      navigate('/status');
     } else {
       alert('Please complete all fields before submitting.');
-    }
+    }   
   };
 
   const handleTermsAndConditionsChange = (e) => {

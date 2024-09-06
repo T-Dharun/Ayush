@@ -11,19 +11,19 @@ const cardData = [
     logo: investor,
     heading: "Investor",
     description: "Join as an investor to support emerging AYUSH startups.",
-    route: "/investorregister",
+    route: "/register/investor",
   },
   {
     logo: mentor,
     heading: "Mentor",
     description: "Become a mentor and guide startups on their journey.",
-    route: "/mentorregister",
+    route: "/register/mentor",
   },
   {
     logo: startup,
     heading: "Startup Founder",
     description: "Register your startup and get the necessary approvals.",
-    route: "/startupregister",
+    route: "/register",
   },
 ];
 

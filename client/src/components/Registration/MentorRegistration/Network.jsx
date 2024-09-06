@@ -1,21 +1,38 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
-const Network = ({setStep,step,setNetwork,network}) => {
+const Network = ({ setStep, setNetwork, network }) => {
+  const [customNetwork, setCustomNetwork] = useState('');
+  const [isFormValid, setIsFormValid] = useState(false);
+
   const handleInputChange = (event) => {
     setNetwork(event.target.value);
   };
 
+  const handleCustomInputChange = (event) => {
+    setCustomNetwork(event.target.value);
+  };
+
+  useEffect(() => {
+    // Validate the form
+    if (network === 'other') {
+      setIsFormValid(customNetwork.trim() !== '');
+    } else {
+      setIsFormValid(network !== '');
+    }
+  }, [network, customNetwork]);
+
   const handleSubmit = (event) => {
     event.preventDefault();
-    setStep(prev=>prev+1)
-    
-//    alert(`You are a member of: ${network}`);
+    if (network === 'other' && customNetwork) {
+      setNetwork(customNetwork); // Store custom input in network state
+    }
+    setStep((prev) => prev + 1);
   };
 
   return (
     <div className="p-4 pt-6 pb-8 mb-4 bg-white rounded shadow-md w-100">
       <h2 className="text-2xl font-bold mb-4">Your Network</h2>
-      <form onSubmit={handleSubmit} className='mt-5 h-50 d-flex flex-column justify-between'>
+      <form onSubmit={handleSubmit} className="mt-5 h-50 d-flex flex-column justify-between">
         <div className="flex flex-wrap -mx-3 mb-6">
           <div className="w-full px-3 mb-6">
             <label
@@ -34,10 +51,7 @@ const Network = ({setStep,step,setNetwork,network}) => {
                 onChange={handleInputChange}
                 className="mr-2"
               />
-              <label
-                className="text-gray-700 text-sm"
-                htmlFor="TE"
-              >
+              <label className="text-gray-700 text-sm" htmlFor="TE">
                 TE
               </label>
             </div>
@@ -47,22 +61,39 @@ const Network = ({setStep,step,setNetwork,network}) => {
                 id="other"
                 name="network"
                 value="other"
-                checked={network === "other"}
+                checked={network === 'other'}
                 onChange={handleInputChange}
                 className="mr-2"
               />
-              <label
-                className="text-gray-700 text-sm"
-                htmlFor="other"
-              >
-                other
+              <label className="text-gray-700 text-sm" htmlFor="other">
+                Other
               </label>
             </div>
+            {network === 'other' && (
+              <div className="mt-4">
+                <label
+                  className="block text-gray-700 text-sm font-bold mb-2"
+                  htmlFor="customNetwork"
+                >
+                  Please specify:
+                </label>
+                <input
+                  type="text"
+                  id="customNetwork"
+                  value={customNetwork}
+                  onChange={handleCustomInputChange}
+                  className="w-full px-3 py-2 border border-gray-300 rounded"
+                />
+              </div>
+            )}
           </div>
         </div>
         <button
           type="submit"
-          className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded w-full"
+          disabled={!isFormValid} // Disable button if form is invalid
+          className={`bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded w-full ${
+            !isFormValid ? 'opacity-50 cursor-not-allowed' : ''
+          }`}
         >
           Continue
         </button>

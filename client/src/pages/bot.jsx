@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Box, Button, Image, useDisclosure } from '@chakra-ui/react';
 import Bot from './Aibot';  // Import your Bot component
 import Chat from './chat';  // Import your Chat component
-
+import logo from '../assets/chatbot.png';
 const bot = () => {
   const [showButtons, setShowButtons] = useState(false);
   const [selectedComponent, setSelectedComponent] = useState(null);
@@ -29,10 +29,12 @@ const bot = () => {
         cursor="pointer"
       >
         <Image
-          src="https://tse4.mm.bing.net/th?id=OIP.kjOyhLhykSmAp6BNHMwNbgHaHa&pid=Api&P=0&h=180"
+          src={logo}
           alt="Chatbot"
           boxSize="80px"
           borderRadius="full"
+          backgroundColor="white"
+          margin='1em'
         />
       </Button>
 

@@ -9,10 +9,9 @@ function App() {
   return (
     <div className="bg-[#425417] ">
       <Header />
-      <div className="bg-[url('https://img.freepik.com/premium-photo/ayurvedic-spices_6751-83.jpg?size=626&ext=jpg&ga=GA1.1.1532003599.1724182688&semt=ais_hybrid')] bg-cover bg-center">
-
-      <Navbar />
-      <Hero />
+      <div className="bg-[url('https://img.freepik.com/premium-photo/ayurvedic-spices_6751-83.jpg?size=626&ext=jpg&ga=GA1.1.1532003599.1724182688&semt=ais_hybrid')] bg-cover bg-center ">
+        <Navbar />
+        <Hero />
       </div>
       <Analytics />
       <Newsletter />

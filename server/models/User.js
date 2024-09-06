@@ -6,7 +6,7 @@ const UserSchema = new mongoose.Schema({
   password: { type: String, required: true },
   mobile: {
     type: String,
-    required: true,
+    required: false,
     unique: true,
     match: [
       /^\+\d{1,3}\d{10}$/,
@@ -15,7 +15,7 @@ const UserSchema = new mongoose.Schema({
   },
   role: {
     type: String,
-    enum: ["startup", "clerk", "authority", "stakeholder"],
+    enum: ["startup", "clerk", "authority", "stakeholder","investor","mentor"],
     required: true,
   },
   otpVerified: { type: Boolean, default: false },

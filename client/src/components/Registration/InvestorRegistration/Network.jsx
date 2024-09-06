@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-const Network = ({setStep,step,network,setNetwork}) => {
+const Network = ({ setStep, step, network, setNetwork }) => {
 
   const handleInputChange = (event) => {
     setNetwork(event.target.value);
@@ -8,8 +8,14 @@ const Network = ({setStep,step,network,setNetwork}) => {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    setStep(prev=>prev+1)
-//    alert(`You are a member of: ${network}`);
+
+    // Check if the network is selected
+    if (network) {
+      setStep(prev => prev + 1);  // Move to the next step if all fields are filled
+    } else {
+      console.log("Fill all the details");
+      alert('Please select a network before proceeding.');
+    }
   };
 
   return (
@@ -33,6 +39,7 @@ const Network = ({setStep,step,network,setNetwork}) => {
                 checked={network === 'TE'}
                 onChange={handleInputChange}
                 className="mr-2"
+                required
               />
               <label
                 className="text-gray-700 text-sm"
@@ -50,6 +57,7 @@ const Network = ({setStep,step,network,setNetwork}) => {
                 checked={network === "Let's Venture"}
                 onChange={handleInputChange}
                 className="mr-2"
+                required
               />
               <label
                 className="text-gray-700 text-sm"
@@ -63,6 +71,7 @@ const Network = ({setStep,step,network,setNetwork}) => {
         <button
           type="submit"
           className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded w-full"
+          //disabled={!network}  // Button disabled if no network is selected
         >
           Continue
         </button>

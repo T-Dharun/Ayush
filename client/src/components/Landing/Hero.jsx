@@ -53,14 +53,14 @@ const AyushStartup = () => {
       setTimeout(() => {
         setCurrentIndex((prevIndex) => (prevIndex + 1) % slides.length);
         setAnimating(false);
-      }, 500); // Animation duration
-    }, 2000); // Change slide every 2 seconds
+      }, 300); // Animation duration
+    }, 3000); // Change slide every 2 seconds
 
     return () => clearInterval(interval);
   }, [slides.length]);
 
   return (
-    <div className="min-h-screen flex flex-col mt-[140px] items-center bg-green-100 bg-[url('https://img.freepik.com/premium-photo/ayurvedic-spices_6751-83.jpg?size=626&ext=jpg&ga=GA1.1.1532003599.1724182688&semt=ais_hybrid')] bg-cover bg-center">
+    <div className="min-h-screen flex flex-col mt-[10px] items-center bg-green-100 bg-[url('https://img.freepik.com/premium-photo/ayurvedic-spices_6751-83.jpg?size=626&ext=jpg&ga=GA1.1.1532003599.1724182688&semt=ais_hybrid')] bg-cover bg-center">
       {/* Main Container */}
       <div className="max-w-7xl w-full p-8">
         {/* Carousel */}

@@ -24,7 +24,7 @@ const Navbar = () => {
 
   useEffect(() => {
     const handleScroll = () => {
-      setIsScrolled(window.scrollY > 200);
+      setIsScrolled(window.scrollY > 100);
     };
 
     window.addEventListener('scroll', handleScroll);
@@ -55,13 +55,15 @@ const Navbar = () => {
   const handleAvatarClick = () => {
     setShowPopup(!showPopup);
   };
+  const handleStatus=()=>{
 
+  }
   return (
     <nav
-      className={`bg-white text-black fixed top-0 left-0 w-full z-50 p-4 transition-all duration-300 
-        ${isAnalyticsPage || isScrolled ? 'rounded-none mt-0' : 'rounded-[70px] mt-[110px]'}`}
+      className={`bg-white text-black fixed top-0 left-0 w-full z-50 sticky p-4 transition-all duration-300 
+     `}
     >
-      <div className="container mx-auto flex justify-between items-center">
+      <div className="container mx-auto flex justify-between items-a-center">
         <div className="flex items-center space-x-4">
           <button className="md:hidden text-gray-800">
             <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -102,7 +104,7 @@ const Navbar = () => {
               For Startups
             </button>
             {isStartupDropdownOpen && (
-              <div className="absolute left-0 mt-2 w-[1000px] mr-[100px] bg-white border-t border-b border-gray-300 shadow-lg z-10">
+              <div className="absolute left-0 mt-5 pl-5 w-[700px] mr-[100px] bg-white border-t border-b border-gray-300 shadow-lg z-10">
                 <div className="flex justify-around py-4">
                   <div className="space-y-2">
                     <h4 className="font-bold text-gray-800">Startup Literacy</h4>
@@ -143,7 +145,7 @@ const Navbar = () => {
               For Enablers
             </button>
             {isEnablerDropdownOpen && (
-              <div className="absolute left-0 mt-2 w-[1000px] mr-[100px] bg-white border-t border-b border-gray-300 shadow-lg z-10">
+              <div className="absolute left-0 mt-5 w-[500px] mr-[100px] bg-white border-t border-b border-gray-300 shadow-lg z-10">
                 <div className="flex justify-around py-4">
                   <div className="space-y-2">
                     <h4 className="font-bold text-gray-800">Ecosystem Stakeholders</h4>
@@ -195,7 +197,7 @@ const Navbar = () => {
                       setIsLoggedIn(false);
                       setUserDetails(null); // Clear user details on logout
                       localStorage.removeItem('user');
-                      locatStore.removeItem('data');
+                      localStore.removeItem('data');
                     }}
                   >
                     Logout
@@ -214,18 +216,18 @@ const Navbar = () => {
                       <span className="text-sm text-gray-500 ml-2">Profile</span>
                     </div>
                     {isPopupOpen && (
-                      <div className="absolute right-0 mt-2 w-64 bg-white shadow-md rounded-md z-50 overflow-hidden">
+                      <div className="absolute right-0 mt-4  bg-white shadow-md rounded-md z-50 overflow-hidden">
                         <ul className="p-4 space-y-2">
                           <Link to="/">
                             <li className="py-2 px-4 hover:bg-gray-100 rounded-md cursor-pointer transition duration-200 ease-in-out transform hover:translate-x-2">
                               <span className="text-sm text-gray-600">Home</span>
                             </li>
                           </Link>
-                          <Link to="/">
-                            <li className="py-2 px-4 hover:bg-gray-100 rounded-md cursor-pointer transition duration-200 ease-in-out transform hover:translate-x-2">
+                            <li className="py-2 px-4 hover:bg-gray-100 rounded-md cursor-pointer transition duration-200 ease-in-out transform hover:translate-x-2"
+                              onClick={()=>handleStatus()}
+                            >
                               <span className="text-sm text-gray-600">DashBoard</span>
                             </li>
-                          </Link>
                           {data?.role !== 'stakeholder' ? (
                             <Link to="/government">
                               <li className="py-2 px-4 hover:bg-gray-100 rounded-md cursor-pointer transition duration-200 ease-in-out transform hover:translate-x-2">
