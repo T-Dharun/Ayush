@@ -85,7 +85,6 @@ const StartupSchema = new mongoose.Schema({
     type: String,
     enum: [
       "start",
-      "initial",
       "upload",
       "verify",
       "pending",

@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import './guide.css';
 
-export default function FAQ() {
+export default function FAQ({faqData}) {
   const [activeIndex, setActiveIndex] = useState(null);
 
   const toggleFAQ = (index) => {
@@ -34,12 +34,4 @@ export default function FAQ() {
       </ul>
     </div>
   );
-}
-
-const faqData = [
-  { question: "What is the purpose of this project?", answer: "The purpose of this project is to build a comprehensive platform for AYUSH startup registration." },
-  { question: "How do I register a startup?", answer: "To register a startup, you need to fill in the necessary forms, upload certificates, and submit the required documents." },
-  { question: "What documents are required for registration?", answer: "You need to provide documents like GMP certificate, AYUSH license, company incorporation certificate, etc." },
-  { question: "How can I track the status of my registration?", answer: "You can track the status of your registration on the portal under the 'Registration Status' section." },
-  { question: "Who can I contact for support?", answer: "For support, you can reach out to our customer service via the 'Contact Us' page." }
-];
+};

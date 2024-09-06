@@ -27,7 +27,7 @@ const cardData = [
   },
 ];
 
-function UserType() {
+function UserType({setType}) {
   const [cardPicked, setCardPicked] = useState(null);
   const navigate = useNavigate();
   const { name } = JSON.parse(localStorage.getItem("data"));
@@ -37,10 +37,10 @@ function UserType() {
 
   const handleContinue = () => {
     if (cardPicked !== null) {
-      navigate(cardData[cardPicked].route);
+      navigate("/guide");
+      setType(cardPicked);
     }
   };
-
   return (
     <>
       <Header />

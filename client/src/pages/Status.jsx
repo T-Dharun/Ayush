@@ -3,7 +3,7 @@ import Header from '../components/Landing/Header';
 import './Status.css';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
-
+import CertificateGenerator from './CertificateGenerator';
 function RegistrationProcess() {
   const [status, setStatus] = useState(0);
   const [company,setCompany]= useState({});
@@ -125,7 +125,9 @@ function RegistrationProcess() {
         {/* Conditionally render the download button if status is approved */}
         {status === 7 && (
           <div className="download-button1 mt-5">
-            <button className="bg-success text-white p-3 rounded-md">Download Your Certificate</button>
+            <button className="bg-success text-white p-3 rounded-md">
+              <CertificateGenerator />
+            </button>
           </div>
         )}
       </div>

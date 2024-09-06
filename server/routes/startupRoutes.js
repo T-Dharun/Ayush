@@ -17,6 +17,6 @@ router.post("/step3", auth, createStartupStepThree);
 router.post("/createStartup", auth, createStartup);
 router.post("/sendmail", auth, sendMail);
 router.get("/", auth, getStartups);
-router.get("/:id", auth, getStartupById);
+router.get("/getStartupById", auth, getStartupById);
 
 module.exports = router;
