@@ -7,6 +7,7 @@ const {
   getStartupById,
   sendMail,
   createStartup,
+  getAllStartupsData,
 } = require("../controllers/startupController");
 const auth = require("../middleware/authMiddleware");
 const router = express.Router();
@@ -16,7 +17,7 @@ router.post("/step2", auth, createStartupStepTwo);
 router.post("/step3", auth, createStartupStepThree);
 router.post("/createStartup", auth, createStartup);
 router.post("/sendmail", auth, sendMail);
-router.get("/", auth, getStartups);
-router.get("/getStartupById", auth, getStartupById);
+router.get("/getAllStartupsData", auth, getAllStartupsData);
+router.get("/:id", auth, getStartupById);
 
 module.exports = router;

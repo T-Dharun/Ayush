@@ -65,14 +65,9 @@ export default function Guide({type}) {
           </ul>
         </div>
       </div>
-<<<<<<< HEAD
-      <button className="guide-btn" onClick={()=>navigate('/UserType')}>Next</button>
-      <FAQ/>
-=======
       <button className="pdf-guide" onClick={handlePdfDownload}>Click to Download a Guide book</button>
       <button className="guide-btn" onClick={()=>navigate(nav)}>Next</button>
       <FAQ faqData={data[type].faqData}/>
->>>>>>> c69dae49360ecb4a04c1a9187ace1eda1bb19a12
     </div>
   );
 }

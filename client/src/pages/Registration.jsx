@@ -50,10 +50,9 @@ const Registration = () => {
                 return 0; // or some default component or message
         }
     };
-    console.log(step)
     return (
         <>
-            <section className="d-flex">
+            <section className="d-flex pb-20">
                 <ProgressBar currentStep={step}  setStep={setStep}/>
                 {renderComponent()}
             </section>

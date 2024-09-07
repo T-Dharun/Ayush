@@ -1,6 +1,6 @@
 const Mentor = require("../models/Mentor");
 const mongoose = require("mongoose");
-const User=require("../models/User");
+const User = require("../models/User");
 exports.putMentorData = async (req, res) => {
   const { step, data } = req.body;
   console.log(data);
@@ -8,7 +8,6 @@ exports.putMentorData = async (req, res) => {
   if (!step || !data) {
     return res.status(400).json({ message: "Step and data are required" });
   }
-
   // Ensure userId is available from the request (auth middleware should add this)
   const userId = req.user.id;
   if (!userId) {
@@ -43,7 +42,7 @@ exports.putMentorData = async (req, res) => {
       mentor.startupState = startupState;
       mentor.interestedCategorySector = interestedCategorySector;
       mentor.brief = brief;
-      mentor.step=step;
+      mentor.step = step;
 
       await mentor.save();
       return res
@@ -52,7 +51,8 @@ exports.putMentorData = async (req, res) => {
     }
 
     if (step === 2) {
-      const { addressLine, state, district, pincode, linkedin, website } = data.address;
+      const { addressLine, state, district, pincode, linkedin, website } =
+        data.address;
 
       let mentor = await Mentor.findOne({ userId: userObjectId });
       if (!mentor) {
@@ -66,7 +66,7 @@ exports.putMentorData = async (req, res) => {
       mentor.pincode = pincode;
       mentor.linkedin = linkedin;
       mentor.website = website;
-      mentor.step=step;
+      mentor.step = step;
 
       await mentor.save();
       return res
@@ -74,9 +74,9 @@ exports.putMentorData = async (req, res) => {
         .json({ message: "Step 2 data saved successfully", mentor });
     }
     if (step === 3) {
-      let user = await User.findOne({ _id:userObjectId});
-      
-      user.role='mentor'
+      let user = await User.findOne({ _id: userObjectId });
+
+      user.role = "mentor";
       await user.save();
 
       let mentor = await Mentor.findOne({ userId: userObjectId });
@@ -97,5 +97,49 @@ exports.putMentorData = async (req, res) => {
     return res
       .status(500)
       .json({ message: "Server error", error: error.message });
+  }
+};
+
+// Controller function with pagination
+exports.getAllMentorData = async (req, res) => {
+  try {
+    const page = parseInt(req.query.page) || 1; // Default to page 1 if not specified
+    const limit = parseInt(req.query.limit) || 10; // Default to 10 results per page
+    const skip = (page - 1) * limit;
+
+    // Get total count for pagination
+    const total = await Mentor.countDocuments();
+
+    // Fetch paginated mentors
+    const mentors = await Mentor.find().skip(skip).limit(limit);
+
+    // Send paginated response
+    res.status(200).json({
+      data: mentors,
+      currentPage: page,
+      totalPages: Math.ceil(total / limit),
+      totalItems: total,
+    });
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send("Server error");
+  }
+};
+
+exports.getMentorById = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const mentorId = mongoose.Types.ObjectId(req.params.id);
+    let mentor = await Mentor.findById(mentorId);
+    if (!mentor) {
+      mentor = await Mentor.findOne({ userId: id });
+      if (!mentor) {
+        return res.status(404).json({ message: "Mentor not found" });
+      }
+    }
+    res.status(200).json({ mentor });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Server error" });
   }
 };
