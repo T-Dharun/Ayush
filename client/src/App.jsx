@@ -17,8 +17,11 @@ import { ProgressBar } from "./components/Home/index";
 import Registration from "./pages/Registration";
 import InvestorRegistration from "./pages/InvestorRegistration";
 import MentorRegistration from "./pages/MentorRegistration";
+import Webinars from "./components/mentor/Webinars"
 import UserType from './components/Registration/UserType';
 import CertificateGenerator from "./pages/CertificateGenerator";
+import Meeting from "./components/mentor/meeting";
+import MentorAsked from "./components/mentor/mentorAsked.";
 const App = () => {
   const [data, setData] = useState(null);
   const [type,setType]=useState(0);
@@ -52,6 +55,13 @@ const App = () => {
         <Route path="/forgot-password" element={<ForgotPassword />} />
         <Route path="/login" element={<Login/>} />
         <Route path="/courses" element={<Courses />} />
+        <Route path="/register" element={<Registration />} />
+        <Route path="/register/mentor" element={<MentorRegistration/>} />
+        <Route path="/register/investor" element={<InvestorRegistration />} />
+        <Route path="/mentor/meeting/" element={<Meeting/> } />
+        <Route path="/mentor/meeting/:id" element={<Meeting/> } />
+        <Route path="/webinars" element={<Webinars/> } />
+        <Route path="/startupAsked" element={<MentorAsked/> } />
         {/*testing purposes  */}
         
         {user && (

@@ -1,4 +1,10 @@
 const mongoose = require("mongoose");
+const Startup = new mongoose.Schema({
+  name: String,
+  id:mongoose.Schema.Types.ObjectId,
+  email:String,
+  mobile:String
+});
 
 const MentorSchema = new mongoose.Schema({
   name: {
@@ -65,6 +71,10 @@ const MentorSchema = new mongoose.Schema({
     ref: "User",
     required: true,
   },
+  webinarAsked:[Startup],
+  webinar:{
+    type:Boolean,
+  }
 }); // Add timestamps to track createdAt and updatedAt
 
 module.exports = mongoose.model("Mentor", MentorSchema);

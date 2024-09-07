@@ -6,6 +6,7 @@ import twitter from "../../assets/x.webp";
 import facebook from "../../assets/facebook.png";
 import Post from "../social/posts";
 import axiosHeader from "../../axiosHeader";
+import CreateWebinar from "./createWebinar";
 // Data object for mentors
 const mentorData = {
   logo: mentorLogo,
@@ -143,6 +144,9 @@ const MentorProfile = () => {
           ))}
           
         </div>
+        <div>
+            <CreateWebinar/>
+          </div>
         <div className="w-full px-6 py-10 bg-gradient-to-r from-indigo-600 to-blue-500 rounded-lg mt-8 shadow-lg">
   <div className="mx-auto max-w-screen-lg lg:grid lg:grid-cols-5 lg:gap-6 items-center">
     {/* Left Side: Text */}
