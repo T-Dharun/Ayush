@@ -8,7 +8,6 @@ exports.putMentorData = async (req, res) => {
   if (!step || !data) {
     return res.status(400).json({ message: "Step and data are required" });
   }
-
   // Ensure userId is available from the request (auth middleware should add this)
   const userId = req.user.id;
   if (!userId) {
@@ -52,7 +51,8 @@ exports.putMentorData = async (req, res) => {
     }
 
     if (step === 2) {
-      const { addressLine, state, district, pincode, linkedin, website } = data.address;
+      const { addressLine, state, district, pincode, linkedin, website } =
+        data.address;
 
       let mentor = await Mentor.findOne({ userId: userObjectId });
       if (!mentor) {
@@ -75,8 +75,7 @@ exports.putMentorData = async (req, res) => {
     }
     if (step === 3) {
       let user = await User.findOne({ _id: userObjectId });
-
-      user.role = 'mentor'
+      user.role = "mentor";
       await user.save();
 
       let mentor = await Mentor.findOne({ userId: userObjectId });
@@ -100,29 +99,68 @@ exports.putMentorData = async (req, res) => {
   }
 };
 
+// Controller function with pagination
+exports.getAllMentorData = async (req, res) => {
+  try {
+    const page = parseInt(req.query.page) || 1; // Default to page 1 if not specified
+    const limit = parseInt(req.query.limit) || 10; // Default to 10 results per page
+    const skip = (page - 1) * limit;
 
+    // Get total count for pagination
+    const total = await Mentor.countDocuments();
+
+    // Fetch paginated mentors
+    const mentors = await Mentor.find().skip(skip).limit(limit);
+
+    // Send paginated response
+    res.status(200).json({
+      data: mentors,
+      currentPage: page,
+      totalPages: Math.ceil(total / limit),
+      totalItems: total,
+    });
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send("Server error");
+  }
+};
+
+exports.getMentorById = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const mentorId = mongoose.Types.ObjectId(req.params.id);
+    let mentor = await Mentor.findById(mentorId);
+    if (!mentor) {
+      mentor = await Mentor.findOne({ userId: id });
+      if (!mentor) {
+        return res.status(404).json({ message: "Mentor not found" });
+      }
+    }
+    res.status(200).json({ mentor });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Server error" });
+  }
+};
 exports.getWebinars = async (req, res) => {
   try {
-    let {data}=req.body;
-    console.log("Dharun")
+    let { data } = req.body;
+    console.log("Dharun");
     console.log(data);
-    let mentor = await Mentor.find({webinar:true});
+    let mentor = await Mentor.find({ webinar: true });
     //console.log(mentor);
-    return res
-      .status(200)
-      .json({ message: "updated successfully", mentor });
-  }
-  catch(error){
+    return res.status(200).json({ message: "updated successfully", mentor });
+  } catch (error) {
     console.error("Error:", error);
     return res
       .status(500)
       .json({ message: "Server error", error: error.message });
   }
-}
+};
 
 exports.setWebinars = async (req, res) => {
-   const { data } = req.body; // Remove if not used
-// console.log(data)
+  const { data } = req.body; // Remove if not used
+  // console.log(data)
   const userId = req.user?.id; // Optional chaining for safety
 
   if (!userId) {
@@ -131,7 +169,7 @@ exports.setWebinars = async (req, res) => {
 
   try {
     let mentor = await Mentor.findOne({ userId: userId });
-    
+
     if (!mentor) {
       return res.status(404).json({ message: "Mentor not found" });
     }
@@ -145,11 +183,13 @@ exports.setWebinars = async (req, res) => {
     //   await mentor.save();
     // }
 
-    console.log('Mentor updated:', mentor);
+    console.log("Mentor updated:", mentor);
 
     return res.status(200).json({ message: "Updated successfully", mentor });
   } catch (error) {
     console.error("Error updating mentor:", error);
-    return res.status(500).json({ message: "Server error", error: error.message });
+    return res
+      .status(500)
+      .json({ message: "Server error", error: error.message });
   }
 };

@@ -37,7 +37,7 @@ const bot = () => {
       <Image
         src={ChatIcon}    // Path to your bot image
         alt="Chatbot"
-        boxSize="150px"    // Adjust this to increase/decrease the image size
+        boxSize="100px"    // Adjust this to increase/decrease the image size
         borderRadius="full" // Keeps the image circular
         cursor="pointer"    // Adds a pointer cursor to indicate it's clickable
         boxShadow="lg"      // Optional: Adds a shadow around the image

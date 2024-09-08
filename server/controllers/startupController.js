@@ -10,162 +10,33 @@ const transporter = nodemailer.createTransport({
   port: 587, // or use 587 for STARTTLS
   secure: true,
 });
-exports.createStartupStepOne = async (req, res) => {
-  const {
-    name,
-    typeOfEntity,
-    dateOfIncorporation,
-    registrationNumber,
-    registeredAddress,
-    contactPerson,
-    manufacturingUnitAddress,
-    productCategory,
-    productionCapacity,
-  } = req.body;
-  try {
-    // Ensure userId is an ObjectId
-    const userId = mongoose.Types.ObjectId(req.user.id);
-    //console.log(userId);
-    // Find or create the startup document
-    let startup = await Startup.findOne({ userId });
-
-    if (startup) {
-      // Update existing document
-      startup = Object.assign(startup, {
-        name,
-        typeOfEntity,
-        dateOfIncorporation,
-        registrationNumber,
-        registeredAddress,
-        contactPerson,
-        manufacturingUnitAddress,
-        productCategory,
-        productionCapacity,
-        progress: "step1", // Ensure consistent field name
-      });
-    } else {
-      // Create new document
-      startup = new Startup({
-        name,
-        typeOfEntity,
-        dateOfIncorporation,
-        registrationNumber,
-        registeredAddress,
-        contactPerson,
-        manufacturingUnitAddress,
-        productCategory,
-        productionCapacity,
-        progress: "step1", // Ensure consistent field name
-        userId, // Ensure userId is set correctly
-      });
-    }
-
-    await startup.save();
-    res.status(201).json(startup);
-  } catch (err) {
-    console.error(err);
-    res.status(500).send("Server error");
-  }
-};
-exports.createStartupStepTwo = async (req, res) => {
-  const {
-    gmpCertificate,
-    coppCertificate,
-    ayushLicenseCertificate,
-    manufacturingLicense,
-    companyIncorporationCertificate,
-  } = req.body;
-
-  try {
-    // Ensure userId is an ObjectId
-    const userId = mongoose.Types.ObjectId(req.user.id);
-
-    const startup = await Startup.findOne({ userId });
-
-    if (!startup) {
-      return res.status(404).json({ msg: "Startup not found" });
-    }
-
-    // Update the existing startup with document details
-    startup.progress = "step2";
-    startup.documents = {
-      gmpCertificate,
-      coppCertificate,
-      ayushLicenseCertificate,
-      manufacturingLicense,
-      companyIncorporationCertificate,
-    };
-    // Ensure consistent field name
-    await startup.save();
-    res.status(200).json(startup);
-  } catch (err) {
-    console.error(err.message);
-    res.status(500).send("Server error");
-  }
-};
-exports.createStartupStepThree = async (req, res) => {
-  const {
-    panCard,
-    gstRegistrationNo,
-    ieCode,
-    capitalInvestment,
-    bankAccountDetails,
-  } = req.body;
-
-  try {
-    // Ensure userId is an ObjectId
-    const userId = mongoose.Types.ObjectId(req.user.id);
-
-    const startup = await Startup.findOne({ userId });
-
-    if (!startup) {
-      return res.status(404).json({ msg: "Startup not found" });
-    }
-
-    // Update the existing startup with financial details
-    startup.panCard = panCard;
-    startup.gstRegistrationNo = gstRegistrationNo;
-    startup.ieCode = ieCode;
-    startup.capitalInvestment = capitalInvestment;
-    startup.bankDetails = bankAccountDetails;
-    startup.progress = "step3"; // Ensure consistent field name
-    startup.status = "initial";
-
-    await startup.save();
-    res.status(200).json(startup);
-  } catch (err) {
-    console.error(err.message);
-    res.status(500).send("Server error");
-  }
-};
-exports.getStartups = async (req, res) => {
-  try {
-    // Ensure userId is an ObjectId
-    const userId = mongoose.Types.ObjectId(req.user.id);
-    console.log(req.user.id);
-    const startups = await Startup.find({ userId });
-    res.json(startups);
-  } catch (err) {
-    console.error(err.message);
-    res.status(500).send("Server error");
-  }
-};
 
 exports.getStartupById = async (req, res) => {
   try {
-    // Ensure req.params.id is an ObjectId
-    const userId = mongoose.Types.ObjectId(req.user.id);
-    //const startupId = mongoose.Types.ObjectId(req.params.id);
-    const startup = await Startup.findOne({ userId });
+    // Extract the startupId from req.params and ensure it's an ObjectId
+    const id = mongoose.Types.ObjectId(req.user.id);
+    // Search for the startup by its _id field
+    let startup = await Startup.findOne({ userId: id });
     if (!startup) {
-      return res.status(404).json({ msg: "Startup not found" });
+      startup = await Startup.findOne({ userId: id });
+      if (!startup) {
+        return res.status(404).json({ msg: "Startup not found" });
+      }
     }
+    // Send the found startup data
     res.json(startup);
   } catch (err) {
     console.error(err.message);
+
+    // Handle potential errors such as invalid ObjectId
+    if (err.kind === "ObjectId") {
+      return res.status(400).json({ msg: "Invalid startup ID" });
+    }
+
     res.status(500).send("Server error");
   }
 };
+
 exports.sendMail = async (req, res) => {
   const { to, subject, text, html } = req.body;
 
@@ -326,8 +197,8 @@ exports.createStartup = async (req, res) => {
             ifscCode:
               data.bankDetails.ifscCode || startup.bankDetails?.ifscCode,
           };
-          startup.progress=`6`
-          startup.status="initial";
+          startup.progress = `6`;
+          startup.status = "initial";
         }
 
         // Preserve file paths if they exist and only update the fields that are provided
@@ -379,6 +250,40 @@ exports.createStartup = async (req, res) => {
       .json({ message: "Data updated successfully", data: startup });
   } catch (error) {
     console.error(error);
+    res.status(500).json({ message: "Server error" });
+  }
+};
+// Route to get paginated startups
+exports.getAllStartupsData = async (req, res) => {
+  try {
+    // Extract page and limit from query params, set default values
+    const page = parseInt(req.query.page) || 1; // Default page 1
+    const limit = parseInt(req.query.limit) || 10; // Default limit 10
+
+    // Ensure the page and limit are valid integers
+    if (isNaN(page) || isNaN(limit) || page < 1 || limit < 1) {
+      return res.status(400).json({ message: "Invalid pagination parameters" });
+    }
+
+    const skip = (page - 1) * limit;
+
+    // Fetch startups with pagination
+    const startups = await Startup.find({ status: "approved" })
+      .skip(skip)
+      .limit(limit)
+      .sort({ createdAt: -1 }); // Optional: Sort by latest created
+
+    // Total count for pagination metadata (for the filtered `approved` startups only)
+    const totalCount = await Startup.countDocuments({ status: "approved" });
+
+    res.status(200).json({
+      startups,
+      totalPages: Math.ceil(totalCount / limit),
+      currentPage: page,
+      totalCount: totalCount, // Optional: Include total number of startups
+    });
+  } catch (error) {
+    console.error("Error: " + error);
     res.status(500).json({ message: "Server error" });
   }
 };

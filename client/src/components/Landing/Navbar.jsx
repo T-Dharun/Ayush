@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import LOGO from '../../assets/LOGO.jpeg';
-import { useLocation, Link } from 'react-router-dom';
+import { useToast } from '@chakra-ui/react';
+import { useLocation, Link,useNavigate } from 'react-router-dom';
 import { FaUserCircle } from 'react-icons/fa';
 import axiosHeader from '../../axiosHeader';
+import { Toast } from 'react-bootstrap';
 const Navbar = () => {
-
+  const toast=useToast();
   const [isStartupDropdownOpen, setIsStartupDropdownOpen] = useState(false);
   const [isEnablerDropdownOpen, setIsEnablerDropdownOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
@@ -13,7 +15,7 @@ const Navbar = () => {
   const [userDetails, setUserDetails] = useState(null);
   const user = JSON.parse(localStorage.getItem('user'));
   const data = JSON.parse(localStorage.getItem('data'));
-  console.log(data)
+  
   const location = useLocation();
   //console.log("nav"+user.token);
   const closeDropdowns = () => {
@@ -41,11 +43,9 @@ const Navbar = () => {
   };
   useEffect(() => {
     if (isLoggedIn) {
-      console.log('Fetching user data...');
       fetch('http://localhost:5000/user')
         .then(response => response.json())
         .then(data => {
-          console.log('User data fetched:', data);
           setUserDetails(data);
         })
         .catch(error => console.error('Error fetching user data:', error));
@@ -55,8 +55,30 @@ const Navbar = () => {
   const handleAvatarClick = () => {
     setShowPopup(!showPopup);
   };
+  const navigate=useNavigate();
   const handleStatus=()=>{
-
+    
+  }
+  const handleProfile=()=>{
+    const user = JSON.parse(localStorage.getItem('data'));
+    if(user.role=='startup'){
+      navigate('/startup/'+user._id);
+    }
+    else if(user.role=='investor'){
+      navigate('/investor/'+user._id);
+    }
+    else if(user.role=='mentor')  {
+      navigate('/mentor/'+user._id);
+    }
+    else{
+      toast({
+        title: 'sorry we don\'t have profile public',
+        description: 'Please contact us',
+        status: 'error',
+        duration: 4000,
+        isClosable: true,
+      });
+    }
   }
   return (
     <nav
@@ -79,8 +101,8 @@ const Navbar = () => {
               type="search"
               className="w-full py-2 pl-10 text-sm text-gray-700 rounded-full mr-[280px] w-[400px] "
               placeholder="Search..." style={{ border: '2px solid black' }}
+              onClick={() => {navigate('/search')}}
             />
-
             <svg
               className="absolute top-1/2 transform -translate-y-1/2 left-3 h-5 w-5 text-gray-400"
               fill="none"
@@ -223,6 +245,11 @@ const Navbar = () => {
                               <span className="text-sm text-gray-600">Home</span>
                             </li>
                           </Link>
+                          <li className="py-2 px-4 hover:bg-gray-100 rounded-md cursor-pointer transition duration-200 ease-in-out transform hover:translate-x-2"
+                              onClick={()=>handleProfile()}
+                            >
+                              <span className="text-sm text-gray-600">Profile</span>
+                            </li>
                             <li className="py-2 px-4 hover:bg-gray-100 rounded-md cursor-pointer transition duration-200 ease-in-out transform hover:translate-x-2"
                               onClick={()=>handleStatus()}
                             >

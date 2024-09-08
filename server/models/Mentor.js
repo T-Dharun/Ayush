@@ -1,9 +1,9 @@
 const mongoose = require("mongoose");
 const Startup = new mongoose.Schema({
   name: String,
-  id:mongoose.Schema.Types.ObjectId,
-  email:String,
-  mobile:String
+  id: mongoose.Schema.Types.ObjectId,
+  email: String,
+  mobile: String,
 });
 
 const MentorSchema = new mongoose.Schema({
@@ -20,12 +20,12 @@ const MentorSchema = new mongoose.Schema({
     trim: true,
   },
   logo: {
-    type:[String],
-    default:[]
+    type: [String],
+    default: [],
   },
   startupState: {
     type: [String],
-    default:[]
+    default: [],
   },
   interestedCategorySector: {
     type: String,
@@ -59,22 +59,22 @@ const MentorSchema = new mongoose.Schema({
     type: String,
     trim: true,
   },
-  status:{
-    type:String,
-    trim:true
+  status: {
+    type: String,
+    trim: true,
   },
-  step:{
-    type:Number
+  step: {
+    type: Number,
   },
   userId: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "User",
     required: true,
   },
-  webinarAsked:[Startup],
-  webinar:{
-    type:Boolean,
-  }
-}); // Add timestamps to track createdAt and updatedAt
+  webinarAsked: [Startup],
+  webinar: {
+    type: Boolean,
+  },
+});
 
 module.exports = mongoose.model("Mentor", MentorSchema);

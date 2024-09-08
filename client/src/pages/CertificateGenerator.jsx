@@ -52,11 +52,10 @@ const CertificateGenerator = () => {
       pageMargins: [40, 60, 40, 60],
       background: [
         {
-          // Text-based background for a subtle watermark effect
           text: 'Certificate',
-          color: '#f0f0f0',
+          color: '#e0f5e0', // Light green for a subtle background
           bold: true,
-          fontSize: 100,
+          fontSize: 150,
           opacity: 0.1,
           alignment: 'center',
           absolutePosition: { x: 0, y: 300 },
@@ -64,9 +63,9 @@ const CertificateGenerator = () => {
         },
       ],
       content: [
-        // Header
+        // Header Section
         {
-          text: 'CERTIFICATE NO:\nDIPP82185',
+          text: `CERTIFICATE NO: ${data._id.slice(-6)}`,
           style: 'certificateNo',
           alignment: 'right',
           margin: [0, 0, 0, 20],
@@ -75,109 +74,143 @@ const CertificateGenerator = () => {
           text: 'CERTIFICATE OF RECOGNITION',
           style: 'header',
           alignment: 'center',
+          margin: [0, 0, 0, 30],
+        },
+        {
+          canvas: [{ type: 'rect', x: 0, y: 0, w: 515, h: 2, lineColor: '#4caf50' }],
           margin: [0, 0, 0, 20],
         },
         {
-          canvas: [{ type: 'rect', x: 0, y: 0, w: 515, h: 2, r: 0, lineColor: '#4a90e2' }],
-        },
-        { text: '\n\n' },
-
-        // Main Content
-        {
-          text: `This is to certify that ${data?.companyName} incorporated as a Private Limited Company on ${data?.incorporationDate}, is recognized as a startup by the Department for Promotion of Industry and Internal Trade. The startup is working in ${data?.industry} Industry and ${data?.sector} sector as self-certified by them.`,
+          text: `This is to certify that ${data?.name || 'Name of the Company'}, incorporated as a Private Limited Company on ${new Date().toLocaleDateString()}, is recognized as a startup by the Department for Promotion of Industry and Internal Trade. The startup is working in AYUSH Industry and ${data?.sector || 'Sector Name'} sector as self-certified by them.`,
           style: 'normalText',
           alignment: 'justify',
+          margin: [0, 20, 0, 20],
         },
-        { text: '\n\n\n' },
-
-        // Details Section
         {
-          text: 'This certificate shall only be valid for the Entity up to Ten years from the date of its incorporation\nonly if its turnover for any of the financial years has not extended ₹ 100 Cr.',
+          text: 'This certificate shall only be valid for the Entity up to Ten years from the date of its incorporation only if its turnover for any of the financial years has not exceeded ₹ 100 Cr.',
           style: 'smallText',
           alignment: 'center',
-          margin: [0, 0, 0, 20],
+          margin: [0, 10, 0, 20],
         },
         {
           columns: [
-            { text: '28-06-2021\nDATE OF ISSUE', style: 'date', alignment: 'left' },
-            { text: '20-05-2028\nVALID UPTO', style: 'date', alignment: 'right' },
-          ],
-        },
-        { text: '\n\n\n\n' },
-
-        // Bottom Section
-        {
-          columns: [
             {
-              canvas: [{ type: 'rect', x: 0, y: 0, w: 150, h: 150, r: 100, lineColor: '#4a90e2' }],
+              text: '28-06-2021\nDATE OF ISSUE',
+              style: 'date',
+              alignment: 'left',
+              margin: [0, 0, 20, 0],
             },
             {
-              text: `${data?.companyName}`,
-              style: 'bottomText',
+              text: '20-05-2028\nVALID UPTO',
+              style: 'date',
               alignment: 'right',
-              margin: [0, 60, 0, 0],
-            },
-            {
-              text: 'www.AirCrewsAviation.com',
-              style: 'bottomText',
-              alignment: 'right',
-              margin: [0, 0, 0, 0],
+              margin: [20, 0, 0, 0],
             },
           ],
         },
+        { text: '\n\n\n' },
+    
+        // Footer Section
         {
           columns: [
             {
-              text: '#startupindia',
+              canvas: [{ type: 'rect', x: 0, y: 0, w: 150, h: 150, r: 75, lineColor: '#4caf50' }],
+              margin: [0, 10, 0, 0],
+            },
+            {
+              text: `${data?.name || 'Name of the Company'}`,
+              style: 'bottomText',
+              alignment: 'right',
+              margin: [0, 20, 0, 0],
+            },
+            {
+              text: `www.${data?.name || 'example'}.com`,
+              style: 'bottomText',
+              alignment: 'right',
+              margin: [0, 0, 0, 10],
+            },
+          ],
+        },
+        {
+          columns: [
+            {
+              text: '#startupAyush',
               style: 'startupIndia',
               alignment: 'right',
-              margin: [0, 0, 0, 0],
+              margin: [0, 10, 0, 0],
             },
           ],
         },
         {
-          canvas: [{ type: 'rect', x: 0, y: 0, w: 515, h: 2, r: 0, lineColor: '#4a90e2' }],
+          canvas: [{ type: 'rect', x: 0, y: 0, w: 515, h: 2, lineColor: '#4caf50' }],
+          margin: [0, 10, 0, 0],
+        },
+        {
+          // Signature Section
+          columns: [
+            {
+              text: '',
+              width: '*',
+            },
+            {
+              text: 'Signature',
+              style: 'signatureText',
+              alignment: 'right',
+              margin: [0, 20, 0, 0],
+            },
+          ],
         },
       ],
       styles: {
         certificateNo: {
-          fontSize: 14,
+          fontSize: 16,
           bold: true,
-          color: '#4a90e2',
+          color: '#4caf50', // Green color for certificate number
+          marginBottom: 15,
         },
         header: {
-          fontSize: 30,
+          fontSize: 36,
           bold: true,
-          color: '#4a90e2',
-          marginBottom: 15,
+          color: '#4caf50', // Green color for header
+          marginBottom: 30,
+          decoration: 'underline',
         },
         normalText: {
           fontSize: 14,
           color: '#333',
-          margin: [0, 5],
+          margin: [0, 20, 0, 20],
         },
         smallText: {
-          fontSize: 10,
-          margin: [0, 5],
+          fontSize: 12,
+          color: '#333',
+          margin: [0, 10, 0, 20],
         },
         date: {
           fontSize: 12,
           bold: true,
+          color: '#333',
           margin: [0, 5],
         },
         bottomText: {
-          fontSize: 14,
-          bold: true,
-          margin: [0, 0, 0, 10],
-        },
-        startupIndia: {
           fontSize: 16,
           bold: true,
-          color: '#4a90e2',
-          margin: [0, 0, 0, 10],
+          color: '#333',
+          margin: [0, 20, 0, 10],
+        },
+        startupIndia: {
+          fontSize: 18,
+          bold: true,
+          color: '#4caf50',
+          margin: [0, 10, 0, 10],
+        },
+        signatureText: {
+          fontSize: 14,
+          color: '#4caf50',
+          margin: [0, 20, 20, 0],
+          borderBottom: '1px solid #4caf50', // Adds a line for signature area
         },
       },
-      // Adding a nice border
+      // Adding a border around the page
       pageBackground: [
         {
           type: 'rect',
@@ -185,12 +218,14 @@ const CertificateGenerator = () => {
           y: 10,
           w: 575,
           h: 822,
-          lineWidth: 3,
-          lineColor: '#4a90e2',
-          dash: { length: 8, space: 6 },
+          lineWidth: 4,
+          lineColor: '#4caf50', // Green border
         },
       ],
     };
+    
+    
+
 
     try {
       pdfMake.createPdf(documentDefinition).download('certificate.pdf');
