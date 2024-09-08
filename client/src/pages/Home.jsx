@@ -1,5 +1,5 @@
 import { useState,useEffect } from "react"
-import { StepViewer, CompanyDetailsForm, TransactionDetailsForm, CertificateForm } from "../components/Home"
+import { CompanyDetailsForm, TransactionDetailsForm, CertificateForm } from "../components/Home"
 import Bot from "../pages/bot"
 import { useNavigate } from "react-router-dom";
 import axios from 'axios';
@@ -73,10 +73,7 @@ const Home = () => {
   return (
     <div className="screen center flex-col gap-5" style={{backgroundColor:"white"}}>
       <section className="w-[48rem]">
-        <StepViewer
-          steps={steps}
-          active={active}
-        />
+        hello
       </section>
       <Bot/>
 
