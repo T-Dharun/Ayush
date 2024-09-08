@@ -1,4 +1,5 @@
-import React from 'react';
+import React,{useRef} from 'react';
+
 import innovation from '../../assets/innovation.avif';
 import quality from '../../assets/quality.avif';
 import community from '../../assets/community.avif';
@@ -33,7 +34,7 @@ const cards = [
 
 function Card({ title, text, link, image }) {
     return (
-      <div className="relative w-80 h-80 overflow-hidden shadow-lg group transition-transform duration-300 transform hover:scale-105">
+      <div id="#ecoSystem" className="relative w-80 h-80 overflow-hidden shadow-lg group transition-transform duration-300 transform hover:scale-105">
         {/* Image section */}
         <img src={image} alt={title} className="absolute inset-0 w-full h-full object-cover object-center transition-transform duration-300 group-hover:opacity-25" />
         {/* Text section */}

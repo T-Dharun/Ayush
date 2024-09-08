@@ -7,9 +7,7 @@ const Mentorship = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const navigate = useNavigate();
-
   const API_URL = `http://localhost:5000/api/mentor`;
-
   const getWebinars = async () => {
     let a = JSON.parse(localStorage.getItem('user'));
     let d = JSON.parse(localStorage.getItem('data'));

@@ -24,6 +24,8 @@ import Mentorship from "./components/mentor/Mentorship";
 import ProductDevelopment from "./components/Landing/ProductDevelopment";
 import CommunityEngagement from "./components/Landing/CommunityEngagement";
 import KeysAndInitiativesPages from "./components/Landing/KeysAndIntiativesPages";
+import Events from "./components/events/Events";
+import EventsPage from "./components/events/EventPage";
 const App = () => {
   const [data, setData] = useState(null);
   const [type,setType]=useState(0);
@@ -59,6 +61,8 @@ const App = () => {
       <Routes>
         {/* //development purpose */}
         <Route path='/search' element={<SearchBar />} />
+        <Route path="/events" element={<Events />} />
+        <Route path="/events-page/:id" element={<EventsPage />} />
         <Route path='product-development' element={<ProductDevelopment />} />
         <Route path='community-engagement' element={<CommunityEngagement />} />
         <Route path='/keys-and-initiatives/:id' element={<KeysAndInitiativesPages />} />
