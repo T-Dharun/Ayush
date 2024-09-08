@@ -5,8 +5,7 @@ import twitter from "../../assets/x.webp";
 import facebook from "../../assets/facebook.png";
 import Post from "../social/posts";
 import axiosHeader from "../../axiosHeader";
-import { useParams } from "react-router-dom";
-
+// Data object for mentors
 const MentorProfile = () => {
   const { id } = useParams();
   const [mentorData, setMentorData] = useState({});
@@ -122,79 +121,66 @@ const MentorProfile = () => {
           </div>
         </div>
 
-        {/* Right Side - Expertise */}
-        <div className="flex-1 md:w-2/3 bg-white p-6 rounded-lg">
-          <h2 className="text-2xl font-bold mb-4">Mentor Expertise</h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-6">
-              <div className="bg-gray-200 p-4 rounded-lg text-center">
-                <p className="text-gray-700 text-sm">Field Of Experinece</p>
-                <p className="font-bold text-lg">AYUSH</p>
-              </div>
-              <div className="bg-gray-200 p-4 rounded-lg text-center">
-                <p className="text-gray-700 text-sm">Years Of Experinece</p>
-                <p className="font-bold text-lg">{Math.round(Math.random()*100)}</p>
-              </div>
-              <div className="bg-gray-200 p-4 rounded-lg text-center">
-                <p className="text-gray-700 text-sm">Industry</p>
-                <p className="font-bold text-lg">{mentorData.startupState}</p>
-              </div>
-              <div className="bg-gray-200 p-4 rounded-lg text-center">
-                <p className="text-gray-700 text-sm">Achievements</p>
-                <p className="font-bold text-lg">12</p>
-              </div>
-              <div className="bg-gray-200 p-4 rounded-lg text-center">
-                <p className="text-gray-700 text-sm">Website</p>
-                <p className="font-bold text-lg">{mentorData.website}</p>
-              </div>
-          </div>
-          <div className="w-full px-6 py-10 bg-gradient-to-r from-indigo-600 to-blue-500 rounded-lg mt-8 shadow-lg">
-            <div className="mx-auto max-w-screen-lg lg:grid lg:grid-cols-5 lg:gap-6 items-center">
-              {/* Left Side: Text */}
-              <div className="lg:col-span-3 text-white">
-                <h1 className="text-2xl font-extrabold sm:text-3xl mb-2">
-                  Stay Updated with {mentorData.name}
-                </h1>
-                <p className="font-medium text-lg mb-4">
-                  Subscribe to our newsletter for expert tips and latest updates on how to successfully register your Ayush startup.
-                </p>
-              </div>
-              {/* Right Side: Form */}
-              <div className="lg:col-span-2">
-                <form
-                  onSubmit={handleSubscribe}
-                  className="flex flex-col sm:flex-row items-center justify-center w-full"
-                >
-                  <input
-                    type="email"
-                    placeholder="Enter your email"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    className="flex-grow rounded-lg p-3 text-black mb-4 sm:mb-0 sm:mr-4 focus:outline-none"
-                    required
-                  />
-                  <button
-                    type="submit"
-                    className="w-full sm:w-auto bg-white text-indigo-600 font-bold px-6 py-3 rounded-lg hover:bg-gray-100 transition-all"
-                    disabled={loading}
-                  >
-                    {loading ? "Subscribing..." : "Subscribe"}
-                  </button>
-                </form>
-                {status.message && (
-                  <p
-                    className={`mt-3 text-center ${
-                      status.error ? "text-red-500" : "text-green-500"
-                    }`}
-                  >
-                    {status.message}
-                  </p>
-                )}
-              </div>
+      {/* Right Side - Expertise */}
+      <div className="flex-1 md:w-2/3 bg-white p-6 rounded-lg">
+        <h2 className="text-2xl font-bold mb-4">Mentor Expertise</h2>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-6">
+          {mentorData.expertise.map((item, index) => (
+            <div key={index} className="bg-gray-200 p-4 rounded-lg text-center">
+              <p className="text-gray-700 text-sm">{item[0]}</p>
+              <p className="font-bold text-lg">{item[1]}</p>
             </div>
-          </div>
+          ))}
+          
         </div>
+        <div className="w-full px-6 py-10 bg-gradient-to-r from-indigo-600 to-blue-500 rounded-lg mt-8 shadow-lg">
+  <div className="mx-auto max-w-screen-lg lg:grid lg:grid-cols-5 lg:gap-6 items-center">
+    {/* Left Side: Text */}
+    <div className="lg:col-span-3 text-white">
+      <h1 className="text-2xl font-extrabold sm:text-3xl mb-2">
+        Stay Updated with {mentorData.name}
+      </h1>
+      <p className="font-medium text-lg mb-4">
+        Subscribe to our newsletter for expert tips and latest updates on how to successfully register your Ayush startup.
+      </p>
+    </div>
+    {/* Right Side: Form */}
+    <div className="lg:col-span-2">
+      <form
+        onSubmit={handleSubscribe}
+        className="flex flex-col sm:flex-row items-center justify-center w-full"
+      >
+        <input
+          type="email"
+          placeholder="Enter your email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          className="flex-grow rounded-lg p-3 text-black mb-4 sm:mb-0 sm:mr-4 focus:outline-none"
+          required
+        />
+        <button
+          type="submit"
+          className="w-full sm:w-auto bg-white text-indigo-600 font-bold px-6 py-3 rounded-lg hover:bg-gray-100 transition-all"
+          disabled={loading}
+        >
+          {loading ? "Subscribing..." : "Subscribe"}
+        </button>
+      </form>
+      {status.message && (
+        <p
+          className={`mt-3 text-center ${
+            status.error ? "text-red-500" : "text-green-500"
+          }`}
+        >
+          {status.message}
+        </p>
+      )}
+    </div>
+  </div>
+</div>
       </div>
-      <Post />
+    </div>
+    <Post/>
     </>
   );
 };

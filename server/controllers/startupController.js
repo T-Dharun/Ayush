@@ -10,143 +10,15 @@ const transporter = nodemailer.createTransport({
   port: 587, // or use 587 for STARTTLS
   secure: true,
 });
-exports.createStartupStepOne = async (req, res) => {
-  const {
-    name,
-    typeOfEntity,
-    dateOfIncorporation,
-    registrationNumber,
-    registeredAddress,
-    contactPerson,
-    manufacturingUnitAddress,
-    productCategory,
-    productionCapacity,
-  } = req.body;
-  try {
-    // Ensure userId is an ObjectId
-    const userId = mongoose.Types.ObjectId(req.user.id);
-    //console.log(userId);
-    // Find or create the startup document
-    let startup = await Startup.findOne({ userId });
-
-    if (startup) {
-      // Update existing document
-      startup = Object.assign(startup, {
-        name,
-        typeOfEntity,
-        dateOfIncorporation,
-        registrationNumber,
-        registeredAddress,
-        contactPerson,
-        manufacturingUnitAddress,
-        productCategory,
-        productionCapacity,
-        progress: "step1", // Ensure consistent field name
-      });
-    } else {
-      // Create new document
-      startup = new Startup({
-        name,
-        typeOfEntity,
-        dateOfIncorporation,
-        registrationNumber,
-        registeredAddress,
-        contactPerson,
-        manufacturingUnitAddress,
-        productCategory,
-        productionCapacity,
-        progress: "step1", // Ensure consistent field name
-        userId, // Ensure userId is set correctly
-      });
-    }
-
-    await startup.save();
-    res.status(201).json(startup);
-  } catch (err) {
-    console.error(err);
-    res.status(500).send("Server error");
-  }
-};
-exports.createStartupStepTwo = async (req, res) => {
-  const {
-    gmpCertificate,
-    coppCertificate,
-    ayushLicenseCertificate,
-    manufacturingLicense,
-    companyIncorporationCertificate,
-  } = req.body;
-
-  try {
-    // Ensure userId is an ObjectId
-    const userId = mongoose.Types.ObjectId(req.user.id);
-
-    const startup = await Startup.findOne({ userId });
-
-    if (!startup) {
-      return res.status(404).json({ msg: "Startup not found" });
-    }
-
-    // Update the existing startup with document details
-    startup.progress = "step2";
-    startup.documents = {
-      gmpCertificate,
-      coppCertificate,
-      ayushLicenseCertificate,
-      manufacturingLicense,
-      companyIncorporationCertificate,
-    };
-    // Ensure consistent field name
-    await startup.save();
-    res.status(200).json(startup);
-  } catch (err) {
-    console.error(err.message);
-    res.status(500).send("Server error");
-  }
-};
-exports.createStartupStepThree = async (req, res) => {
-  const {
-    panCard,
-    gstRegistrationNo,
-    ieCode,
-    capitalInvestment,
-    bankAccountDetails,
-  } = req.body;
-
-  try {
-    // Ensure userId is an ObjectId
-    const userId = mongoose.Types.ObjectId(req.user.id);
-
-    const startup = await Startup.findOne({ userId });
-
-    if (!startup) {
-      return res.status(404).json({ msg: "Startup not found" });
-    }
-
-    // Update the existing startup with financial details
-    startup.panCard = panCard;
-    startup.gstRegistrationNo = gstRegistrationNo;
-    startup.ieCode = ieCode;
-    startup.capitalInvestment = capitalInvestment;
-    startup.bankDetails = bankAccountDetails;
-    startup.progress = "step3"; // Ensure consistent field name
-    startup.status = "initial";
-
-    await startup.save();
-    res.status(200).json(startup);
-  } catch (err) {
-    console.error(err.message);
-    res.status(500).send("Server error");
-  }
-};
 
 exports.getStartupById = async (req, res) => {
   try {
     // Extract the startupId from req.params and ensure it's an ObjectId
-    const startupId = mongoose.Types.ObjectId(req.params.id);
+    const id = mongoose.Types.ObjectId(req.user.id);
     // Search for the startup by its _id field
-    let startup = await Startup.findById(startupId);
+    let startup = await Startup.findOne({ userId: id });
     if (!startup) {
-      startup = await Startup.findOne({ userId: startupId });
+      startup = await Startup.findOne({ userId: id });
       if (!startup) {
         return res.status(404).json({ msg: "Startup not found" });
       }

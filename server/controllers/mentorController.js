@@ -75,7 +75,6 @@ exports.putMentorData = async (req, res) => {
     }
     if (step === 3) {
       let user = await User.findOne({ _id: userObjectId });
-
       user.role = "mentor";
       await user.save();
 
@@ -141,5 +140,55 @@ exports.getMentorById = async (req, res) => {
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Server error" });
+  }
+};
+exports.getWebinars = async (req, res) => {
+  try {
+    let { data } = req.body;
+    console.log("Dharun");
+    console.log(data);
+    let mentor = await Mentor.find({ webinar: true });
+    //console.log(mentor);
+    return res.status(200).json({ message: "updated successfully", mentor });
+  } catch (error) {
+    console.error("Error:", error);
+    return res
+      .status(500)
+      .json({ message: "Server error", error: error.message });
+  }
+};
+
+exports.setWebinars = async (req, res) => {
+  const { data } = req.body; // Remove if not used
+  // console.log(data)
+  const userId = req.user?.id; // Optional chaining for safety
+
+  if (!userId) {
+    return res.status(401).json({ message: "User not authenticated" });
+  }
+
+  try {
+    let mentor = await Mentor.findOne({ userId: userId });
+
+    if (!mentor) {
+      return res.status(404).json({ message: "Mentor not found" });
+    }
+    if (data.role == "mentor") {
+      mentor.webinar = true; // Assuming you want to set this field to true
+      await mentor.save();
+    }
+    // else{
+    //   mentor.webinarAsked=[...mentor.webinarAsked,{id:data._id,name:data.name,email:data.email,mobile:data.mobile}];
+    //   await mentor.save();
+    // }
+
+    console.log("Mentor updated:", mentor);
+
+    return res.status(200).json({ message: "Updated successfully", mentor });
+  } catch (error) {
+    console.error("Error updating mentor:", error);
+    return res
+      .status(500)
+      .json({ message: "Server error", error: error.message });
   }
 };

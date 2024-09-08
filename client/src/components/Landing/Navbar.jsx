@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import LOGO from '../../assets/LOGO.jpeg';
+import { useToast } from '@chakra-ui/react';
 import { useLocation, Link,useNavigate } from 'react-router-dom';
 import { FaUserCircle } from 'react-icons/fa';
 import axiosHeader from '../../axiosHeader';
+import { Toast } from 'react-bootstrap';
 const Navbar = () => {
-
+  const toast=useToast();
   const [isStartupDropdownOpen, setIsStartupDropdownOpen] = useState(false);
   const [isEnablerDropdownOpen, setIsEnablerDropdownOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
@@ -61,6 +63,21 @@ const Navbar = () => {
     const user = JSON.parse(localStorage.getItem('data'));
     if(user.role=='startup'){
       navigate('/startup/'+user._id);
+    }
+    else if(user.role=='investor'){
+      navigate('/investor/'+user._id);
+    }
+    else if(user.role=='mentor')  {
+      navigate('/mentor/'+user._id);
+    }
+    else{
+      toast({
+        title: 'sorry we don\'t have profile public',
+        description: 'Please contact us',
+        status: 'error',
+        duration: 4000,
+        isClosable: true,
+      });
     }
   }
   return (

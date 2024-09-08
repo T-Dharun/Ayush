@@ -1,5 +1,6 @@
-const Startup = require('../models/Startup');
-const User = require('../models/User');
+const mongoose = require("mongoose");
+const Startup = require("../models/Startup");
+const User = require("../models/User");
 const nodemailer = require("nodemailer");
 const transporter = nodemailer.createTransport({
   service: "gmail",
@@ -12,7 +13,7 @@ const transporter = nodemailer.createTransport({
 });
 //Fetch startups by status
 exports.getStartupsByStatus = async (req, res, st) => {
-  let status = st === 'approved' ? st : getStatusBasedOnRole(req.user.role);
+  let status = st === "approved" ? st : getStatusBasedOnRole(req.user.role);
 
   if (!status) {
     return res.status(401).json({ message: "Unauthorized" });
@@ -23,7 +24,7 @@ exports.getStartupsByStatus = async (req, res, st) => {
     res.json(startups);
   } catch (err) {
     console.error(err.message);
-    res.status(500).send('Server error');
+    res.status(500).send("Server error");
   }
 };
 
@@ -32,17 +33,16 @@ exports.getStartupById = async (req, res) => {
   try {
     const startup = await Startup.findById(req.params.id);
     if (!startup) {
-      return res.status(404).json({ msg: 'Startup not found' });
+      return res.status(404).json({ msg: "Startup not found" });
     }
     res.json(startup);
   } catch (err) {
     console.error(err.message);
-    res.status(500).send('Server error');
+    res.status(500).send("Server error");
   }
 };
 exports.updateStartupStatus = async (req, res, status) => {
-  status = status === 'verify' ? getStatusBasedOnVerify(req.user.role) : status;
-
+  status = status === "verify" ? getStatusBasedOnVerify(req.user.role) : status;
   if (!status) {
     return res.status(401).json({ message: "Unauthorized" });
   }
@@ -50,14 +50,26 @@ exports.updateStartupStatus = async (req, res, status) => {
   try {
     const startup = await Startup.findById(req.params.id);
     if (!startup) {
-      return res.status(404).json({ msg: 'Startup not found' });
+      return res.status(404).json({ msg: "Startup not found" });
     }
-
+    // Update the startup status to user
     startup.status = status;
     await startup.save();
-    console.log(status + " " + req.user.role);
+    if (status === "approved") {
+      const id = startup.userId;
+      const user = await User.findById(id);
+      console.log(user + "=>" + user.role);
+      if (!user) {
+        return res.status(404).json({ msg: "User not found" });
+      }
+      user.role = "startup";
+      await user.save();
+    }
     const responseMessage = {
-      msg: status === 'rejected' ? (req.body.message || 'Document mismatch') : `Startup ${status}`,
+      msg:
+        status === "rejected"
+          ? req.body.message || "Document mismatch"
+          : `Startup ${status}`,
       status,
     };
 
@@ -65,24 +77,25 @@ exports.updateStartupStatus = async (req, res, status) => {
     res.json(responseMessage);
 
     // Only proceed to send an email if the status is 'rejected'
-    if (status === 'rejected') {
-      const message = req.body.message || "Officials Reject the Application, Please check the necessary documents";
-      
-      
+    if (status === "rejected") {
+      const message =
+        req.body.message ||
+        "Officials Reject the Application, Please check the necessary documents";
+
       console.log(message);
       const startup = await Startup.findById(req.params.id);
-      startup.message=message;
+      startup.message = message;
       await startup.save();
       if (!startup) {
-        return res.status(404).json({ msg: 'Startup not found' });
+        return res.status(404).json({ msg: "Startup not found" });
       }
-      const {userId}=startup;
+      const { userId } = startup;
       const user = await User.findById(userId);
       if (!user) {
-        console.log('User not found');
+        console.log("User not found");
         return; // E
       }
-      const {email} = user;
+      const { email } = user;
       // console.log(startup)
       // console.log(user);
       const mailOptions = {
@@ -105,29 +118,28 @@ exports.updateStartupStatus = async (req, res, status) => {
   } catch (err) {
     console.error(err.message);
     if (!res.headersSent) {
-      res.status(500).send('Server error');
+      res.status(500).send("Server error");
     }
   }
 };
 
-
 // Helper function to get status based on role
 function getStatusBasedOnRole(role) {
   switch (role) {
-    case 'clerk':
-      return 'pending';
-    case 'authority':
-      return 'proceed';
+    case "clerk":
+      return "pending";
+    case "authority":
+      return "proceed";
     default:
       return null;
   }
 }
 function getStatusBasedOnVerify(role) {
   switch (role) {
-    case 'clerk':
-      return 'proceed';
-    case 'authority':
-      return 'approved';
+    case "clerk":
+      return "proceed";
+    case "authority":
+      return "approved";
     default:
       return null;
   }
