@@ -23,6 +23,8 @@ import MentorAsked from "./components/mentor/mentorAsked.";
 import Mentorship from "./components/mentor/Mentorship";
 import ProductDevelopment from "./components/Landing/ProductDevelopment";
 import CommunityEngagement from "./components/Landing/CommunityEngagement";
+import Scheme from "./components/scheme/Scheme";
+import SchemePage from "./components/scheme/SchemePage";
 const App = () => {
   const [data, setData] = useState(null);
   const [type,setType]=useState(0);
@@ -80,6 +82,8 @@ const App = () => {
         
         {user && (
           <>
+            <Route path="/scheme" element={<Scheme/>}/>
+            <Route path="/scheme/:id" element={<SchemePage/>}/>
             <Route path="/bot" element={<Bot />} />
             <Route path='/guide' element={<Guide  type={type}/>} />
             <Route path='/government' element={<GovernWorkspace />} />
