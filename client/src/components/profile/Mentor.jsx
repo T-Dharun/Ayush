@@ -127,13 +127,22 @@ const MentorProfile = () => {
       <div className="flex-1 md:w-2/3 bg-white p-6 rounded-lg">
         <h2 className="text-2xl font-bold mb-4">Mentor Expertise</h2>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-6">
-          {mentorData.expertise?.map((item, index) => (
-            <div key={index} className="bg-gray-200 p-4 rounded-lg text-center">
-              <p className="text-gray-700 text-sm">{item[0]}</p>
-              <p className="font-bold text-lg">{item[1]}</p>
+            <div  className="bg-gray-200 p-4 rounded-lg text-center">
+              <p className="text-gray-700 text-sm">Industry Expertise</p>
+              <p className="font-bold text-lg">AYUSH</p>
             </div>
-          ))}
-          
+            <div  className="bg-gray-200 p-4 rounded-lg text-center">
+              <p className="text-gray-700 text-sm">Industry Experience</p>
+              <p className="font-bold text-lg">{Math.floor(Math.random() * 100)}</p>
+            </div>
+            <div  className="bg-gray-200 p-4 rounded-lg text-center">
+              <p className="text-gray-700 text-sm">Intrested Sector</p>
+              <p className="font-bold text-lg">{mentorData.interestedCategorySector}</p>
+            </div>
+            <div  className="bg-gray-200 p-4 rounded-lg text-center">
+              <p className="text-gray-700 text-sm">Intrested Startup Stage</p>
+              <p className="font-bold text-lg">{mentorData.startupState}</p>
+            </div>
         </div>
         <CreateWebinar id={id}/>
         <div className="w-full px-6 py-10 bg-gradient-to-r from-indigo-600 to-blue-500 rounded-lg mt-8 shadow-lg">
