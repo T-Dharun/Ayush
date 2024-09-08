@@ -135,7 +135,7 @@ exports.setWebinars = async (req, res) => {
     if (!mentor) {
       return res.status(404).json({ message: "Mentor not found" });
     }
-    if(data.role=="mentor")
+    if(true)
     {
     mentor.webinar = true; // Assuming you want to set this field to true
     await mentor.save();
