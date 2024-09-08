@@ -189,12 +189,9 @@ const Navbar = () => {
               </div>
             )}
           </div>
-
-          <a href="#" className="text-gray-800 hover:text-orange-500">Events & Media</a>
-          <a href="#" className="text-gray-800 hover:text-orange-500 ">Ecosystem</a>
+          <Link to='events'><p className="text-gray-800 hover:text-orange-500">Events & Media</p></Link>
+          <a href="#ecosystem" className="text-gray-800 hover:text-orange-500 ">Ecosystem</a>
         </div>
-
-
         <div className="hidden md:flex space-x-4">
           {isLoggedIn ? (
             <div className="relative">

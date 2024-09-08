@@ -8,6 +8,7 @@ import Footer from "../components/Landing/Footer";
 import AyushStartupBenefits from "../components/Landing/AyushStartupBenefits";
 import EcoSystem from "../components/Landing/EcoSystem";
 import KeysAndInitiatives from "../components/Landing/KeysAndInitiatives";
+import StartupToolkit from "../components/Landing/StartupToolKit";
 function App() {
   return (
     <div className="bg-[#425417] ">
@@ -20,7 +21,7 @@ function App() {
       <Newsletter />
       <EcoSystem/>
       <KeysAndInitiatives />
-      <Cards />
+      <StartupToolkit/>
       <Footer />
     </div>
   );
