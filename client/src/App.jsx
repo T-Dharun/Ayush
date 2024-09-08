@@ -22,6 +22,7 @@ import Meeting from "./components/mentor/meeting";
 import MentorAsked from "./components/mentor/mentorAsked.";
 import ProductDevelopment from "./components/Landing/ProductDevelopment";
 import CommunityEngagement from "./components/Landing/CommunityEngagement";
+import KeysAndInitiativesPages from "./components/Landing/KeysAndIntiativesPages";
 const App = () => {
   const [data, setData] = useState(null);
   const [type,setType]=useState(0);
@@ -59,7 +60,7 @@ const App = () => {
         <Route path='/search' element={<SearchBar />} />
         <Route path='product-development' element={<ProductDevelopment />} />
         <Route path='community-engagement' element={<CommunityEngagement />} />
-        {/*<Route path="/register" element={<Home />} />*/}
+        <Route path='/keys-and-initiatives/:id' element={<KeysAndInitiativesPages />} />
         <Route path='/' element={<LandingPage />} />
         <Route path='/register' element={<Registration/>}/>
         <Route path='/register/mentor' element={<MentorRegistration/>}/>

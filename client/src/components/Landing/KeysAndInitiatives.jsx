@@ -8,52 +8,51 @@ import award from '../../assets/award.avif';
 import ranking from '../../assets/ranking.avif';
 import investor from '../../assets/investor.avif';
 import { Link } from 'react-router-dom';
-
 const cardData = [
   {
-    href: '/colla.html',
+    href: '/keys-and-initiatives/0',
     imageSrc: collaboration,
     title: 'Collaboration with other ministries',
     description: 'It encourages collaboration with ministries such as Commerce, Food Processing Industries, and Health and Family Welfare.',
   },
   {
-    href: '/digital.html',
+    href: '/keys-and-initiatives/1',
     imageSrc: digital,
     title: 'Digital initiatives',
     description: 'The Ministry of Ayush (MoA) has taken digital initiatives to improve the quality of research, education, and services.',
   },
   {
-    href: '/startup.html',
+    href: '/keys-and-initiatives/2',
     imageSrc: startup,
     title: 'Ayush Start-up Challenge',
     description: 'The AIIA launched the Ayush Start-up Challenge to support innovations and startups in the Ayush sector.',
   },
   {
-    href: '/pro.html',
+    href: '/keys-and-initiatives/3',
     imageSrc: promoting,
     title: 'Promoting investment',
     description: 'The Global AYUSH Investment & Innovation Summit aims to promote investment in Ayush services, products, and education sectors.',
   },
   {
-    href: '/champ.html',
+    href: '/keys-and-initiatives/4',
     imageSrc: champion,
     title: 'Champion Services Sector Scheme',
     description: 'This scheme provides soft loans and interest subsidies to Ayush hospitals and wellness centers.',
   },
   {
-    href: '/startup.html',
+    href: '/keys-and-initiatives/5',
     imageSrc: award,
     title: 'National Startups Awards',
     description: 'The National Startup Award is a marquee initiative by AYUSH Startup India, DPIIT, in recognizing exceptional startups across India.',
   },
   {
-    href: '/ranking.html',
+    href: '/keys-and-initiatives/6',
     imageSrc: ranking,
     title: 'States Startup Ranking',
     description: 'The States’ Startup Ranking is an annual capacity building exercise which has been developed to build a conducive startup ecosystem.',
   },
   {
-    href: '/connect.html',
+    href: '/keys-and-initiatives/7',
     imageSrc: investor,
     title: 'Investor Connect',
     description: 'It serves as a dedicated platform that connects startups to investors, across diverse sectors.',
