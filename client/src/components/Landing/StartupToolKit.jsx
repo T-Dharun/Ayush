@@ -95,7 +95,7 @@ const StartupToolkit = () => {
   };
 
   return (
-    <div className="flex h-screen h-[400px]">
+    <div className="flex h-screen h-[380px]">
       {/* Sidebar */}
       <div className="w-1/5 bg-green-500 text-white p-4 ml-2 ">
         <h1 className="text-2xl mb-4">Startup Toolkits</h1>
