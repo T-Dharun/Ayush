@@ -72,8 +72,8 @@ const CompanyDetails = () => {
                         <Card className="mb-4">
                             <Card.Header as="h5">Company Information</Card.Header>
                             <Card.Body>
-                                <table className="table table-bordered table-hover">
-                                    <tbody>
+                                <table className="table table-border table-hover">
+                                    <tbody className='p-5'>
                                         <tr>
                                             <th>Name</th>
                                             <td>{companyData.name}</td>

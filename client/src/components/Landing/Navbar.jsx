@@ -126,30 +126,12 @@ const Navbar = () => {
               For Startups
             </button>
             {isStartupDropdownOpen && (
-              <div className="absolute left-0 mt-5 pl-5 w-[700px] mr-[100px] bg-white border-t border-b border-gray-300 shadow-lg z-10">
+              <div className="absolute left-0 mt-5 pl-5 w-[300px] mr-[100px] bg-white border-t border-b border-gray-300 shadow-lg z-10">
                 <div className="flex justify-around py-4">
                   <div className="space-y-2">
-                    <h4 className="font-bold text-gray-800">Startup Literacy</h4>
                    <Link to='/courses' className='p-1'><p className="block text-gray-600 hover:text-black">Learning & Development</p></Link>
-                   <Link to='' className='p-1'><p className="block text-gray-600 hover:text-black">InnovateTN - FabLabs</p></Link>
-                   <Link to='' className='p-1'><p className="block text-gray-600 hover:text-black">Hackathon</p></Link>
-                   <Link to='' className='p-1'><p className="block text-gray-600 hover:text-black">MentorTN</p></Link>
-                   <Link to='' className='p-1'><p className="block text-gray-600 hover:text-black">Brand Labs</p></Link>
-                  </div>
-                  <div className="space-y-2">
-                    <h4 className="font-bold text-gray-800">Innovation Landscape</h4>
-                    <a href="#" className="block text-gray-600 hover:text-black">Open Innovation</a>
-                    <a href="#" className="block text-gray-600 hover:text-black">Hackathon</a>
-                    <a href="#" className="block text-gray-600 hover:text-black">InnovateTN - FabLabs</a>
-                  </div>
-                  <div className="space-y-2">
-                    <h4 className="font-bold text-gray-800">Fund Raise</h4>
-                    <a href="#" className="block text-gray-600 hover:text-black">TANFUND</a>
-                    <a href="#" className="block text-gray-600 hover:text-black">TANSEED</a>
-                    <a href="#" className="block text-gray-600 hover:text-black">Conventional Institutions Engagement</a>
-                    <a href="#" className="block text-gray-600 hover:text-black">AngelsTN</a>
-                    <a href="#" className="block text-gray-600 hover:text-black">Startup Thamizha</a>
-                    <a href="#" className="block text-gray-600 hover:text-black">TN SC/ST Startup Fund</a>
+                   <Link to='/product-development' className='p-1'><p className="block text-gray-600 hover:text-black">Product Development</p></Link>
+                   <Link to='/community-engagement' className='p-1'><p className="block text-gray-600 hover:text-black">Community Engagement</p></Link>
                   </div>
                 </div>
               </div>
@@ -167,30 +149,19 @@ const Navbar = () => {
               For Enablers
             </button>
             {isEnablerDropdownOpen && (
-              <div className="absolute left-0 mt-5 w-[500px] mr-[100px] bg-white border-t border-b border-gray-300 shadow-lg z-10">
+              <div className="absolute left-0 mt-5 w-[300px] mr-[100px] bg-white border-t border-b border-gray-300 shadow-lg z-10">
                 <div className="flex justify-around py-4">
                   <div className="space-y-2">
-                    <h4 className="font-bold text-gray-800">Ecosystem Stakeholders</h4>
-                    <a href="#" className="block text-gray-600 hover:text-black">MentorTN</a>
-                    <a href="#" className="block text-gray-600 hover:text-black">AngelsTN</a>
-                    <a href="#" className="block text-gray-600 hover:text-black">Sectoral Forum</a>
-                    <a href="#" className="block text-gray-600 hover:text-black">S2G</a>
-                    <a href="#" className="block text-gray-600 hover:text-black">Scaleup Incubators</a>
-                    <a href="#" className="block text-gray-600 hover:text-black">Catalyst</a>
-                  </div>
-                  <div className="space-y-2">
-                    <h4 className="font-bold text-gray-800">Equitable Growth</h4>
-                    <a href="#" className="block text-gray-600 hover:text-black">TANSEED</a>
-                    <a href="#" className="block text-gray-600 hover:text-black">Regional Hubs</a>
-                    <a href="#" className="block text-gray-600 hover:text-black">TN SC/ST Startup Fund</a>
-                    <a href="#" className="block text-gray-600 hover:text-black">Venture Lab</a>
+                  <Link to='/courses' className='p-1'><p className="block text-gray-600 hover:text-black">Learning & Development</p></Link>
+                   <Link to='/product-development' className='p-1'><p className="block text-gray-600 hover:text-black">Product Development</p></Link>
+                   <Link to='/community-engagement' className='p-1'><p className="block text-gray-600 hover:text-black">Community Engagement</p></Link>
                   </div>
                 </div>
               </div>
             )}
           </div>
-          <Link to='events'><p className="text-gray-800 hover:text-orange-500">Events & Media</p></Link>
-          <a href="#ecosystem" className="text-gray-800 hover:text-orange-500 ">Ecosystem</a>
+          <Link to='/scheme'><p className="text-gray-800 hover:text-orange-500">Schemes</p></Link>
+          <Link to='/webinars'> <a href="#ecosystem" className="text-gray-800 hover:text-orange-500 ">Webinars</a></Link>
         </div>
         <div className="hidden md:flex space-x-4">
           {isLoggedIn ? (
@@ -247,18 +218,19 @@ const Navbar = () => {
                             >
                               <span className="text-sm text-gray-600">Profile</span>
                             </li>
-                            <li className="py-2 px-4 hover:bg-gray-100 rounded-md cursor-pointer transition duration-200 ease-in-out transform hover:translate-x-2"
+                            {/* <li className="py-2 px-4 hover:bg-gray-100 rounded-md cursor-pointer transition duration-200 ease-in-out transform hover:translate-x-2"
                               onClick={()=>handleStatus()}
                             >
                               <span className="text-sm text-gray-600">DashBoard</span>
-                            </li>
-                          {data?.role !== 'stakeholder' ? (
+                            </li> */}
+                          {(data?.role === 'clerk' || data?.role ==='authority') && (
                             <Link to="/government">
                               <li className="py-2 px-4 hover:bg-gray-100 rounded-md cursor-pointer transition duration-200 ease-in-out transform hover:translate-x-2">
                                 <span className="text-sm text-gray-600">Work</span>
                               </li>
                             </Link>
-                          ) : (
+                          ) }
+                           {(data?.role === "stackholder" || data?.role === 'startup') && (
                             <Link to="/status">
                               <li className="py-2 px-4 hover:bg-gray-100 rounded-md cursor-pointer transition duration-200 ease-in-out transform hover:translate-x-2">
                                 <span className="text-sm text-gray-600">Status</span>

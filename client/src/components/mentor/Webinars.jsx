@@ -37,26 +37,26 @@ const Webinars = () => {
 
     return (
         <div className="container mt-4">
-            <h2 className="mb-4 text-center">Available Webinars</h2>
-            <div className="row">
-                {webinars.length > 0 ? (
-                    webinars.map((webinar, index) => (
-                        <div key={index} className="col-md-4 mb-3">
-                            <div className="card shadow-sm">
-                                <div className="card-body">
-                                    <h5 className="card-title">Webinar Provided by {webinar.name}</h5>
-                                    <p className="card-text"><strong>Topic:</strong> {webinar.interestedCategorySector}</p>
-                                    <p className="card-text"><strong>State:</strong> {webinar.state}</p>
-                                    <a href={`#webinar${index}`} className="btn btn-primary" onClick={()=>handleWebinar(webinar)}>Click to Webinar</a>
-                                </div>
-                            </div>
-                        </div>
-                    ))
-                ) : (
-                    <p className="text-center">No webinars available</p>
-                )}
+  <h1 className="mb-5 text-center text-success display-6 fw-bold">Available Webinars</h1>
+  <div className="row justify-content-center">
+    {webinars.length > 0 ? (
+      webinars.map((webinar, index) => (
+        <div key={index} className="col-md-4 mb-3">
+          <div className="card shadow-sm border border-success">
+            <div className="card-body">
+              <h5 className="card-title text-success fw-bold">Webinar Provided by {webinar.name}</h5>
+              <p className="card-text p-2"><strong>Topic:</strong> {webinar.interestedCategorySector}</p>
+              <p className="card-text p-2"><strong>State:</strong> {webinar.state}</p>
+              <a href={`#webinar${index}`} className="btn btn-success pt-3 pb-3" onClick={() => handleWebinar(webinar)}>Click to Join Webinar</a>
             </div>
+          </div>
         </div>
+      ))
+    ) : (
+      <p className="text-center text-muted">No webinars available</p>
+    )}
+  </div>
+</div>
     );
 };
 
