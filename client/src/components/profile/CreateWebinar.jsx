@@ -32,7 +32,11 @@ const CreateWebinar = () => {
                 </button>
             ) : (
                 <button 
-                    onClick={() => navigate("/mentor/meeting")}
+                    onClick={() => 
+                        {
+                            localStorage.setItem("mentor",)
+                            navigate("/mentor/meeting")
+                        }}
                     className="btn btn-primary btn-lg shadow-lg"
                     style={{
                         backgroundColor: '#007bff', // Bootstrap primary color

@@ -84,7 +84,7 @@ const Meeting = () => {
             let a = JSON.parse(localStorage.getItem('user'));
             try {
                 const response = await axios.post(API_URL, { 
-                    data
+                    ...data,
                 }, {
                     headers: { 'x-auth-token': `${a?.token}` }
                 });
