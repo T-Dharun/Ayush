@@ -3,6 +3,7 @@ const Startup = new mongoose.Schema({
   name: String,
   id: mongoose.Schema.Types.ObjectId,
   email: String,
+  role:String,
   mobile: String,
 });
 
