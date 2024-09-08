@@ -6,7 +6,7 @@ import facebook from "../../assets/facebook.png";
 import Post from "../social/posts";
 import axiosHeader from "../../axiosHeader";
 import { useParams } from "react-router-dom";
-import CreateWebinar from "./createWebinar";
+import CreateWebinar from "./CreateWebinar";
 // Data object for mentors
 const MentorProfile = () => {
   const { id } = useParams();
