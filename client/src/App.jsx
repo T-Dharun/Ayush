@@ -18,7 +18,7 @@ import Webinars from "./components/mentor/Webinars"
 import UserType from './components/Registration/UserType';
 import CertificateGenerator from "./pages/CertificateGenerator";
 import SearchBar from "./components/List/SearchBar";
-import Meeting from "./components/mentor/meeting";
+import Meeting from "./components/mentor/Meeting";
 import MentorAsked from "./components/mentor/mentorAsked.";
 import Mentorship from "./components/mentor/Mentorship";
 import ProductDevelopment from "./components/Landing/ProductDevelopment";
