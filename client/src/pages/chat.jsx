@@ -11,7 +11,7 @@ import {
 } from "@chakra-ui/react";
 import { ArrowForwardIcon, CloseIcon } from "@chakra-ui/icons";
 
-const socket = io("http://localhost:5000");
+const socket = io("http://localhost:3000");
 
 const Chat = () => {
   const [message, setMessage] = useState("");

@@ -1,96 +1,93 @@
-const videos = [
+const courses = [
   {
-    title: "Introduction to React",
-    url: "https://www.youtube.com/watch?v=Ke90Tje7VS0",
+    title: "Ayurveda Fundamentals",
+    videos: [
+      {
+        title: "Introduction to Ayurveda",
+        url: "https://www.youtube.com/watch?v=8vmu5w_-_do&list=PLRR-Y7wX83kt7VwI4g1GE-YybJc6peSCp",
+      },
+      {
+        title: "Ayurvedic Principles",
+        url: "https://www.youtube.com/watch?v=J4vXC9U7VG8&list=PLRR-Y7wX83kt7VwI4g1GE-YybJc6peSCp&index=2",
+      },
+      {
+        title: "Ayurvedic Herbs",
+        url: "https://www.youtube.com/watch?v=1umPXaMCIZA&list=PLRR-Y7wX83kt7VwI4g1GE-YybJc6peSCp&index=3",
+      },
+      {
+        title: "Ayurvedic Treatments",
+        url: "https://www.youtube.com/watch?v=t_YYScfKezc&list=PLRR-Y7wX83kt7VwI4g1GE-YybJc6peSCp&index=4",
+      },
+      {
+        title: "Advanced Ayurveda",
+        url: "https://www.youtube.com/watch?v=sKAAxoH3q30&list=PLRR-Y7wX83kt7VwI4g1GE-YybJc6peSCp&index=5",
+      },
+    ],
   },
   {
-    title: "Introduction to Node.js",
-    url: "https://www.youtube.com/watch?v=U8XF6AFGqlc",
+    title: "Yoga Practices",
+    videos: [
+      {
+        title: "Introduction to Yoga",
+        url: "https://www.youtube.com/watch?v=9c_aAew9Zes&list=PLRR-Y7wX83kt7VwI4g1GE-YybJc6peSCp&index=6",
+      },
+      {
+        title: "Basic Yoga Asanas",
+        url: "https://www.youtube.com/watch?v=aUdo9xHDr-w&list=PLRR-Y7wX83kt7VwI4g1GE-YybJc6peSCp&index=7",
+      },
+      {
+        title: "Yoga Breathing Techniques",
+        url: "https://www.youtube.com/watch?v=r_AYfs_JdHg&list=PLRR-Y7wX83kt7VwI4g1GE-YybJc6peSCp&index=8",
+      },
+      {
+        title: "Advanced Yoga Poses",
+        url: "https://www.youtube.com/watch?v=UJPXE6RMBJ4&list=PLRR-Y7wX83ktJ1o2RY9ZCaw180_qcTWG-",
+      },
+    ],
   },
   {
-    title: "Introduction to Express.js",
-    url: "https://www.youtube.com/watch?v=L72fhGm1tfE",
+    title: "Naturopathy Overview",
+    videos: [
+      {
+        title: "Introduction to Naturopathy",
+        url: "https://www.youtube.com/watch?v=dv6M3I2DRfc&list=PLRR-Y7wX83ktJ1o2RY9ZCaw180_qcTWG-&index=2",
+      },
+      {
+        title: "Naturopathic Remedies",
+        url: "https://www.youtube.com/watch?v=gasGUl7i6Ww&list=PLRR-Y7wX83ktJ1o2RY9ZCaw180_qcTWG-&index=3",
+      },
+    ],
   },
   {
-    title: "Introduction to MongoDB",
-    url: "https://www.youtube.com/watch?v=bxsemcrY4gQ",
+    title: "Ayush Integration",
+    videos: [
+      {
+        title: "Integrating Ayurveda with Yoga",
+        url: "https://www.youtube.com/watch?v=qU3hk0_ZbEI&list=PLRR-Y7wX83ks3qDae1APuS5FD_wMvYXXN",
+      },
+      {
+        title: "Combining Naturopathy with Yoga",
+        url: "https://www.youtube.com/watch?v=wUI4tte9WU0&list=PLRR-Y7wX83ks3qDae1APuS5FD_wMvYXXN&index=2",
+      },
+      {
+        title: "Holistic Approaches in Ayush",
+        url: "https://www.youtube.com/watch?v=Ndc9mcRpMk4&list=PLRR-Y7wX83ks3qDae1APuS5FD_wMvYXXN&index=3",
+      },
+      {
+        title: "Advanced Techniques in Ayush",
+        url: "https://www.youtube.com/watch?v=FPu4-dubLRc&list=PLRR-Y7wX83kt6mesI3fDTSazBUPxh4DqY",
+      },
+    ],
   },
   {
-    title: "Introduction to Mongoose",
-    url: "https://www.youtube.com/watch?v=4yqu8YF29cU",
-  },
-  {
-    title: "Introduction to RESTful APIs",
-    url: "https://www.youtube.com/watch?v=Q-BpqyOT3a8",
-  },
-  {
-    title: "Introduction to JWT",
-    url: "https://www.youtube.com/watch?v=7nafaH9SddU",
-  },
-  {
-    title: "Introduction to React Router",
-    url: "https://www.youtube.com/watch?v=Law7wfdg_ls",
-  },
-  {
-    title: "Introduction to Redux",
-    url: "https://www.youtube.com/watch?v=CVpUuw9XSjY",
-  },
-  {
-    title: "Introduction to Redux Thunk",
-    url: "https://www.youtube.com/watch?v=1QI-UE3-0PU",
-  },
-  {
-    title: "Introduction to Redux Saga",
-    url: "https://www.youtube.com/watch?v=1QI-UE3-0PU",
-  },
-  {
-    title: "Introduction to Material-UI",
-    url: "https://www.youtube.com/watch?v=vyJU9efvUtQ",
-  },
-  {
-    title: "Introduction to Chakra UI",
-    url: "https://www.youtube.com/watch?v=UBTjLO1U4kg",
-  },
-  {
-    title: "Introduction to Tailwind CSS",
-    url: "https://www.youtube.com/watch?v=UBTjLO1U4kg",
-  },
-  {
-    title: "Introduction to Bootstrap",
-    url: "https://www.youtube.com/watch?v=UBTjLO1U4kg",
-  },
-  {
-    title: "Introduction to SASS",
-    url: "https://www.youtube.com/watch?v=Zz6eOVaaelI",
-  },
-  {
-    title: "Introduction to Styled Components",
-    url: "https://www.youtube.com/watch?v=9zTc3Zb7xtQ",
-  },
-  {
-    title: "Introduction to Firebase",
-    url: "https://www.youtube.com/watch?v=PKwu15ldZ7k",
-  },
-  {
-    title: "Introduction to AWS",
-    url: "https://www.youtube.com/watch?v=ubCNZRNjhyo",
-  },
-  {
-    title: "Introduction to Heroku",
-    url: "https://www.youtube.com/watch?v=PMrQkZwzZk",
-  },
-  {
-    title: "Introduction to Netlify",
-    url: "https://www.youtube.com/watch?v=PMrQkZwzZk",
-  },
-  {
-    title: "Introduction to Docker",
-    url: "https://www.youtube.com/watch?v=3c-iBn73dDE",
-  },
-  {
-    title: "Introduction to Kubernetes",
-    url: "https://www.youtube.com/watch?v=PH-2FfFD2PU",
+    title: "Ayush Benefits",
+    videos: [
+      {
+        title: "Benefits of Ayurveda",
+        url: "https://www.youtube.com/watch?v=KVlZBNf3nEo&list=PLRR-Y7wX83kt6mesI3fDTSazBUPxh4DqY&index=2",
+      },
+    ],
   },
 ];
 
-export { videos };
+export { courses };

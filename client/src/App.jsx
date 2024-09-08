@@ -28,6 +28,7 @@ import Events from "./components/events/Events";
 import EventsPage from "./components/events/EventPage";
 import Scheme from "./components/scheme/Scheme"
 import SchemePage from "./components/scheme/SchemePage"
+import CourseVideos from "./pages/CourseVideos";
 const App = () => {
   const [data, setData] = useState(null);
   const [type,setType]=useState(0);
@@ -62,6 +63,7 @@ const App = () => {
     <ChakraProvider>
       <Routes>
         {/* //development purpose */}
+
         <Route path='/scheme' element={<Scheme />} />
         <Route path='/scheme/:id' element={<SchemePage />} />
         <Route path='/search' element={<SearchBar />} />
@@ -78,6 +80,7 @@ const App = () => {
         <Route path="/forgot-password" element={<ForgotPassword />} />
         <Route path="/login" element={<Login/>} />
         <Route path="/courses" element={<Courses />} />
+        <Route path="/course/:id" element={<CourseVideos />} />
         <Route path="/register" element={<Registration />} />
         <Route path="/register/mentor" element={<MentorRegistration/>} />
         <Route path="/register/investor" element={<InvestorRegistration />} />

@@ -84,6 +84,7 @@ exports.modifyUserName = async (req, res) => {
 
 exports.sendOTP = async (req, res) => {
   const { mobile } = req.body;
+  console.log(mobile);
 
   if (
     !process.env.NEXMO_API_KEY ||
@@ -129,6 +130,7 @@ exports.sendOTP = async (req, res) => {
     user.otp = otp; // You might want to hash the OTP before saving
     user.otpExpires = Date.now() + 10 * 60 * 1000; // OTP expires in 10 minutes
     await user.save();
+    console.log(user);
     res.json({ msg: "OTP sent successfully" });
   } catch (err) {
     console.error(err.message);

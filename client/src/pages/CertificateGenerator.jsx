@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { Button, Spinner, Box, Text, VStack, useToast } from '@chakra-ui/react';
 import pdfMake from 'pdfmake/build/pdfmake';
-import pdfFonts from 'pdfmake/build/vfs_fonts';
+import * as pdfFonts from 'pdfmake/build/vfs_fonts';
+
 import axiosHeader from '../axiosHeader'; // Replace with your Axios setup
 
 // Register pdfMake fonts
