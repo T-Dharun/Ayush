@@ -20,6 +20,7 @@ import CertificateGenerator from "./pages/CertificateGenerator";
 import SearchBar from "./components/List/SearchBar";
 import Meeting from "./components/mentor/meeting";
 import MentorAsked from "./components/mentor/mentorAsked.";
+import Mentorship from "./components/mentor/Mentorship";
 import ProductDevelopment from "./components/Landing/ProductDevelopment";
 import CommunityEngagement from "./components/Landing/CommunityEngagement";
 import KeysAndInitiativesPages from "./components/Landing/KeysAndIntiativesPages";
@@ -88,6 +89,7 @@ const App = () => {
             <Route path='/approvedStartups' element={<ViewStartups />} />
             <Route path="/status" element={<Status id={user.id} />} />
             <Route path="/startup/:id" element={<Startup />} />
+            <Route path="/viewMentorship" element={<Mentorship/> } />
             {/* <Route path="/" component={SearchBar} />
              */}
             <Route path='/UserType' element={<UserType setType={setType}/>}/>

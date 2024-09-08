@@ -158,6 +158,7 @@ exports.getWebinars = async (req, res) => {
   }
 };
 
+
 exports.setWebinars = async (req, res) => {
   const { data } = req.body; // Remove if not used
   // console.log(data)
@@ -186,6 +187,58 @@ exports.setWebinars = async (req, res) => {
     console.log("Mentor updated:", mentor);
 
     return res.status(200).json({ message: "Updated successfully", mentor });
+  } catch (error) {
+    console.error("Error updating mentor:", error);
+    return res
+      .status(500)
+      .json({ message: "Server error", error: error.message });
+  }
+};
+exports.setWebinarsById = async (req, res) => {
+  const { id } = req.body;
+  console.log(req.body);
+  const userId = req.user?.id; // Optional chaining for safety
+  console.log(req.user);
+  if (!userId) {
+    return res.status(401).json({ message: "User not authenticated" });
+  }
+
+  try {
+    // Fetch the mentor by ID
+    let mentor = await Mentor.findOne({ _id: id });
+    console.log(mentor);
+
+    // Fetch the user data by ID
+    let data = await User.findOne({ _id: req.user.id });
+    if (!mentor) {
+      return res.status(404).json({ message: "Mentor not found" });
+    }
+
+    // Check if the user ID is already in mentor.webinarAsked array
+    const webinarExists = mentor.webinarAsked.some(
+      (webinar) => webinar.id.toString() === data._id.toString()
+    );
+
+    // If the user ID is not present, add the data
+    if (!webinarExists) {
+      mentor.webinarAsked = [
+        ...mentor.webinarAsked,
+        {
+          id: data._id,
+          name: data.name,
+          email: data.email,
+          role: data.role,
+        },
+      ];
+
+      // Save the updated mentor data
+      await mentor.save();
+
+      console.log("Mentor updated:", mentor);
+      return res.status(200).json({ message: "Updated successfully", mentor });
+    } else {
+      return res.status(200).json({ message: "User already in webinarAsked list" });
+    }
   } catch (error) {
     console.error("Error updating mentor:", error);
     return res
