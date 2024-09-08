@@ -102,7 +102,7 @@ const App = () => {
           </>
         )}
       </Routes>
-      {user&&<Bot/>}
+      <Bot/>
     </ChakraProvider>
   );
 }

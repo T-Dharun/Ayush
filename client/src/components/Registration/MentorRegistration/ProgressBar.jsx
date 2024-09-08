@@ -48,7 +48,7 @@ function ProgressBar({ currentStep ,setStep }) {
   });
 
   return (
-    <div className="progressBar">
+    <div className="progressBar hidden lg:block">
       {data.map((item, index) => (
         <div key={index} className="progressBar-item cursor-pointer" onClick={()=>navi(index)}>
           <div className="progressBar-info">

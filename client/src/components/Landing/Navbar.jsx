@@ -7,6 +7,7 @@ import axiosHeader from '../../axiosHeader';
 import { Toast } from 'react-bootstrap';
 const Navbar = () => {
   const toast=useToast();
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isStartupDropdownOpen, setIsStartupDropdownOpen] = useState(false);
   const [isEnablerDropdownOpen, setIsEnablerDropdownOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
@@ -18,6 +19,9 @@ const Navbar = () => {
   
   const location = useLocation();
   //console.log("nav"+user.token);
+  const toggleMobileMenu = () => {
+    setIsMobileMenuOpen(!isMobileMenuOpen);
+  };
   const closeDropdowns = () => {
     setIsStartupDropdownOpen(false);
     setIsEnablerDropdownOpen(false);
@@ -87,11 +91,14 @@ const Navbar = () => {
     >
       <div className="container mx-auto flex justify-between items-a-center">
         <div className="flex items-center space-x-4">
-          <button className="md:hidden text-gray-800">
-            <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h16m-7 6h7" />
-            </svg>
-          </button>
+        <button
+          className="md:hidden text-gray-800"
+          onClick={toggleMobileMenu} // Toggle mobile menu on click
+        >
+          <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h16m-7 6h7" />
+          </svg>
+        </button>
         </div>
 
         <div className="flex-1 flex justify-center items-center">
@@ -113,7 +120,19 @@ const Navbar = () => {
             </svg>
           </div>
         </div>
-
+        {isMobileMenuOpen && (
+  <div className="md:hidden fixed top-16 left-0 w-full bg-white border-t border-gray-300 shadow-lg z-50">
+    <div className="flex flex-col py-4 px-4">
+      <Link to='/courses' className='p-2 text-gray-800 hover:text-orange-500'>Learning & Development</Link>
+      <Link to='' className='p-2 text-gray-800 hover:text-orange-500'>InnovateTN - FabLabs</Link>
+      <Link to='' className='p-2 text-gray-800 hover:text-orange-500'>Hackathon</Link>
+      <Link to='' className='p-2 text-gray-800 hover:text-orange-500'>MentorTN</Link>
+      <Link to='' className='p-2 text-gray-800 hover:text-orange-500'>Brand Labs</Link>
+      <Link to='events' className='p-2 text-gray-800 hover:text-orange-500'>Events & Media</Link>
+      <a href="#ecosystem" className='p-2 text-gray-800 hover:text-orange-500'>Ecosystem</a>
+    </div>
+  </div>
+)}
         <div className="hidden md:flex space-x-8 relative ml-[40px]">
           <div className="relative">
             <button
@@ -189,6 +208,7 @@ const Navbar = () => {
               </div>
             )}
           </div>
+
           <Link to='events'><p className="text-gray-800 hover:text-orange-500">Events & Media</p></Link>
           <a href="#ecosystem" className="text-gray-800 hover:text-orange-500 ">Ecosystem</a>
         </div>

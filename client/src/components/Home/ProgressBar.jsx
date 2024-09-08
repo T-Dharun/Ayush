@@ -69,14 +69,12 @@ function ProgressBar({ currentStep ,setStep }) {
   });
 
   return (
-    <div className="progressBar">
+    <div className="progressBar hidden lg:block">
       {data.map((item, index) => (
-        <div key={index} className="progressBar-item cursor-pointer" onClick={()=>navi(index)}>
+        <div key={index} className="progressBar-item cursor-pointer" onClick={() => navi(index)}>
           <div className="progressBar-info">
             <div
-              className={`progressBar-circle ${item.complete ? 'complete' : ''} ${
-                item.active ? 'active' : ''
-              }`}
+              className={`progressBar-circle ${item.complete ? 'complete' : ''} ${item.active ? 'active' : ''}`}
             >
               {!item.complete && <span>{item.step}</span>}
             </div>

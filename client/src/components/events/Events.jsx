@@ -126,7 +126,7 @@ const eventCards = [
   }
 ];
 const EventCard = ({ event }) => (
-    <div className="bg-white shadow-lg rounded-lg overflow-hidden card">
+    <div className="bg-white shadow-lg rounded-lg overflow-hidden card transition-transform duration-300 transform hover:scale-105 m-3">
       <img src={event.imgSrc} alt={event.title} className="h-48 w-full object-cover" />
       <div className="p-4 text-center">
         <h3 className="text-xl font-semibold">{event.title}</h3>
@@ -143,7 +143,7 @@ const EventCard = ({ event }) => (
   
 
 const FlipBox = ({ imgSrc, title, link }) => (
-  <div className="group relative h-64 w-full bg-gray-100 shadow-lg rounded-lg overflow-hidden">
+  <div className="group relative h-64 w-full bg-gray-100 shadow-lg rounded-lg overflow-hidden m-4 mr-4">
     <div className="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center transition-transform duration-700 transform group-hover:rotate-y-180">
       <img src={imgSrc} alt={title} className="h-full w-full object-cover" />
       <h3 className="absolute text-white text-xl font-bold">{title}</h3>
