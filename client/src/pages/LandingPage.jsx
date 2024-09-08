@@ -5,6 +5,9 @@ import Analytics from "../components/Landing/Analytics";
 import Newsletter from "../components/Landing/Newsletter";
 import Cards from "../components/Landing/Cards";
 import Footer from "../components/Landing/Footer";
+import AyushStartupBenefits from "../components/Landing/AyushStartupBenefits";
+import EcoSystem from "../components/Landing/EcoSystem";
+import KeysAndInitiatives from "../components/Landing/KeysAndInitiatives";
 function App() {
   return (
     <div className="bg-[#425417] ">
@@ -13,8 +16,10 @@ function App() {
         <Navbar />
         <Hero />
       </div>
-      <Analytics />
+      <AyushStartupBenefits />
       <Newsletter />
+      <EcoSystem/>
+      <KeysAndInitiatives />
       <Cards />
       <Footer />
     </div>
