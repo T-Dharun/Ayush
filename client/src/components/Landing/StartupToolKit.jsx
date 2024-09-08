@@ -1,8 +1,8 @@
 import React, { useState } from "react";
-import img1 from "../../assets/ideation.avif"
-import img2 from "../../assets/validation.avif"
-import img3 from "../../assets/tracking.avif"
-import img4 from "../../assets/scaling.avif"
+import img1 from "../../assets/ideation.avif";
+import img2 from "../../assets/validation.avif";
+import img3 from "../../assets/tracking.avif";
+import img4 from "../../assets/scaling.avif";
 
 const StartupToolkit = () => {
   const [activeTab, setActiveTab] = useState("ideation");
@@ -66,38 +66,35 @@ const StartupToolkit = () => {
     const { image, video, title, description, activities } = contentData[tab];
 
     return (
-      <div className="p-8 space-y-4 m-2">
-       <div className="flex flex-col md:flex-row justify-between items-start md:items-center space-y-4 md:space-y-0 md:space-x-8 py-6 px-4 bg-gray-50 rounded-lg shadow-lg">
-  {/* Left Column - Text Content */}
-  <div className="w-full md:w-1/2">
-    <h2 className="text-3xl font-semibold text-gray-800 mb-4 flex items-center">
-      <i className={`fas fa-${tab === "ideation" ? "lightbulb text-yellow-500" : tab === "validation" ? "check-circle text-green-500" : tab === "early-traction" ? "chart-line text-blue-500" : "expand text-purple-500"} mr-2`}></i>
-      {title}
-    </h2>
-    <p className="text-base text-gray-700 mb-4">{description}</p>
-    <ul className="list-disc list-inside text-gray-700">
-      {activities.map((activity, index) => (
-        <li key={index} className="mb-2">{activity}</li>
-      ))}
-    </ul>
-  </div>
+      <div className="p-4 sm:p-6 md:p-8 space-y-4">
+        <div className="flex flex-col md:flex-row justify-between items-start md:items-center space-y-4 md:space-y-0 md:space-x-8 py-6 px-4 bg-gray-50 rounded-lg shadow-lg">
+          {/* Left Column - Text Content */}
+          <div className="w-full md:w-1/2">
+            <h2 className="text-2xl sm:text-3xl font-semibold text-gray-800 mb-4 flex items-center">
+              <i className={`fas fa-${tab === "ideation" ? "lightbulb text-yellow-500" : tab === "validation" ? "check-circle text-green-500" : tab === "early-traction" ? "chart-line text-blue-500" : "expand text-purple-500"} mr-2`}></i>
+              {title}
+            </h2>
+            <p className="text-base text-gray-700 mb-4">{description}</p>
+            <ul className="list-disc list-inside text-gray-700">
+              {activities.map((activity, index) => (
+                <li key={index} className="mb-2">{activity}</li>
+              ))}
+            </ul>
+          </div>
 
-  {/* Right Column - Image */}
-  <div className="w-full md:w-1/2">
-    <img src={image} alt={`${title} Image`} className="w-full h-64 md:h-62 object-cover rounded-lg shadow-md" />
-  </div>
-</div>
-
-
-        
+          {/* Right Column - Image */}
+          <div className="w-full md:w-1/2">
+            <img src={image} alt={`${title} Image`} className="w-full h-64 object-cover rounded-lg shadow-md" />
+          </div>
         </div>
+      </div>
     );
   };
 
   return (
-    <div className="flex h-screen h-[400px]">
+    <div className="flex flex-col md:flex-row ">
       {/* Sidebar */}
-      <div className="w-1/5 bg-green-500 text-white p-4 ml-2 ">
+      <div className="w-full md:w-1/5 bg-green-500 text-white p-4 md:ml-2">
         <h1 className="text-2xl mb-4">Startup Toolkits</h1>
         <ul className="space-y-2">
           {Object.keys(contentData).map((tab) => (
@@ -113,7 +110,7 @@ const StartupToolkit = () => {
       </div>
 
       {/* Content Area */}
-      <div className="w-4/5 bg-white overflow-y-auto">
+      <div className="w-full md:w-4/5 bg-white overflow-y-auto">
         {renderTabContent(activeTab)}
       </div>
     </div>

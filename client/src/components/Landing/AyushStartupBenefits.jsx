@@ -63,8 +63,8 @@ const AyushStartupBenefits = () => {
         ))}
       </div>
 
-      <img src={left} alt="Left Plant" className="absolute left-0 bottom-0 w-72 animate-float" />
-      <img src={right} alt="Right Plant" className="absolute right-0 bottom-0 w-72 animate-float" />
+      <img src={left} alt="Left Plant" className="absolute left-0 bottom-0 w-72 hidden md:block animate-float" />
+      <img src={right} alt="Right Plant" className="absolute right-0 bottom-0 w-72 hidden md:block animate-float"/>
     </div>
   );
 };

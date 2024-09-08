@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import LOGO from '../../assets/LOGO.jpeg';
 import { useToast } from '@chakra-ui/react';
-import { useLocation, Link,useNavigate } from 'react-router-dom';
+import { useLocation, Link, useNavigate } from 'react-router-dom';
 import { FaUserCircle } from 'react-icons/fa';
 import axiosHeader from '../../axiosHeader';
 import { Toast } from 'react-bootstrap';
 const Navbar = () => {
-  const toast=useToast();
+  const toast = useToast();
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isStartupDropdownOpen, setIsStartupDropdownOpen] = useState(false);
   const [isEnablerDropdownOpen, setIsEnablerDropdownOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
@@ -15,9 +16,12 @@ const Navbar = () => {
   const [userDetails, setUserDetails] = useState(null);
   const user = JSON.parse(localStorage.getItem('user'));
   const data = JSON.parse(localStorage.getItem('data'));
-  
+
   const location = useLocation();
   //console.log("nav"+user.token);
+  const toggleMobileMenu = () => {
+    setIsMobileMenuOpen(!isMobileMenuOpen);
+  };
   const closeDropdowns = () => {
     setIsStartupDropdownOpen(false);
     setIsEnablerDropdownOpen(false);
@@ -55,22 +59,22 @@ const Navbar = () => {
   const handleAvatarClick = () => {
     setShowPopup(!showPopup);
   };
-  const navigate=useNavigate();
-  const handleStatus=()=>{
-    
+  const navigate = useNavigate();
+  const handleStatus = () => {
+
   }
-  const handleProfile=()=>{
+  const handleProfile = () => {
     const user = JSON.parse(localStorage.getItem('data'));
-    if(user.role=='startup'){
-      navigate('/startup/'+user._id);
+    if (user.role == 'startup') {
+      navigate('/startup/' + user._id);
     }
-    else if(user.role=='investor'){
-      navigate('/investor/'+user._id);
+    else if (user.role == 'investor') {
+      navigate('/investor/' + user._id);
     }
-    else if(user.role=='mentor')  {
-      navigate('/mentor/'+user._id);
+    else if (user.role == 'mentor') {
+      navigate('/mentor/' + user._id);
     }
-    else{
+    else {
       toast({
         title: 'sorry we don\'t have profile public',
         description: 'Please contact us',
@@ -87,7 +91,10 @@ const Navbar = () => {
     >
       <div className="container mx-auto flex justify-between items-a-center">
         <div className="flex items-center space-x-4">
-          <button className="md:hidden text-gray-800">
+          <button
+            className="md:hidden text-gray-800"
+            onClick={toggleMobileMenu} // Toggle mobile menu on click
+          >
             <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h16m-7 6h7" />
             </svg>
@@ -101,7 +108,7 @@ const Navbar = () => {
               type="search"
               className="w-full py-2 pl-10 text-sm text-gray-700 rounded-full mr-[280px] w-[400px] "
               placeholder="Search..." style={{ border: '2px solid black' }}
-              onClick={() => {navigate('/search')}}
+              onClick={() => { navigate('/search') }}
             />
             <svg
               className="absolute top-1/2 transform -translate-y-1/2 left-3 h-5 w-5 text-gray-400"
@@ -113,7 +120,18 @@ const Navbar = () => {
             </svg>
           </div>
         </div>
-
+        {isMobileMenuOpen && (
+          <div className="md:hidden fixed top-16 left-0 w-full bg-white border-t border-gray-300 shadow-lg z-50">
+            <div className="flex flex-col py-4 px-4">
+              <Link to='/courses' className='p-2 text-gray-800 hover:text-orange-500'>Learning & Development</Link>
+              <Link to='/product-development' className='p-1'><p className="block text-gray-600 hover:text-black">Product Development</p></Link>
+              <Link to='/community-engagement' className='p-1'><p className="block text-gray-600 hover:text-black">Community Engagement</p></Link>
+              <Link to='/events' className='p-1'><p className="block text-gray-600 hover:text-black">Events</p></Link>
+              <Link to='/scheme'><p className="text-gray-800 hover:text-orange-500">Schemes</p></Link>
+          <Link to='/webinars'> <a href="#ecosystem" className="text-gray-800 hover:text-orange-500 ">Webinars</a></Link>
+            </div>
+          </div>
+        )}
         <div className="hidden md:flex space-x-8 relative ml-[40px]">
           <div className="relative">
             <button
@@ -129,9 +147,9 @@ const Navbar = () => {
               <div className="absolute left-0 mt-5 pl-5 w-[300px] mr-[100px] bg-white border-t border-b border-gray-300 shadow-lg z-10">
                 <div className="flex justify-around py-4">
                   <div className="space-y-2">
-                   <Link to='/courses' className='p-1'><p className="block text-gray-600 hover:text-black">Learning & Development</p></Link>
-                   <Link to='/product-development' className='p-1'><p className="block text-gray-600 hover:text-black">Product Development</p></Link>
-                   <Link to='/community-engagement' className='p-1'><p className="block text-gray-600 hover:text-black">Community Engagement</p></Link>
+                    <Link to='/courses' className='p-1'><p className="block text-gray-600 hover:text-black">Learning & Development</p></Link>
+                    <Link to='/product-development' className='p-1'><p className="block text-gray-600 hover:text-black">Product Development</p></Link>
+                    <Link to='/community-engagement' className='p-1'><p className="block text-gray-600 hover:text-black">Community Engagement</p></Link>
                   </div>
                 </div>
               </div>
@@ -152,9 +170,7 @@ const Navbar = () => {
               <div className="absolute left-0 mt-5 w-[300px] mr-[100px] bg-white border-t border-b border-gray-300 shadow-lg z-10">
                 <div className="flex justify-around py-4">
                   <div className="space-y-2">
-                  <Link to='/courses' className='p-1'><p className="block text-gray-600 hover:text-black">Learning & Development</p></Link>
-                   <Link to='/product-development' className='p-1'><p className="block text-gray-600 hover:text-black">Product Development</p></Link>
-                   <Link to='/community-engagement' className='p-1'><p className="block text-gray-600 hover:text-black">Community Engagement</p></Link>
+                    <Link to='/events' className='p-1'><p className="block text-gray-600 hover:text-black">Events</p></Link>
                   </div>
                 </div>
               </div>
@@ -214,23 +230,23 @@ const Navbar = () => {
                             </li>
                           </Link>
                           <li className="py-2 px-4 hover:bg-gray-100 rounded-md cursor-pointer transition duration-200 ease-in-out transform hover:translate-x-2"
-                              onClick={()=>handleProfile()}
-                            >
-                              <span className="text-sm text-gray-600">Profile</span>
-                            </li>
-                            {/* <li className="py-2 px-4 hover:bg-gray-100 rounded-md cursor-pointer transition duration-200 ease-in-out transform hover:translate-x-2"
+                            onClick={() => handleProfile()}
+                          >
+                            <span className="text-sm text-gray-600">Profile</span>
+                          </li>
+                          {/* <li className="py-2 px-4 hover:bg-gray-100 rounded-md cursor-pointer transition duration-200 ease-in-out transform hover:translate-x-2"
                               onClick={()=>handleStatus()}
                             >
                               <span className="text-sm text-gray-600">DashBoard</span>
                             </li> */}
-                          {(data?.role === 'clerk' || data?.role ==='authority') && (
+                          {(data?.role === 'clerk' || data?.role === 'authority') && (
                             <Link to="/government">
                               <li className="py-2 px-4 hover:bg-gray-100 rounded-md cursor-pointer transition duration-200 ease-in-out transform hover:translate-x-2">
                                 <span className="text-sm text-gray-600">Work</span>
                               </li>
                             </Link>
-                          ) }
-                           {(data?.role === "stackholder" || data?.role === 'startup') && (
+                          )}
+                          {(data?.role === "stackholder" || data?.role === 'startup') && (
                             <Link to="/status">
                               <li className="py-2 px-4 hover:bg-gray-100 rounded-md cursor-pointer transition duration-200 ease-in-out transform hover:translate-x-2">
                                 <span className="text-sm text-gray-600">Status</span>
@@ -243,7 +259,7 @@ const Navbar = () => {
                             </li>
                           </Link>
                           <Link to="/login">
-                            <li className="py-2 px-4 hover:bg-gray-100 rounded-md cursor-pointer transition duration-200 ease-in-out transform hover:translate-x-2" onClick={()=>{localStorage.removeItem('data');localStorage.removeItem('user')}}>
+                            <li className="py-2 px-4 hover:bg-gray-100 rounded-md cursor-pointer transition duration-200 ease-in-out transform hover:translate-x-2" onClick={() => { localStorage.removeItem('data'); localStorage.removeItem('user') }}>
                               <span className="text-sm text-gray-600">Logout</span>
                             </li>
                           </Link>
@@ -262,12 +278,12 @@ const Navbar = () => {
                   </Link>
                 )}
               </div>
-              {(data?.role == 'stakeholder'|| !data) && 
-              <Link to="/userType">
-                <button className="px-4 py-2 bg-blue-900 text-white rounded-full hover:bg-blue-700 ml-[20px]">
-                  Start Registration
-                </button>
-              </Link>}
+              {(data?.role == 'stakeholder' || !data) &&
+                <Link to="/userType">
+                  <button className="px-4 py-2 bg-blue-900 text-white rounded-full hover:bg-blue-700 ml-[20px]">
+                    Start Registration
+                  </button>
+                </Link>}
             </>
           )}
         </div>
