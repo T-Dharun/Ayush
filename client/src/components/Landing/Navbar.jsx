@@ -16,7 +16,6 @@ const Navbar = () => {
   const [userDetails, setUserDetails] = useState(null);
   const user = JSON.parse(localStorage.getItem('user'));
   const data = JSON.parse(localStorage.getItem('data'));
-
   const location = useLocation();
   //console.log("nav"+user.token);
   const toggleMobileMenu = () => {
@@ -246,7 +245,7 @@ const Navbar = () => {
                               </li>
                             </Link>
                           )}
-                          {(data?.role === "stackholder" || data?.role === 'startup') && (
+                          {(data?.role === "stakeholder" || data?.role === 'startup') && (
                             <Link to="/status">
                               <li className="py-2 px-4 hover:bg-gray-100 rounded-md cursor-pointer transition duration-200 ease-in-out transform hover:translate-x-2">
                                 <span className="text-sm text-gray-600">Status</span>
