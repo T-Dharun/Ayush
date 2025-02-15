@@ -94,17 +94,6 @@ The **AYUSH Startup Registration Portal** is a web-based platform that simplifie
 4. **Chat System**: Startups communicate with clerks for queries.
 5. **AI Chatbot**: Helps with common questions.
 
-## 📚 API Endpoints
-| Method | Endpoint | Description |
-|--------|---------|-------------|
-| POST   | `/api/auth/signup` | User registration |
-| POST   | `/api/auth/login` | User login |
-| GET    | `/api/startups` | Get all startup applications |
-| POST   | `/api/startups` | Submit a new startup application |
-| PUT    | `/api/startups/:id/status` | Update startup status |
-| GET    | `/api/chat/:id` | Get chat messages |
-| POST   | `/api/chat` | Send a new message |
-
 ## 🎯 Future Enhancements
 - **Automated Email Notifications** for status updates.
 - **More AI Assistance** for document verification.
